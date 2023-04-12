@@ -1,0 +1,2 @@
+delete  from pr_zlecenia_rbh rbh where rbh.rok=2014  and rbh.ID_KOMORKI in (select k.id_komorki from pr_komorki k where k.ID_WYDZIALU = 3 ) 
+#C

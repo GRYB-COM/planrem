@@ -1,0 +1,11 @@
+update  PR_HARMONOGRAM h
+set
+h.id_sprzetu   = (select first 1 m.ID_SPRZETU from pr_magazyn m where m.ROK = h.ROK and m.ID_HARM = h.ID_HARMONOGRAMU),
+h.id_jednostki = (select first 1 m.ID_JEDNOSTKI from pr_magazyn m where m.ROK = h.ROK and m.ID_HARM = h.ID_HARMONOGRAMU)
+where h.ROK < 2013 and  h.id_sprzetu is not null and exists
+( select first 1 null from pr_magazyn m
+  inner join PR_KOMORKI  k on k.ID_KOMORKI  = m.ID_KOMORKI
+  inner join PR_WYDZIALY w on w.ID_WYDZIALU = k.ID_WYDZIALU
+  where m.ROK = h.ROK and m.ID_HARM = h.ID_HARMONOGRAMU and m.ID_SPRZETU <> h.ID_SPRZETU and w.KOD='D3'
+)
+#C

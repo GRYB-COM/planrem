@@ -1,0 +1,96 @@
+CREATE OR ALTER PROCEDURE SP_LISTA_KUT (KOD     Varchar(20),
+       DZIAL   Varchar(10),
+       ROK     Integer,
+       MIES_OD Integer,
+       MIES_DO Integer)
+returns (IDX_1         Integer,
+         IDX_2         Integer,
+         NAGL_1        Varchar(100),
+         SYGN_MAG      Varchar(50),
+         ID_HARM       Integer,
+         NAZWA         Varchar(200),
+         INDEKS_MAT    Varchar(20),
+         KOD_REM       Varchar(10),
+         NR_FABR       Varchar(60),
+         NR_REJ        Varchar(60),
+         ILOSC_PRZYJ   Numeric(15,2),
+         RBH_PLAN      Numeric(15,2),
+         ILOSC_REM     Numeric(15,2),
+         RBH_REM       Numeric(10,2),
+         JW            Varchar(60),
+         MIEJSCOWOSC   Varchar(80),
+         DATA_PRZYJ    Date,
+         DATA_ZAK      Date,
+         DATA_POW      Date,
+         IL_POW        Integer,
+         SYGN_ZLECENIA Varchar(60),
+         DATA_PRZEKAZ  Date,
+         DATA_ZDA_KUT  Date,
+         UWAGI         Varchar(200))
+AS 
+  declare variable ID_WYDZIALU Integer;
+  declare variable ROK_OD Integer;
+  declare variable ROK_DO Integer;
+  declare variable ID_KOMORKI_DO Integer;
+  declare variable ID_KOMORKI_OD Integer;
+begin
+ IF(ROK >0) THEN BEGIN ROK_OD = ROK; ROK_DO = ROK; END
+ ELSE BEGIN ROK_OD = 0; ROK_DO = 999999999; END
+ IF(KOD='0/0') THEN
+   SELECT MIN(K.ID_KOMORKI), MAX(K.ID_KOMORKI) FROM PR_KOMORKI K WHERE WARSZTAT ='T' INTO :ID_KOMORKI_OD,  :ID_KOMORKI_DO;
+ ELSE 
+   SELECT MIN(K.ID_KOMORKI), MAX(K.ID_KOMORKI) FROM PR_KOMORKI K WHERE KOD=:KOD INTO :ID_KOMORKI_OD,  :ID_KOMORKI_DO;    
+
+ SELECT MIN(ID_WYDZIALU) FROM PR_WYDZIALY WHERE KOD = :DZIAL INTO :ID_WYDZIALU;
+ IDX_2=1;
+ FOR SELECT KU.POZYCJA,
+ CASE WHEN KU.POZYCJA = '999' THEN 'POZOSTA£E ZADANIA'  ELSE KU.NAZ_REMONTU END
+ FROM PR_KODY_USLUG KU
+ INNER JOIN PR_HARMONOGRAM  H ON KU.ID_USLUGI = H.ID_USLUGI
+ INNER JOIN PR_ZLECENIA     Z ON Z.ROK = H.ROK AND Z.ID_HARM = H.ID_HARMONOGRAMU
+ INNER JOIN PR_ZLECENIA_RBH R ON R.ROK = Z.ROK AND R.ID_KOMORKI = Z.ID_KOMORKI AND R.ID_ZLECENIA = Z.ID_ZLECENIA
+ inner join PR_KOMORKI      K ON K.ID_KOMORKI  = Z.ID_KOMORKI
+ WHERE R.ROK between :ROK_OD and :ROK_DO AND R.MIESIAC BETWEEN :MIES_OD AND :MIES_DO 
+ AND ( (:ID_WYDZIALU IS NOT NULL AND K.ID_WYDZIALU = :ID_WYDZIALU) OR   (:ID_WYDZIALU IS NULL AND  K.ID_KOMORKI BETWEEN :ID_KOMORKI_OD AND :ID_KOMORKI_DO) )
+ GROUP BY 1, 2 HAVING COUNT(*) > 0
+ INTO :IDX_1, :NAGL_1
+ DO
+ BEGIN
+ SUSPEND;
+ END
+ IDX_2=2;
+ FOR select
+ ku.pozycja,
+ CASE WHEN KU.POZYCJA = '999' THEN 'POZOSTA£E ZADANIA'  ELSE KU.NAZ_REMONTU END,
+ m.sygn_mag, m.ID_HARM, s.NAZWA, s.INDEKS_MAT,   r.KOD_REM, m.NR_FABR, m.NR_REJ, m.ILOSC AS ILOSC_PRZYJ,
+ z.LICZBA_RBH as RBH_PLAN,
+ (SELECT SUM(ZD.ILOSC) FROM  PR_ZLECENIA_RBH ZD WHERE  ZD.ID_ZLECENIA = Z.ID_ZLECENIA AND ZD.ROK = Z.ROK AND ZD.ID_KOMORKI = Z.ID_KOMORKI AND ZD.MIESIAC BETWEEN :MIES_OD AND :MIES_DO) as ILOSC_REM,
+ (SELECT SUM(ZD.LICZBA_RBH) FROM  PR_ZLECENIA_RBH ZD WHERE  ZD.ID_ZLECENIA = Z.ID_ZLECENIA AND ZD.ROK = Z.ROK AND ZD.ID_KOMORKI = Z.ID_KOMORKI AND ZD.MIESIAC BETWEEN :MIES_OD AND :MIES_DO) as RBH_REM,
+ j.JW, j.MIEJSCOWOSC, m.DATA_PRZYJ, m.DATA_ZAK,
+ (select max(p.DATA_WYST) from pr_powiad p
+ inner join PR_POWIAD2MAGAZYN pm on pm.ID_POWIAD = p.ID_POWIAD and pm.ROK_POW = p.ROK and pm.ID_WYDZIALU = p.ID_WYDZIALU
+ where pm.DEPOZYT = m.DEPOZYT and pm.ROK = m.ROK and pm.ID_KOMORKI = m.ID_KOMORKI and pm.ID_MAG = m.ID_MAG)  AS DATA_POW,
+ (select COUNT(DISTINCT P.ID_POWIAD) from pr_powiad p
+ inner join PR_POWIAD2MAGAZYN pm on pm.ID_POWIAD = p.ID_POWIAD and pm.ROK_POW = p.ROK and pm.ID_WYDZIALU = p.ID_WYDZIALU
+ where pm.DEPOZYT = m.DEPOZYT and pm.ROK = m.ROK and pm.ID_KOMORKI = m.ID_KOMORKI and pm.ID_MAG = m.ID_MAG)  AS IL_POW,
+ z.SYGN_ZLECENIA, m.DATA_PRZEKAZ, z.DATA_ZDA_KUT, m.UWAGI
+ from pr_zlecenia z
+ left outer join pr_jednostki   j  on j.ID_JEDNOSTKI = z.ID_JEDNOSTKI
+ left outer join pr_magazyn     m  on m.DEPOZYT = z.DEPOZYT and m.ROK = z.ROK_MAG and m.ID_KOMORKI = z.ID_KOMORKI_GLW and m.ID_MAG = z.ID_MAG
+ left outer join pr_remonty     r  on r.ID_REMONTU = m.ID_REMONTU
+ left outer join pr_sprzet      s  on s.ID_SPRZETU = m.ID_SPRZETU
+ LEFT OUTER JOIN PR_KOMORKI     K  on k.ID_KOMORKI = z.ID_KOMORKI
+ left outer join PR_HARMONOGRAM h  on h.ROK =z.ROK and h.ID_HARMONOGRAMU = z.ID_HARM
+ left outer join pr_kody_uslug  ku on ku.ID_USLUGI = h.ID_USLUGI
+ WHERE Z.ROK between :ROK_OD and :ROK_DO AND   
+( (:ID_WYDZIALU IS NOT NULL AND K.ID_WYDZIALU = :ID_WYDZIALU) OR  (:ID_WYDZIALU IS NULL AND  K.ID_KOMORKI BETWEEN :ID_KOMORKI_OD AND :ID_KOMORKI_DO)  )
+ ORDER BY Z.SYGN_ZLECENIA
+ INTO
+ :IDX_1,:NAGL_1,:sygn_mag, :ID_HARM, :NAZWA, :INDEKS_MAT, :KOD_REM, :NR_FABR, :NR_REJ, :ILOSC_PRZYJ,:RBH_PLAN,:ILOSC_REM,:RBH_REM,:JW,:MIEJSCOWOSC,:DATA_PRZYJ,:DATA_ZAK, :DATA_POW, :IL_POW,
+ :SYGN_ZLECENIA, :DATA_PRZEKAZ, :DATA_ZDA_KUT, :UWAGI
+ do
+ begin
+ SUSPEND;
+ end
+end
+#C

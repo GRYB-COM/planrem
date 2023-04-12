@@ -1,0 +1,4 @@
+insert into pr_harmonogram(ROK, ID_USLUGI, ID_KOMORKI, NR_ZADANIA, ZADANIE, ID_JEDNOSTKI, ID_REMONTU, ID_HARMONOGRAMU_GL,DATA_OD,DATA_DO,ID_HARMONOGRAMU,ID_SPRZETU,NORMA_RBH)
+select 2011, z.ID_USLUGI, z.ID_KOMORKI, z.NR_ZADANIA, z.ZADANIE, z.ID_JEDNOSTKI, z.ID_REMONTU, z.ID_HARMONOGRAMU_GL, z.DATA_OD, z.DATA_DO, z.ID_HARMONOGRAMU, z.ID_SPRZETU, z.NORMA_RBH from pr_harmonogram z 
+where z.rok=2012 and extract( year from z.DATA_OD) =2011 and not exists (select null from pr_harmonogram w where w.ID_HARMONOGRAMU = z.ID_HARMONOGRAMU and w.ROK =2011)
+#C

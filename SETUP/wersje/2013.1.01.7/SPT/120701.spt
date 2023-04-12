@@ -1,0 +1,129 @@
+CREATE OR ALTER PROCEDURE SP_KOMORKI_FOR_MIES_OD_DO (ROK     Integer,
+       MIES_OD Integer,
+       MIES_DO Integer)
+returns (ID_KOMORKI  Integer,
+         KOMORKA_IDX Integer,
+         KOD         Varchar(20),
+         NAZWA       Varchar(210),
+         ILOSC_P     Numeric(15,2),
+         RODZ_REM    Varchar(10),
+         ILOSC_R     Numeric(15,2),
+         RBH_P       Numeric(15,2),
+         RBH_R       Numeric(15,2),
+         ILOSC_WP    Numeric(15,2),
+         ILOSC_WZ    Numeric(15,2),
+         PROC_WP     Varchar(20),
+         PROC_WZ     Varchar(20),
+         ILOSC_WPS   Varchar(20),
+         ILOSC_WZS   Varchar(20))
+AS 
+  declare variable ID_WYDZIALU Integer;
+  declare variable TYLKORAZ Char(1);
+  declare variable NAZWA_WYDZ Varchar(80);
+  declare variable NAZWA_WAR Varchar(120);
+begin
+ FOR SELECT ID_WYDZIALU, NAZWA FROM PR_WYDZIALY ORDER BY KOD 
+ INTO :ID_WYDZIALU, :NAZWA_WYDZ DO
+ BEGIN
+ TYLKORAZ ='T';
+  FOR  SELECT DISTINCT K.ID_KOMORKI, K.KOD,  K.NAZWA
+  FROM PR_KOMORKI K
+   WHERE K.WARSZTAT='T' AND K.KOD <>'0/0'  AND K.ID_WYDZIALU = :ID_WYDZIALU
+    ORDER BY K.KOD
+     INTO :ID_KOMORKI, :KOD, :NAZWA_WAR
+      DO BEGIN
+       SELECT ILOSC_P,  RODZ_REM,ILOSC_R, RBH_P, RBH_R, ILOSC_WP, ILOSC_WZ, PROC_WP, PROC_WZ, ILOSC_WPS,ILOSC_WZS
+        FROM SP_MIES_OD_DO(NULL,:ID_KOMORKI,NULL,:ROK,:MIES_OD,:MIES_DO,NULL)
+         INTO  :ILOSC_P, :RODZ_REM,:ILOSC_R, :RBH_P, :RBH_R, :ILOSC_WP, :ILOSC_WZ, :PROC_WP, :PROC_WZ, :ILOSC_WPS, :ILOSC_WZS;
+          IF(ILOSC_P>0 OR ILOSC_R >0 OR RBH_P >0 OR RBH_R>0) THEN
+           BEGIN
+            IF (TYLKORAZ ='T' )THEN
+            BEGIN
+             KOMORKA_IDX =0;
+             NAZWA = NAZWA_WYDZ;
+             TYLKORAZ='N';
+             SUSPEND;
+            END
+            KOMORKA_IDX =1;
+            NAZWA = KOD || ' - ' || NAZWA_WAR;
+            SUSPEND;
+            NAZWA = NULL;
+            KOMORKA_IDX =2;
+            SUSPEND;
+            KOMORKA_IDX =3;
+            NAZWA='RAZEM WARSZTAT' || KOD;
+            SUSPEND;
+           END
+      END
+  END
+end
+#C
+
+
+CREATE OR ALTER PROCEDURE SP_POLROCZNE (ROK      Integer,
+       POLROCZE Integer)
+returns (POZYCJA           Integer,
+         POZYCJA_IDX       Integer,
+         KOD_WARSZTATU     Varchar(20),
+         KOD_WARSZTATU_IDX Integer,
+         LP                Integer,
+         NAZWA             Varchar(210),
+         INDEKS_MAT        Varchar(20),
+         ILOSC_P           Numeric(15,2),
+         RODZ_REM          Varchar(10),
+         ILOSC_R           Numeric(15,2),
+         RBH_P             Numeric(15,2),
+         RBH_R             Numeric(15,2),
+         ILOSC_WP          Numeric(15,2),
+         ILOSC_WZ          Numeric(15,2),
+         PROC_WP           Varchar(20),
+         PROC_WZ           Varchar(20),
+         ILOSC_WPS         Varchar(20),
+         ILOSC_WZS         Varchar(20))
+AS 
+  declare variable MIES_DO Integer;
+  declare variable MIES_OD Integer;
+  declare variable ID_SPRZETU Integer;
+  declare variable ID_KOMORKI Integer;
+begin
+ IF(POLROCZE =1) THEN BEGIN MIES_OD =1; MIES_DO = 6; END
+ ELSE BEGIN MIES_OD =7; MIES_DO = 12; END
+ LP=1;
+ FOR SELECT ID_KOMORKI, KOD, KOMORKA_IDX, NAZWA, ILOSC_P, RODZ_REM,ILOSC_R, RBH_P, RBH_R, ILOSC_WP, ILOSC_WZ, PROC_WP, PROC_WZ, ILOSC_WPS, ILOSC_WZS
+ FROM SP_KOMORKI_FOR_MIES_OD_DO(:ROK,:MIES_OD,:MIES_DO)
+ INTO  :ID_KOMORKI,:KOD_WARSZTATU, :KOD_WARSZTATU_IDX, :NAZWA, :ILOSC_P,:RODZ_REM, :ILOSC_R, :RBH_P, :RBH_R, :ILOSC_WP, :ILOSC_WZ, :PROC_WP, :PROC_WZ, :ILOSC_WPS, :ILOSC_WZS
+ DO BEGIN
+ IF(KOD_WARSZTATU_IDX IN (0,1,3)  ) THEN
+ BEGIN
+ POZYCJA       = NULL;
+ POZYCJA_IDX   = 0;
+ RODZ_REM = NULL;
+ SUSPEND;
+ END
+ ELSE IF(KOD_WARSZTATU_IDX  =2) THEN
+ BEGIN
+ FOR SELECT POZYCJA,  POZYCJA_IDX, NAZWA, ILOSC_P, RODZ_REM, ILOSC_R, RBH_P, RBH_R, ILOSC_WP, ILOSC_WZ, PROC_WP, PROC_WZ, ILOSC_WPS, ILOSC_WZS
+ FROM SP_KODY_USLUG_FOR_MIES_OD_DO(:ROK,:MIES_OD,:MIES_DO,:ID_KOMORKI)
+ INTO  :POZYCJA, :POZYCJA_IDX, :NAZWA, :ILOSC_P,:RODZ_REM, :ILOSC_R, :RBH_P, :RBH_R, :ILOSC_WP, :ILOSC_WZ, :PROC_WP, :PROC_WZ, :ILOSC_WPS, :ILOSC_WZS
+ DO BEGIN
+ IF(POZYCJA_IDX = 1 OR POZYCJA_IDX =3) THEN
+ BEGIN
+ RODZ_REM = NULL;
+ SUSPEND;
+ END
+ ELSE IF(KOD_WARSZTATU_IDX =2) THEN
+ BEGIN
+ FOR SELECT ID_SPRZETU,INDEKS_MAT, NAZWA, ILOSC_P, RODZ_REM,ILOSC_R, RBH_P, RBH_R, ILOSC_WP, ILOSC_WZ, PROC_WP, PROC_WZ, ILOSC_WPS, ILOSC_WZS
+ FROM SP_SPRZET_FOR_MIES_OD_DO(:ROK,:MIES_OD,:MIES_DO,:POZYCJA,:ID_KOMORKI)
+ INTO  :ID_SPRZETU, :INDEKS_MAT, :NAZWA, :ILOSC_P, :RODZ_REM, :ILOSC_R, :RBH_P, :RBH_R, :ILOSC_WP, :ILOSC_WZ, :PROC_WP, :PROC_WZ, :ILOSC_WPS, :ILOSC_WZS
+ DO BEGIN
+ SUSPEND;
+ LP = LP +1;
+ END
+ END
+ END
+ END
+ END
+end
+#C
+

@@ -1,0 +1,119 @@
+[REPORT]
+comment=Rozliczenie miesiêczne godzin nieprodukcyjnych w rozbiciu na warsztaty
+index=
+rapgroup=Planowanie
+type=-1
+templatefile=
+[CHART]
+legend=0
+legendalignment=1
+description=1
+descriptionnewpage=0
+mark=0
+markstyle=0
+width=800
+height=600
+style=0
+xstyle=0
+xfield=
+chartlabelangle=0
+[CFG]
+vertical=|
+horizontal=_
+width_no=3
+no=0
+wrapline=0
+[HTML]
+font=Arial
+sizef=10
+notablehdr=0
+firstpagecnt=-1
+nextpagecnt=-1
+fixedtable=0
+[PARAM_NR_MIES]
+TYP=-1
+RODZAJ=-1
+SQLCNT=0
+[HEADER]
+no=1
+line1=Rozliczenie miesiêczne godzin nieprodukcyjnych w rozbiciu na warsztaty
+[HEADER_EXT]
+no=1
+line1=Nr miesi¹ca:  :MIESIAC
+[FOOTER]
+no=1
+line1=
+[SQL]
+no=33
+line1=select
+line2=war.KOD ||' - '|| war.NAZWA as Warsztat,
+line3=sum(os.ETAT_PR) As Etat,
+line4=sum( os.ETAT_PR * os.ETAT_NPR * mies.DNI_ROB) AS Nominalne,
+line5=sum( os.ETAT_PR * os.ETAT_NPR * (case when ur.URLOP is null then 0.00 else ur.URLOP end)/os.ETAT_KOR )  AS Urlop,
+line6=sum( os.ETAT_PR * os.ETAT_NPR * (case when zw.LICZBA_DNI is null then 0.00 else zw.LICZBA_DNI end)/os.ETAT_KOR ) AS Zwolnienie,
+line7=sum( os.ETAT_PR * (mies.DNI_ROB - case when ur.Urlop is NULL then 0 else ur.URLOP end - case when zw.LICZBA_DNI is NULL then 0 else zw.LICZBA_DNI end)  * ka.PRZERWA) AS Przerwa,
+line8=sum( os.ETAT_PR * ka.CHOROBA) AS Choroba,
+line9=sum( os.ETAT_PR * ka.SLUZBA)  AS Sluzba,
+line10=sum( os.ETAT_PR *  (case when sz.RBH is null then 0.00 else sz.rbh end)) AS Szkolenie,
+line11=sum( os.ETAT_PR * os.ETAT_NPR * (case when ur.URLOP is null then 0.00 else ur.URLOP end)/os.ETAT_KOR )  +
+line12=sum( os.ETAT_PR * os.ETAT_NPR * (case when zw.LICZBA_DNI is null then 0.00 else zw.LICZBA_DNI end)/os.ETAT_KOR ) +
+line13=sum( os.ETAT_PR * (mies.DNI_ROB - case when ur.Urlop is NULL then 0 else ur.URLOP end - case when zw.LICZBA_DNI is NULL then 0 else zw.LICZBA_DNI end)  * ka.PRZERWA) +
+line14=sum( os.ETAT_PR * ka.CHOROBA) +
+line15=sum( os.ETAT_PR * ka.SLUZBA)  +
+line16=sum( os.ETAT_PR *  (case when sz.RBH is null then 0.00 else sz.rbh end)) AS NPROD,
+line17=sum( os.ETAT_PR * os.ETAT_NPR * mies.DNI_ROB) -
+line18=sum( os.ETAT_PR * os.ETAT_NPR * (case when ur.URLOP is null then 0.00 else ur.URLOP end)/os.ETAT_KOR )  -
+line19=sum( os.ETAT_PR * os.ETAT_NPR * (case when zw.LICZBA_DNI is null then 0.00 else zw.LICZBA_DNI end)/os.ETAT_KOR ) -
+line20=sum( os.ETAT_PR * (mies.DNI_ROB - case when ur.Urlop is NULL then 0 else ur.URLOP end - case when zw.LICZBA_DNI is NULL then 0 else zw.LICZBA_DNI end)  * ka.PRZERWA) -
+line21=sum( os.ETAT_PR * ka.CHOROBA) -
+line22=sum( os.ETAT_PR * ka.SLUZBA)  -
+line23=sum( os.ETAT_PR *  (case when sz.RBH is null then 0.00 else sz.rbh end)) AS PROD
+line24=from PR_komorki war
+line25=left outer join PR_OSOBY    os   on os.ID_KOMORKI = war.ID_KOMORKI
+line26=inner join PR_MIESIACE mies on mies.NR_MIES >0
+line27=left outer join PR_URLOPY   ur   on ur.ID_OSOBY = os.ID_OSOBY and ur.NR_MIES = mies.NR_MIES
+line28=left outer join PR_ZW_DOD   zw   on zw.ID_OSOBY = os.ID_OSOBY and zw.NR_MIES = mies.NR_MIES
+line29=left outer join PR_KADRA    ka   on ka.KOD = os.KADRA
+line30=left outer join PR_SZKOLENIE_RBH sz on sz.KOD = ka.KOD and sz.NR_MIES = mies.NR_MIES
+line31=WHERE war.WARSZTAT ='T'  and WAR.KOD <>'0/0'  AND WAR.KOD <>'-1/-1' AND WAR.ID_KOMORKI >0   and mies.NR_MIES =   :MIESIAC
+line32=group by
+line33=war.KOD, war.NAZWA
+[DISPLAYNAMES]
+KOD_WARSZTATU=&#160;
+NAZ_WARSZTATU=Warsztat
+RBH_NOM=RBH nominalne
+ETAT_PR=Etat prod.
+RBH_SLUZBA=S³u¿ba
+RBH_CHOROBA=Choroba
+RBH_PRZERWA=Przerwa
+RBH_SZKOLENIE=Szkolenie
+RBH_URLOP=Urlop
+RBH_NPROD=Fundusz niepr.
+RBH_PROD=Fundusz prod.
+[FIELDSIZES]
+ID_WYDZIALU   =-1
+KOD_WYDZIALU  =-1
+NAZ_WYDZIALU  =-1
+ID_WARSZTATU  =-1
+KOD_WARSZTATU =4
+NAZ_WARSZTATU =65
+ETAT_PR       =9
+RBH_NOM       =9
+RBH_URLOP     =9
+RBH_CHOROBA   =9
+RBH_SLUZBA    =9
+RBH_SZKOLENIE =9
+RBH_PRZERWA   =9
+RBH_PROD      =9
+RBH_NPROD     =9
+[PARAMS]
+MIESIAC=@MIESIAC#
+[PARAM_MIESIAC]
+TYP=1
+RODZAJ=2
+KEYFIELD=NR_MIES
+LISTFIELDS=NR_MIES;NAZ_MIES
+DISPLAYNAMES=Miesi¹c
+LONGNAME=Miesi¹c
+SQLCNT=1
+SQL0=SELECT * FROM PR_MIESIACE WHERE NR_MIES >0 order by nr_mies

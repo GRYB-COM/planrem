@@ -1,0 +1,9 @@
+select * from IS_PARAMS where UPPER(SET_NAME) ='MODLIN'
+#IFEXISTS
+update pr_komorki k
+set GLOWNY_K='T' 
+where 
+          k.WARSZTAT ='T' 
+      and k.KOD not in ('1/2','0/0','-1/-1')
+      and k.ID_WYDZIALU not in (3,6)
+#C

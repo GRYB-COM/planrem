@@ -1,0 +1,5 @@
+DELETE FROM PR_POWIAD
+#C
+
+update  pr_magazyn set data_przekaz = null where data_przekaz = '1899-12-30'
+#C

@@ -1,0 +1,125 @@
+[REPORT]
+comment=Lista przyjêtego sprzêtu poza planem
+index=
+rapgroup=Meldunek
+type=-1
+templatefile=
+[CHART]
+legend=0
+legendalignment=1
+description=1
+descriptionnewpage=0
+mark=0
+markstyle=0
+width=800
+height=600
+style=0
+xstyle=0
+xfield=
+chartlabelangle=0
+chartmultibar=0
+[CFG]
+vertical=|
+horizontal=_
+width_no=3
+no=1
+wrapline=0
+[HTML]
+font=Arial
+sizef=10
+notablehdr=0
+firstpagecnt=-1
+nextpagecnt=-1
+fixedtable=0
+noth=0
+[HEADER]
+no=1
+line1=<B>LISTA PRZYJÊTEGO SZPRZÊTU POZA PLANEM</B>
+[HEADER_EXT]
+no=1
+line1=
+[FOOTER]
+no=1
+line1=
+[SQL]
+no=32
+line1=SELECT
+line2=
+line3='&nbsp ' || K.KOD AS WARSZTAT,
+line4=
+line5=M.ID_HARM, M.PODSTAWA,
+line6=
+line7=CASE WHEN S.NAZWA IS NULL THEN '' ELSE S.NAZWA END  AS NAZ_SPRZ,
+line8=
+line9=J.JW || ' ' || J.NAZWA AS NAZ_JEDNOSTKI,
+line10=
+line11=R.KOD_REM, M.PROT_PRZYJ, M.NR_FABR, M.ILOSC, M.DATA_PRZYJ, M.DATA_PROP_ZAK, M.DATA_ZAK,
+line12=
+line13=' style=" background-color: silver; "  ' as thatrib
+line14=
+line15=FROM PR_MAGAZYN M
+line16=
+line17=LEFT OUTER JOIN PR_SPRZET    S ON S.ID_SPRZETU = M.ID_SPRZETU
+line18=
+line19=LEFT OUTER JOIN PR_ZLECENIA  Z ON Z.ROK_MAG = M.ROK AND Z.ID_KOMORKI_GLW = M.ID_KOMORKI AND Z.DEPOZYT = M.DEPOZYT AND Z.ID_MAG = M.ID_MAG
+line20=
+line21=LEFT OUTER JOIN PR_JEDNOSTKI J ON J.ID_JEDNOSTKI = M.ID_JEDNOSTKI
+line22=
+line23=LEFT OUTER JOIN PR_KOMORKI   K ON K.ID_KOMORKI = M.ID_KOMORKI
+line24=
+line25=LEFT OUTER JOIN PR_REMONTY R ON R.ID_REMONTU = M.ID_REMONTU
+line26=
+line27=WHERE  M.ID_HARM - (M.ID_HARM/1000)*1000 <=8  AND  M.DATA_PRZYJ BETWEEN :DATA_OD AND :DATA_DO AND  Z.NR_KOL =0
+line28=
+line29=AND   (:kod ='0/0' or  WARSZTAT =:KOD)
+line30=
+line31=ORDER BY K.KOD, M.DATA_PRZYJ
+line32=
+[DISPLAYNAMES]
+WARSZTAT=Warsztat
+ID_HARM=Nr harm.
+DATA_PRZYJ=Data przyjêcia
+NAZ_SPRZ=Typ sprzêtu
+NAZ_JEDNOSTKI=Dostawca
+PODSTAWA=Podstawa
+PROT_PRZYJ=Protokó³ przyj.
+NR_FABR=Nr fabr.
+ILOSC=Iloœæ
+DATA_PROP_ZAK=Proponowany termin zakoñczenia
+DATA_ZAK=Termin zakoñczenia
+[FIELDSIZES]
+WARSZTAT=5
+ID_HARM=5
+DATA_PRZYJ=10
+NAZ_SPRZ=55
+NAZ_JEDNOSTKI=30
+PODSTAWA=20
+PROT_PRZYJ=10
+NR_FABR=10
+ILOSC=5
+DATA_PROP_ZAK=10
+DATA_ZAK=10
+thatrib=-1
+[DISPLAYFORMATS]
+ILOSC=###,###,###,##0.00
+[PARAMS]
+DATA_OD=@1STYBR#
+DATA_DO=@31GRUBR#
+KOD=0/0
+[PARAM_KOD]
+TYP=4
+RODZAJ=1
+KEYFIELD=KOD
+LISTFIELDS=KOD;NAZWA
+DISPLAYNAMES=Kod;Warsztat
+LONGNAME=Warsztat
+SQLCNT=1
+SQL0=SELECT KOD,NAZWA FROM PR_KOMORKI WHERE WARSZTAT='T'  AND KOD <> '-1/-1' and nazwa <> 'Warsztat nieokreœlony' order by KOD
+[PARAM_DATA_DO]
+TYP=0
+RODZAJ=0
+SQLCNT=0
+[PARAM_DATA_OD]
+TYP=0
+RODZAJ=0
+SQLCNT=0

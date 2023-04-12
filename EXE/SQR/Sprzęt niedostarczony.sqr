@@ -1,0 +1,134 @@
+[REPORT]
+comment=Lista niedostarczonego sprzêtu
+index=
+rapgroup=Meldunek
+type=-1
+templatefile=
+[CHART]
+legend=0
+legendalignment=1
+description=1
+descriptionnewpage=0
+mark=0
+markstyle=0
+width=800
+height=600
+style=0
+xstyle=0
+xfield=
+chartlabelangle=0
+chartmultibar=0
+[CFG]
+vertical=|
+horizontal=_
+width_no=3
+no=1
+wrapline=0
+[HTML]
+font=Arial
+sizef=10
+notablehdr=0
+firstpagecnt=-1
+nextpagecnt=-1
+fixedtable=0
+noth=0
+[PARAM_DATA_OD]
+TYP=0
+RODZAJ=0
+SQLCNT=0
+[HEADER]
+no=1
+line1=<B>LISTA NIEDOSTARCZONEGO SPRZÊTU MIESI¥CE OD :MIES_OD DO :MIES_DO</B>
+[HEADER_EXT]
+no=1
+line1=
+[FOOTER]
+no=1
+line1=
+[SQL]
+no=2
+line1=select '&nbsp ' || WARSZTAT as Warsztat, ID_HARMONOGRAMU, NAZ_SPRZ, NAZ_JEDNOSTKI, KOD_REM, NR_FABR, PLANOWANE, PRZYJETE,
+line2=NIE_DOST, DATA_PRZYJ, DATA_PROP_ZAK from SP_SPRZET_NIEDOSTARCZONY(:ROK,:MIES_OD,:MIES_DO)   where (:kod ='0/0' or  WARSZTAT =:KOD)
+[DISPLAYNAMES]
+WARSZTAT=Warsztat
+ID_HARMONOGRAMU=Nr harm.
+DATA_PRZYJ=Proponowana<br>data przyjêcia
+NAZ_SPRZ=Typ sprzêtu
+NAZ_JEDNOSTKI=Dostawca
+PODSTAWA=Podstawa
+PROT_PRZYJ=Protokó³ przyj.
+NR_FABR=Nr fabr.
+ILOSC=Iloœæ
+DATA_PROP_ZAK=Proponowany <br>termin zakoñczenia
+DATA_ZAK=Planowany <br>termin zakoñczenia
+PLANOWANE=Planowa<br> iloœæ sprzêtu
+PRZYJETE=Dostarczona<br>iloœæ sprzêtu
+NIE_DOST=Niedostarczona<br>iloœæ sprzêtu
+KOD_REM=Kod<br>remontu
+[FIELDSIZES]
+WARSZTAT=5
+ID_HARMONOGRAMU=5
+DATA_PRZYJ=10
+NAZ_SPRZ=55
+NAZ_JEDNOSTKI=30
+PODSTAWA=20
+PROT_PRZYJ=10
+NR_FABR=10
+ILOSC=5
+DATA_PROP_ZAK=10
+DATA_ZAK=10
+PLANOWANE=5
+PRZYJETE=5
+NIE_DOST=5
+MIES_OD=-1
+[DISPLAYFORMATS]
+ILOSC=###,###,###,##0.00
+PLANOWANE=###,###,###,##0.00
+PRZYJETE=###,###,###,##0.00
+NIE_DOST=###,###,###,##0.00
+[PARAMS]
+MIES_OD=@MIESIAC#
+MIES_DO=@MIESIAC#
+ROK=@ROK#
+KOD=0/0
+[PARAM_DATA_DO]
+TYP=0
+RODZAJ=-1
+LONGNAME=Data do
+SQLCNT=0
+[PARAM_KOD]
+TYP=4
+RODZAJ=1
+KEYFIELD=KOD
+LISTFIELDS=KOD;NAZWA
+DISPLAYNAMES=Kod;Warsztat
+LONGNAME=Warsztat
+SQLCNT=1
+SQL0=SELECT KOD,NAZWA FROM PR_KOMORKI WHERE WARSZTAT='T'  AND KOD <> '-1/-1' and nazwa <> 'Warsztat nieokreœlony' order by KOD
+[PARAM_MIES_DO]
+TYP=1
+RODZAJ=1
+KEYFIELD=NR_MIES
+LISTFIELDS=NAZ_MIES
+DISPLAYNAMES=Miesi¹c
+LONGNAME=Miesi¹c do
+SQLCNT=1
+SQL0=SELECT NR_MIES, NAZ_MIES FROM PR_MIESIACE WHERE NR_MIES >0 ORDER BY NR_MIES
+[PARAM_MIES_OD]
+TYP=1
+RODZAJ=1
+KEYFIELD=NR_MIES
+LISTFIELDS=NAZ_MIES
+DISPLAYNAMES=Miesi¹c
+LONGNAME=Miesi¹c od
+SQLCNT=1
+SQL0=SELECT NR_MIES, NAZ_MIES FROM PR_MIESIACE WHERE NR_MIES >0 ORDER BY NR_MIES
+[PARAM_ROK]
+TYP=1
+RODZAJ=2
+LONGNAME=Rok
+SQLCNT=4
+SQL0=2011
+SQL1=2012
+SQL2=2013
+SQL3=2014

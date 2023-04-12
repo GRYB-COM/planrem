@@ -1,0 +1,76 @@
+[REPORT]
+comment=Sprawozdanie pó³roczne v 1
+index=
+rapgroup=Sprawozdania
+type=-1
+templatefile=
+[HEADER]
+no=1
+line1=Spr póroczne
+[HEADER_EXT]
+no=1
+line1=
+[FOOTER]
+no=1
+line1=
+[CHART]
+legend=0
+legendalignment=1
+description=1
+descriptionnewpage=0
+mark=0
+markstyle=0
+width=800
+height=600
+style=0
+xstyle=0
+xfield=
+chartlabelangle=0
+chartmultibar=0
+[SQL]
+no=32
+line1=select
+line2=a.IDX_1 ,
+line3=a.IDX_2 ,
+line4=a.lp,
+line5=a.ID_KOMORKI ,
+line6=a.KOD_WARSZTATU ,
+line7=a.naz_warsztatu ,
+line8=a.pozycja ,
+line9=a.naz_remontu ,
+line10=cast(   ( case when a.idx_2 =1  then  '  class="gruby"  bgcolor="#6DD9FF"  '
+line11=when a.idx_2 = 10  then  '   class="gruby"  bgcolor="#FFFFB7"  '
+line12=when a.idx_2 =99  then  '   class="gruby"  bgcolor="#6DD9FF"  '
+line13=else null end  )  as varchar(100))  tratrib,
+line14=cast(   ( case when a.idx_2 =1  then  '  colspan="24"  '
+line15=when a.idx_2 = 10  then  '  colspan="3"  '
+line16=when a.idx_2 =99  then  '  colspan="3"  '
+line17=else null end  )  as varchar(100))  tdatrib_lp2,
+line18=(case when a.idx_2=1 then a.naz_remontu
+line19=when a.idx_2=10 then 'Razem'
+line20=when a.idx_2=99 then 'Ogó³em'
+line21=else a.lp end ) lp2,
+line22=a.naz_sprzetu ,
+line23=a.INDEKS_MAT ,
+line24=a.PLAN_ILOSC_SPRZETU ,
+line25=a.RODZ_NAPRAWY ,
+line26=a.PLAN_ILOSC_RBH ,
+line27=a.PLAN_ILOSC_SPRZETU,
+line28=a.REAL_ILOSC_RBH,
+line29=a.REAL_ILOSC_SPRZETU,
+line30=a.Procent
+line31=from SP_POLROCZNE_WYK_PLANU(:ID_WARSZTATU) a
+line32=
+[CFG]
+vertical=
+horizontal=
+width_no=3
+no=0
+wrapline=0
+[HTML]
+font=Arial
+sizef=10
+notablehdr=0
+firstpagecnt=-1
+nextpagecnt=-1
+fixedtable=0

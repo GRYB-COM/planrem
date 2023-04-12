@@ -1,0 +1,40 @@
+CREATE OR ALTER TRIGGER PR_URLOPY_TR_BI FOR PR_URLOPY
+ACTIVE BEFORE  INSERT POSITION 0
+AS
+  declare variable id_max Integer;
+  declare variable id_zgen Integer;
+begin
+  IF (NEW.ID_URLOPU IS NULL OR NEW.ID_URLOPU < 1) 
+  THEN 
+  begin
+   select gen_id(PR_URLOPY_GEN,0),  max(id_urlopu) from pr_urlopy into :id_zgen, :id_max;
+   if(id_max > id_zgen) then
+   begin
+     select first 1  gen_id(PR_URLOPY_GEN, abs( max(id_urlopu) - gen_id(PR_URLOPY_GEN,0)) ) from pr_urlopy into :id_zgen;
+   end  
+    NEW.ID_URLOPU=GEN_ID(PR_URLOPY_GEN,1);
+
+  end  
+end
+#C
+
+CREATE OR ALTER TRIGGER PR_ETATY_PRAC_TR_BI FOR PR_ETATY_PRAC
+ACTIVE BEFORE INSERT POSITION 0
+AS
+  declare variable id_max Integer;
+  declare variable id_zgen Integer;
+begin
+  IF (NEW.ID_ETAT_PRAC IS NULL OR NEW.ID_ETAT_PRAC < 1) 
+  THEN 
+  begin
+   select gen_id(PR_ETATY_PRAC_GEN,0),  max(ID_ETAT_PRAC) from PR_ETATY_PRAC into :id_zgen, :id_max;
+   if(id_max > id_zgen) then
+   begin
+     select first 1  gen_id(PR_etaty_prac_GEN, abs( max(ID_ETAT_PRAC) - gen_id(PR_etaty_prac_GEN,0)) ) from PR_ETATY_PRAC into :id_zgen;
+   end  
+    NEW.ID_ETAT_PRAC=GEN_ID(PR_ETATY_PRAC_GEN,1);
+
+  end  
+
+end
+#C

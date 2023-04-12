@@ -1,0 +1,119 @@
+[REPORT]
+comment=Sprawozdanie kwartalne
+index=KOD_WARSZTATU;HEAD_WARSZTATU;POZYCJA;HEAD_REMONTU;LP
+rapgroup=Sprawozdania
+type=0
+templatefile=
+[CHART]
+legend=0
+legendalignment=1
+description=1
+descriptionnewpage=0
+mark=0
+markstyle=0
+width=800
+height=600
+style=0
+xstyle=0
+xfield=
+chartlabelangle=0
+chartmultibar=0
+[CFG]
+vertical=|
+horizontal=-
+width_no=3
+no=0
+wrapline=0
+[HTML]
+font=Arial
+sizef=10
+notablehdr=1
+firstpagecnt=-1
+nextpagecnt=-1
+fixedtable=0
+[HEADER]
+no=1
+line1=<div align="center"><B>KWARTALNE SPRAWOZDANIE Z DZIA£ALNOŒCI PRODUKCYJNEJ I OBS£UGOWO-REMONTOWEJ</B></DIV> 
+[HEADER_EXT]
+no=40
+line1=<center><b>:NAZWA_WARSZTATU</b></center><br><br>
+line2=<table border="0" bordercolor="#AAAAAA"   cellpadding="2" cellspacing="0">
+line3=<thead><tr bgcolor="silver">
+line4=<td rowspan="3" align="center" width="25">Lp.</td>
+line5=<td rowspan="3" align="center" width="150">Typ sprzêtu</td>
+line6=<td rowspan="3" align="center" width="35">Indeks<br>mater.</td>
+line7=<td rowspan="3" align="center" width="35">Planowana<br>iloœæ<br>sprzêtu<br>/szt. lub kpl/</td>
+line8=<td rowspan="3" align="center" width="15">Poz.<br>planu</td>
+line9=<td rowspan="3" align="center" width="20">JW miejsce</td>
+line10=<td rowspan="3" align="center" width="20">Rodz.<br>naprawy</td>
+line11=<td rowspan="3" align="center" width="40">Planowana<br>ilosc rbh</td>
+line12=<td rowspan="3" align="center" width="40">Nr zlecenia,<br>dziennika<br>remontowego</td>
+line13=<td rowspan="3" align="center" width="25">Data<br>przyjêcia<br>doremontu</td>
+line14=<td rowspan="2" colspan="3" align="center"  width="100">Planowana iloœæ rbh<br>w miesi¹cach</td>
+line15=<td rowspan="2" colspan="3" align="center"  width="100">Realizacja planu w<br>miesi¹cach /rbh/</td>
+line16=<td rowspan="2" colspan="3" align="center"  width="100">Wyremontowany<br>sprzêt w miesi¹cach</td>
+line17=<td rowspan="3" align="center" width="40">Iloœæ<br>sprzêtu<br>wyremontowanego<br>/szt. lub kpl/</td>
+line18=<td rowspan="3" align="center" width="40">Data i miejsce<br>przekazania<br>po wykonanym<br>remoncie</td>
+line19=<td colspan="4" align="center"  width="80">W trakcie remontu</td>
+line20=<td rowspan="3" align="center" width="40">Uwagi</td>
+line21=</tr>
+line22=<tr bgcolor="silver">
+line23=<td colspan="2" align="center" width="40">Planowanego</td>
+line24=<td colspan="2" align="center" width="40">Zaleg³oœci</td>
+line25=</tr>
+line26=<tr bgcolor="silver">
+line27=<td align="center" width="25">I</td>
+line28=<td align="center" width="25">II</td>
+line29=<td align="center" width="25">|||</td>
+line30=<td align="center" width="25">I</td>
+line31=<td align="center" width="25">II</td>
+line32=<td align="center" width="25">|||</td>
+line33=<td align="center" width="25">I</td>
+line34=<td align="center" width="25">II</td>
+line35=<td align="center" width="25">|||</td>
+line36=<td align=\"center\" width=\"20\">Iloœæ</td>
+line37=<td align=\"center\" width=\"20\">% zaang.</td>
+line38=<td align=\"center\" width=\"20\">Iloœæ</td>
+line39=<td align=\"center\" width=\"20\">% zaang.</td>
+line40=</tr><p>
+[FOOTER]
+no=1
+line1=
+[SQL]
+[DISPLAYNAMES]
+LP=1
+NAZ_SPRZETU=2
+INDEKS_MAT=3
+ILOSC_P=4
+ID_HARM=5
+JW=6
+NAZ_RODZ_REM=7
+PLAN_LICZBA_RBH=8
+SYGN_ZLECENIA=9
+DATA_PRZYJ=10
+RBH_1=11
+RBH_2=12
+RBH_3=13
+R1=14
+R2=15
+R3=16
+ILOSC_M1=17
+ILOSC_M2=18
+ILOSC_M3=19
+ILOSC_REM=20
+PRZEKAZANO=21
+ILOSC_PLAN=22
+PROC_PLAN=23
+ILOSC_ZAL=24
+PROC_ZAL=25
+UWAGI=26
+
+[FIELDSIZES]
+tdatrib_LP=-1
+ID_KOMORKI=-1
+KOD_WARSZTATU=-1
+HEAD_WARSZTATU=-1
+POZYCJA=-1
+HEAD_REMONTU=-1
+LP=3
+tdatrib_ID_HARM=-1

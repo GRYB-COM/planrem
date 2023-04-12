@@ -1,0 +1,7 @@
+update pr_magazyn set data_zak = NULL where data_zak <= '1900-01-01'
+#C
+update pr_magazyn set data_przekaz = NULL where data_przekaz <= '1900-01-01'
+#C
+
+update pr_zlecenia set data_zak = NULL where data_zak <= '1900-01-01'
+#C

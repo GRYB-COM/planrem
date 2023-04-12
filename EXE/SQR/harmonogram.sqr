@@ -1,0 +1,142 @@
+[REPORT]
+comment=Harmonogram
+index=idx_1;idx_2;id_harm
+rapgroup=
+type=0
+templatefile=
+[CHART]
+legend=1
+legendalignment=1
+description=1
+descriptionnewpage=0
+mark=1
+markstyle=0
+width=800
+height=600
+style=0
+xstyle=0
+xfield=
+chartlabelangle=0
+[CFG]
+vertical=|
+horizontal=-
+width_no=3
+no=0
+wrapline=1
+[HTML]
+font=Arial
+sizef=10
+notablehdr=0
+firstpagecnt=-1
+nextpagecnt=-1
+fixedtable=0
+[PARAM_MAGAZYN]
+TYP=-1
+RODZAJ=-1
+SQLCNT=0
+[HEADER]
+no=1
+line1=Harmonogram
+[HEADER_EXT]
+no=1
+line1=warsztat :WARSZTAT
+[FOOTER]
+no=0
+[SQL]
+no=55
+line1=select ku.pozycja idx_1, 1 idx_2,
+line2=p.id_harm,p.zadanie,p.nr_zadania,p.dostawca,
+line3=sum(case when p.ilosc is not null then p.ilosc else 0 end) ilosc,
+line4=sum(case when p.ilosc is not null and extract( month from p.data_od) in (1,2,3) then p.ilosc else 0 end) kw1,
+line5=sum(case when p.ilosc is not null and extract( month from p.data_od) in (4,5,6) then p.ilosc else 0 end) kw2,
+line6=sum(case when p.ilosc is not null and extract( month from p.data_od) in (7,8,9) then p.ilosc else 0 end) kw3,
+line7=sum(case when p.ilosc is not null and extract( month from p.data_od) in (10,11,12) then p.ilosc else 0 end) kw4,
+line8=p.data_od,
+line9=NULL data_do,
+line10=NULL uwagi
+line11=from
+line12=pr_plan p
+line13=inner join pr_kody_uslug ku on p.id_uslugi=ku.id_uslugi and ku.p_n not in ('D') and ku.pozycja < 999
+line14=inner join pr_komorki w on p.id_komorki=w.id_komorki and w.kod=:WARSZTAT
+line15=
+line16=group by
+line17=p.id_harm,p.zadanie,p.nr_zadania,p.dostawca,
+line18=p.data_od,ku.pozycja
+line19=
+line20=union all
+line21=select ku.pozycja idx_1, 1 idx_2,
+line22=p.id_harm,p.zadanie,p.nr_zadania,p.dostawca,
+line23=sum(case when p.ilosc is not null then p.ilosc else 0 end) ilosc,
+line24=sum(case when p.ilosc is not null and extract( month from p.data_od) in (1,2,3) then p.ilosc else 0 end) kw1,
+line25=sum(case when p.ilosc is not null and extract( month from p.data_od) in (4,5,6) then p.ilosc else 0 end) kw2,
+line26=sum(case when p.ilosc is not null and extract( month from p.data_od) in (7,8,9) then p.ilosc else 0 end) kw3,
+line27=sum(case when p.ilosc is not null and extract( month from p.data_od) in (10,11,12) then p.ilosc else 0 end) kw4,
+line28=p.data_od,
+line29=NULL data_do,
+line30=NULL uwagi
+line31=from
+line32=pr_plan p
+line33=inner join pr_kody_uslug ku on p.id_uslugi=ku.id_uslugi and ku.p_n not in ('D') and ku.pozycja = 999
+line34=inner join pr_komorki w on p.id_komorki=w.id_komorki and w.kod=:WARSZTAT
+line35=
+line36=group by
+line37=p.id_harm,p.zadanie,p.nr_zadania,p.dostawca,
+line38=p.data_od,ku.pozycja
+line39=
+line40=union all
+line41=select distinct ku.pozycja idx_1, 0 idx_2,
+line42=NULL,  (case when ku.pozycja = 999 then 'Pozosta³e zadania' else ku.naz_remontu end ) ,NULL,NULL,
+line43=NULL ilosc,
+line44=NULL kw1,
+line45=NULL kw2,
+line46=NULL kw3,
+line47=NULL kw4,
+line48=NULL,
+line49=NULL data_do,
+line50=NULL uwagi
+line51=from pr_plan p
+line52=inner join pr_kody_uslug ku on p.id_uslugi=ku.id_uslugi and ku.p_n not in ('D','N')
+line53=inner join pr_komorki w on p.id_komorki=w.id_komorki and w.kod=:WARSZTAT
+line54=
+line55=
+[DISPLAYNAMES]
+id_harm=Pozycja<br>planu
+zadanie=Nazwa sprzêtu
+nr_zadania=Numer<br>sprzêtu
+dostawca=Dostawca
+ilosc=Iloœæ
+kw1=I kw
+kw2=II kw
+kw3=III kw
+kw4=IV kw
+data_od=Termin<br>dostarczenia<br>planowany
+data_do=Termin<br>dostarczenia<br>faktyczny
+uwagi=Uwagi<br>o realizacji
+idx_1=-1
+idx_2=-1
+[FIELDSIZES]
+id_harm=6
+zadanie=40
+nr_zadania=10
+dostawca=40
+ilosc=5
+kw1=5
+kw2=5
+kw3=5
+kw4=5
+data_od=11
+data_do=11
+uwagi=20
+idx_1=-1
+idx_2=-1
+[PARAMS]
+WARSZTAT=1/1
+[PARAM_WARSZTAT]
+TYP=4
+RODZAJ=1
+KEYFIELD=KOD
+LISTFIELDS=Kod;Nazwa
+DISPLAYNAMES=KOD;NAZWA
+LONGNAME=Warsztat
+SQLCNT=1
+SQL0=select * from pr_warsztaty order by kod

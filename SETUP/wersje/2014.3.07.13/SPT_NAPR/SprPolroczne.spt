@@ -1,0 +1,413 @@
+CREATE OR ALTER PROCEDURE   SP_POLROCZNE_WYK_PLANU(IN_ID_WARSZTAT Integer) RETURNS (IDX_1 Integer,IDX_2 Integer,LP Integer,ID_KOMORKI Integer,KOD_WARSZTATU Varchar(20),NAZ_WARSZTATU Varchar(120),POZYCJA Varchar(20),ID_HARM Integer,NAZ_REMONTU Varchar(120),NAZ_SPRZETU Varchar(120),INDEKS_MAT Varchar(120),PLAN_ILOSC_SPRZETU Numeric(15,2),RODZ_NAPRAWY Varchar(120),PLAN_ILOSC_RBH Numeric(15,2),REAL_ILOSC_SPRZETU Numeric(15,2),REAL_ILOSC_RBH Numeric(15,2),PROCENT Numeric(15,2)) AS BEGIN EXIT; END
+#C
+CREATE OR ALTER PROCEDURE   SP_POLROCZNE_WYK_PLANU_DET(IN_ID_WARSZTAT Integer) RETURNS (IDX_1 Integer,IDX_2 Integer,LP Integer,ID_KOMORKI Integer,KOD_WARSZTATU Varchar(20),NAZ_WARSZTATU Varchar(120),POZYCJA Varchar(20),ID_HARM Integer,NAZ_REMONTU Varchar(120),NAZ_SPRZETU Varchar(120),INDEKS_MAT Varchar(120),PLAN_ILOSC_SPRZETU Numeric(15,2),RODZ_NAPRAWY Varchar(120),PLAN_ILOSC_RBH Numeric(15,2),REAL_ILOSC_SPRZETU Numeric(15,2),REAL_ILOSC_RBH Numeric(15,2),PROCENT Numeric(15,2)) AS BEGIN EXIT; END 
+#C
+CREATE OR ALTER PROCEDURE   SP_POLROCZNE_WYK_PLANU_NULL(IN_ID_WARSZTAT Integer) RETURNS (IDX_1 Integer,IDX_2 Integer,LP Integer,ID_KOMORKI Integer,KOD_WARSZTATU Varchar(20),NAZ_WARSZTATU Varchar(120),POZYCJA Varchar(20),ID_HARM Integer,NAZ_REMONTU Varchar(120),NAZ_SPRZETU Varchar(120),INDEKS_MAT Varchar(120),PLAN_ILOSC_SPRZETU Numeric(15,2),RODZ_NAPRAWY Varchar(120),PLAN_ILOSC_RBH Numeric(15,2),REAL_ILOSC_SPRZETU Numeric(15,2),REAL_ILOSC_RBH Numeric(15,2),PROCENT Numeric(15,2)) AS BEGIN EXIT; END 
+#C
+CREATE OR ALTER PROCEDURE   SP_POLROCZNE_WYK_PLANU_OG(IN_ID_WARSZTAT Integer) RETURNS (IDX_1 Integer,IDX_2 Integer,LP Integer,ID_KOMORKI Integer,KOD_WARSZTATU Varchar(20),NAZ_WARSZTATU Varchar(120),POZYCJA Varchar(20),ID_HARM Integer,NAZ_REMONTU Varchar(120),NAZ_SPRZETU Varchar(120),INDEKS_MAT Varchar(120),PLAN_ILOSC_SPRZETU Numeric(15,2),RODZ_NAPRAWY Varchar(120),PLAN_ILOSC_RBH Numeric(15,2),REAL_ILOSC_SPRZETU Numeric(15,2),REAL_ILOSC_RBH Numeric(15,2),PROCENT Numeric(15,2)) AS BEGIN EXIT; END 
+#C
+CREATE OR ALTER PROCEDURE   SP_POLROCZNE_WYK_PLANU_SUM(IN_ID_WARSZTAT Integer) RETURNS (IDX_1 Integer,IDX_2 Integer,LP Integer,ID_KOMORKI Integer,KOD_WARSZTATU Varchar(20),NAZ_WARSZTATU Varchar(120),POZYCJA Varchar(20),ID_HARM Integer,NAZ_REMONTU Varchar(120),NAZ_SPRZETU Varchar(120),INDEKS_MAT Varchar(120),PLAN_ILOSC_SPRZETU Numeric(15,2),RODZ_NAPRAWY Varchar(120),PLAN_ILOSC_RBH Numeric(15,2),REAL_ILOSC_SPRZETU Numeric(15,2),REAL_ILOSC_RBH Numeric(15,2),PROCENT Numeric(15,2)) AS BEGIN EXIT; END 
+#C
+/***********************************/
+/*        Stored Procedures        */
+/***********************************/
+
+CREATE OR ALTER PROCEDURE  SP_POLROCZNE_WYK_PLANU_DET (IN_ID_WARSZTAT Integer)
+returns (IDX_1              Integer,
+         IDX_2              Integer,
+         LP                 Integer,
+         ID_KOMORKI         Integer,
+         KOD_WARSZTATU      Varchar(20),
+         NAZ_WARSZTATU      Varchar(120),
+         POZYCJA            Varchar(20),
+         ID_HARM            Integer,
+         NAZ_REMONTU        Varchar(120),
+         NAZ_SPRZETU        Varchar(120),
+         INDEKS_MAT         Varchar(120),
+         PLAN_ILOSC_SPRZETU Numeric(15,2),
+         RODZ_NAPRAWY       Varchar(120),
+         PLAN_ILOSC_RBH     Numeric(15,2),
+         REAL_ILOSC_SPRZETU Numeric(15,2),
+         REAL_ILOSC_RBH     Numeric(15,2),
+         PROCENT            Numeric(15,2))
+AS 
+  declare variable locLP Integer;
+  declare variable HARM_SUB Integer;
+  declare variable MIES_OD Integer;
+  declare variable MIES_DO Integer;
+  declare variable PLAN_RBH Numeric(15,2);
+begin
+ /*szczegoly*/
+ locLP = 1;
+ MIES_OD = 7;
+ MIES_DO = 12;
+ for SELECT
+ (case when ku.pozycja is null then 999 else ku.pozycja end) IDX_1,
+ 5 IDX_2,
+ p.id_harm,
+ p.id_harm - (p.id_harm/1000)*1000 AS HARM_SUB,
+ W.ID_KOMORKI, W.KOD AS KOD_WARSZTATU,
+ (case when w.ID_KOMORKI is null then 'POZOSTA£E' else W.KOD || ' - ' || W.NAZWA end) as naz_warsztatu,
+ (case when ku.pozycja is null then 999 else ku.pozycja end) as pozycja ,
+ (case when (ku.pozycja is null OR  ku.pozycja = 999) then 'POZOSTA£E' else ku.naz_remontu end ) as naz_remontu,
+ case when s.nazwa is null then P.ZADANIE else s.nazwa end  as naz_sprzetu,
+ CASE WHEN S.INDEKS_MAT IS NULL THEN p.INDEKS_MAT ELSE S.INDEKS_MAT END,
+ P.REMONT AS RODZ_NAPRAWY,
+ CASE WHEN P.KWARTAL_III IS NULL THEN 0.0 ELSE P.KWARTAL_III END  + CASE WHEN P.KWARTAL_IV IS NULL THEN 0.0 ELSE P.KWARTAL_IV END  as PLAN_ILOSC_SPRZETU,
+(CASE WHEN P.KWARTAL_III IS NULL THEN 0.0 ELSE P.KWARTAL_III END  + CASE WHEN P.KWARTAL_IV IS NULL THEN 0.0 ELSE P.KWARTAL_IV END) * P.PLAN_RBH  AS PLAN_ILOSC_RBH,
+ sum(case when r.miesiac between :MIES_OD and :MIES_DO AND R.LICZBA_RBH IS NOT NULL  then r.LICZBA_RBH ELSE 0.0 end) / P.PLAN_RBH AS REAL_ILOSC_SPRZETU,
+ sum(case when r.miesiac between :MIES_OD and :MIES_DO AND R.LICZBA_RBH IS NOT NULL  then r.LICZBA_RBH ELSE 0.0 end) as REAL_ILOSC_RBH,
+ null AS PROCENT
+ FROM pr_PLAN p
+ left outer join PR_KOMORKI       w  on w.ID_KOMORKI   = P.ID_KOMORKI
+ left outer join pr_ZLECENIA      z  on z.ID_HARM      = p.ID_HARM
+ left outer join pr_kody_uslug    ku on ku.ID_USLUGI   = p.ID_USLUGI
+ left outer join pr_magazyn       m  on m.ID_MAG       = z.ID_MAG  AND M.ID_KOMORKI = Z.ID_KOMORKI_GLW AND M.DEPOZYT =Z.DEPOZYT AND M.ROK =Z.ROK_MAG
+ left outer join pr_sprzet        s  on s.ID_SPRZETU   = P.ID_SPRZETU
+ left outer join pr_zlecenia_rbh  r  on r.ID_ZLECENIA  = z.ID_ZLECENIA  AND R.ID_KOMORKI = Z.ID_KOMORKI AND R.ROK = Z.ROK
+ left outer join pr_remonty       re on re.ID_REMONTU  = m.id_remontu
+ where  ( (P.KWARTAL_III IS NOT NULL AND P.KWARTAL_III >0) OR (P.KWARTAL_IV IS NOT NULL AND P.KWARTAL_IV >0) ) AND W.ID_KOMORKI = :IN_ID_WARSZTAT
+ group by
+ w.ID_KOMORKI, w.KOD, w.NAZWA,  ku.POZYCJA, ku.NAZ_REMONTU,   s.NAZWA,S.INDEKS_MAT,P.INDEKS_MAT,  p.ID_HARM,  p.ZADANIE,  
+ P.PLAN_RBH,P.REMONT,P.KWARTAL_III,P.KWARTAL_IV, P.PLAN_RBH
+ ORDER BY KU.POZYCJA,P.ID_HARM
+ into
+ :IDX_1,
+ :IDX_2,
+ :ID_HARM,
+ :HARM_SUB,
+ :ID_KOMORKI ,
+ :KOD_WARSZTATU ,
+ :naz_warsztatu  ,
+ :pozycja  ,
+ :naz_remontu  ,
+ :naz_sprzetu ,
+ :INDEKS_MAT  ,
+ :RODZ_NAPRAWY  ,
+ :PLAN_ILOSC_SPRZETU,
+ :PLAN_ILOSC_RBH ,
+ :REAL_ILOSC_SPRZETU,
+ :REAL_ILOSC_RBH ,
+ :PROCENT
+ do
+ begin
+  LP = locLP;
+  locLP = locLP + 1;
+  IF(REAL_ILOSC_SPRZETU >0) THEN
+  BEGIN
+   IF(REAL_ILOSC_SPRZETU > PLAN_ILOSC_SPRZETU) THEN REAL_ILOSC_SPRZETU = PLAN_ILOSC_SPRZETU;
+  END 
+  IF(HARM_SUB < 9 OR PLAN_ILOSC_SPRZETU =0 ) THEN 
+  BEGIN
+       PLAN_ILOSC_SPRZETU = NULL;
+       REAL_ILOSC_SPRZETU = NULL;
+  END     
+  IF(PLAN_ILOSC_RBH = 0) THEN PLAN_ILOSC_RBH = NULL; 
+  IF(REAL_ILOSC_RBH = 0) THEN REAL_ILOSC_RBH = NULL; 
+  IF(REAL_ILOSC_SPRZETU =0 ) THEN REAL_ILOSC_SPRZETU = NULL;
+  IF(PLAN_ILOSC_SPRZETU IS NOT NULL AND PLAN_ILOSC_SPRZETU > 0) THEN PROCENT = 100 * REAL_ILOSC_SPRZETU/PLAN_ILOSC_SPRZETU;  
+ SUSPEND;
+ end
+end
+#C
+
+CREATE OR ALTER PROCEDURE  SP_POLROCZNE_WYK_PLANU_NULL (IN_ID_WARSZTAT Integer)
+returns (IDX_1              Integer,
+         IDX_2              Integer,
+         LP                 Integer,
+         ID_KOMORKI         Integer,
+         KOD_WARSZTATU      Varchar(20),
+         NAZ_WARSZTATU      Varchar(120),
+         POZYCJA            Varchar(20),
+         ID_HARM            Integer,
+         NAZ_REMONTU        Varchar(120),
+         NAZ_SPRZETU        Varchar(120),
+         INDEKS_MAT         Varchar(120),
+         PLAN_ILOSC_SPRZETU Numeric(15,2),
+         RODZ_NAPRAWY       Varchar(120),
+         PLAN_ILOSC_RBH     Numeric(15,2),
+         REAL_ILOSC_SPRZETU Numeric(15,2),
+         REAL_ILOSC_RBH     Numeric(15,2),
+         PROCENT            Numeric(15,2))
+AS 
+
+begin
+ /*szczegoly*/
+ for SELECT distinct
+ (case when ku.pozycja is null then 999 else ku.pozycja end) IDX_1,
+ 1 IDX_2,
+ NULL,
+ W.ID_KOMORKI, W.KOD AS KOD_WARSZTATU,
+ (case when w.ID_KOMORKI is null then 'POZOSTA£E' else W.KOD || ' - ' || W.NAZWA end) as naz_warsztatu,
+ (case when ku.pozycja is null then 999 else ku.pozycja end) as pozycja ,
+ (case when (ku.pozycja is null OR  ku.pozycja = 999) then 'POZOSTA£E' else ku.naz_remontu end ) as naz_remontu,
+ NULL as naz_sprzetu,
+ NULL AS INDEKS_MAT,
+ NULL AS  RODZ_NAPRAWY,
+ NULL as PLAN_ILOSC_SPRZETU,
+ NULL  AS PLAN_ILOSC_RBH,
+ NULL AS REAL_ILOSC_SPRZETU,
+ NULL as REAL_ILOSC_RBH,
+ null AS PROCENT
+ FROM pr_PLAN p
+ left outer join PR_KOMORKI       w  on w.ID_KOMORKI   = P.ID_KOMORKI
+ left outer join pr_ZLECENIA      z  on z.ID_HARM      = p.ID_HARM
+ left outer join pr_kody_uslug    ku on ku.ID_USLUGI   = p.ID_USLUGI
+ left outer join pr_magazyn       m  on m.ID_MAG       = z.ID_MAG  AND M.ID_KOMORKI = Z.ID_KOMORKI_GLW AND M.DEPOZYT =Z.DEPOZYT AND M.ROK =Z.ROK_MAG
+ left outer join pr_sprzet        s  on s.ID_SPRZETU   = P.ID_SPRZETU
+ left outer join pr_zlecenia_rbh  r  on r.ID_ZLECENIA  = z.ID_ZLECENIA  AND R.ID_KOMORKI = Z.ID_KOMORKI AND R.ROK = Z.ROK
+ left outer join pr_remonty       re on re.ID_REMONTU  = m.id_remontu
+ where  ( (P.KWARTAL_III IS NOT NULL AND P.KWARTAL_III >0) OR (P.KWARTAL_IV IS NOT NULL AND P.KWARTAL_IV >0) ) AND W.ID_KOMORKI = :IN_ID_WARSZTAT
+ group by
+ w.ID_KOMORKI, w.KOD, w.NAZWA,  ku.POZYCJA, ku.NAZ_REMONTU
+ into
+ :IDX_1,
+ :IDX_2,
+ :ID_HARM,
+ :ID_KOMORKI ,
+ :KOD_WARSZTATU ,
+ :naz_warsztatu  ,
+ :pozycja  ,
+ :naz_remontu  ,
+ :naz_sprzetu ,
+ :INDEKS_MAT  ,
+ :RODZ_NAPRAWY  ,
+ :PLAN_ILOSC_SPRZETU,
+ :PLAN_ILOSC_RBH ,
+ :REAL_ILOSC_SPRZETU,
+ :REAL_ILOSC_RBH ,
+ :PROCENT
+ do
+ begin
+ SUSPEND;
+ end
+end
+#C
+
+CREATE OR ALTER PROCEDURE  SP_POLROCZNE_WYK_PLANU_OG (IN_ID_WARSZTAT Integer)
+returns (IDX_1              Integer,
+         IDX_2              Integer,
+         LP                 Integer,
+         ID_KOMORKI         Integer,
+         KOD_WARSZTATU      Varchar(20),
+         NAZ_WARSZTATU      Varchar(120),
+         POZYCJA            Varchar(20),
+         ID_HARM            Integer,
+         NAZ_REMONTU        Varchar(120),
+         NAZ_SPRZETU        Varchar(120),
+         INDEKS_MAT         Varchar(120),
+         PLAN_ILOSC_SPRZETU Numeric(15,2),
+         RODZ_NAPRAWY       Varchar(120),
+         PLAN_ILOSC_RBH     Numeric(15,2),
+         REAL_ILOSC_SPRZETU Numeric(15,2),
+         REAL_ILOSC_RBH     Numeric(15,2),
+         PROCENT            Numeric(15,2))
+AS 
+
+begin
+ for select
+ 999 IDX_1,
+ 999 AS IDX_2,
+ NULL AS LP,
+ P.ID_KOMORKI,
+ P.KOD_WARSZTATU,
+ P.NAZ_WARSZTATU,
+ NULL AS POZYCJA,
+ NULL AS ID_HARM,
+ NULL AS NAZ_REMONTU,
+ NULL AS NAZ_SPRZETU,
+ NULL AS INDEKS_MAT,
+ SUM(P.PLAN_ILOSC_SPRZETU),
+ NULL AS RODZ_NAPRAWY,
+ SUM(P.PLAN_ILOSC_RBH),
+ SUM(P.REAL_ILOSC_SPRZETU),
+ SUM(P.REAL_ILOSC_RBH),
+ NULL AS PROCENT
+ from sp_polroczne_wyk_planu_det(:IN_ID_WARSZTAT) P GROUP BY P.ID_KOMORKI, P.KOD_WARSZTATU, P.NAZ_WARSZTATU
+ INTO
+ :IDX_1,
+ :IDX_2,
+ :LP,
+ :ID_KOMORKI,
+ :KOD_WARSZTATU,
+ :NAZ_WARSZTATU,
+ :POZYCJA,
+ :ID_HARM,
+ :NAZ_REMONTU,
+ :NAZ_SPRZETU,
+ :INDEKS_MAT,
+ :PLAN_ILOSC_SPRZETU,
+ :RODZ_NAPRAWY,
+ :PLAN_ILOSC_RBH,
+ :REAL_ILOSC_SPRZETU,
+ :REAL_ILOSC_RBH,
+ :PROCENT
+ DO BEGIN
+ SUSPEND;
+ END
+end
+#C
+
+CREATE OR ALTER PROCEDURE  SP_POLROCZNE_WYK_PLANU_SUM (IN_ID_WARSZTAT Integer)
+returns (IDX_1              Integer,
+         IDX_2              Integer,
+         LP                 Integer,
+         ID_KOMORKI         Integer,
+         KOD_WARSZTATU      Varchar(20),
+         NAZ_WARSZTATU      Varchar(120),
+         POZYCJA            Varchar(20),
+         ID_HARM            Integer,
+         NAZ_REMONTU        Varchar(120),
+         NAZ_SPRZETU        Varchar(120),
+         INDEKS_MAT         Varchar(120),
+         PLAN_ILOSC_SPRZETU Numeric(15,2),
+         RODZ_NAPRAWY       Varchar(120),
+         PLAN_ILOSC_RBH     Numeric(15,2),
+         REAL_ILOSC_SPRZETU Numeric(15,2),
+         REAL_ILOSC_RBH     Numeric(15,2),
+         PROCENT            Numeric(15,2))
+AS 
+
+begin
+ for select
+ P.IDX_1,
+ 10 AS IDX_2,
+ NULL AS LP,
+ P.ID_KOMORKI,
+ P.KOD_WARSZTATU,
+ P.NAZ_WARSZTATU,
+ P.POZYCJA,
+ NULL AS ID_HARM,
+ NULL AS NAZ_REMONTU,
+ NULL AS NAZ_SPRZETU,
+ NULL AS INDEKS_MAT,
+ SUM(P.PLAN_ILOSC_SPRZETU),
+ NULL AS RODZ_NAPRAWY,
+ SUM(P.PLAN_ILOSC_RBH),
+ SUM(P.REAL_ILOSC_SPRZETU),
+ SUM(P.REAL_ILOSC_RBH),
+ NULL AS PROCENT
+ from sp_polroczne_wyk_planu_det(:IN_ID_WARSZTAT) P GROUP BY P.IDX_1, P.ID_KOMORKI, P.KOD_WARSZTATU, P.NAZ_WARSZTATU, P.POZYCJA
+ INTO
+ :IDX_1,
+ :IDX_2,
+ :LP,
+ :ID_KOMORKI,
+ :KOD_WARSZTATU,
+ :NAZ_WARSZTATU,
+ :POZYCJA,
+ :ID_HARM,
+ :NAZ_REMONTU,
+ :NAZ_SPRZETU,
+ :INDEKS_MAT,
+ :PLAN_ILOSC_SPRZETU,
+ :RODZ_NAPRAWY,
+ :PLAN_ILOSC_RBH,
+ :REAL_ILOSC_SPRZETU,
+ :REAL_ILOSC_RBH,
+ :PROCENT
+ DO BEGIN
+ SUSPEND;
+ END
+end
+#C
+
+CREATE OR ALTER PROCEDURE  SP_POLROCZNE_WYK_PLANU (IN_ID_WARSZTAT Integer)
+returns (IDX_1              Integer,
+         IDX_2              Integer,
+         LP                 Integer,
+         ID_KOMORKI         Integer,
+         KOD_WARSZTATU      Varchar(20),
+         NAZ_WARSZTATU      Varchar(120),
+         POZYCJA            Varchar(20),
+         ID_HARM            Integer,
+         NAZ_REMONTU        Varchar(120),
+         NAZ_SPRZETU        Varchar(120),
+         INDEKS_MAT         Varchar(120),
+         PLAN_ILOSC_SPRZETU Numeric(15,2),
+         RODZ_NAPRAWY       Varchar(120),
+         PLAN_ILOSC_RBH     Numeric(15,2),
+         REAL_ILOSC_SPRZETU Numeric(15,2),
+         REAL_ILOSC_RBH     Numeric(15,2),
+         PROCENT            Numeric(15,2))
+AS 
+
+begin
+/*naglowki*/
+ for select
+ P.IDX_1,               P.IDX_2,          P.LP,   
+ P.ID_KOMORKI,          P.KOD_WARSZTATU,  P.NAZ_WARSZTATU,
+ P.POZYCJA,             P.ID_HARM,        P.NAZ_REMONTU,
+ P.NAZ_SPRZETU,         P.INDEKS_MAT,     P.RODZ_NAPRAWY, 
+ P.PLAN_ILOSC_SPRZETU,  P.PLAN_ILOSC_RBH,
+ P.REAL_ILOSC_SPRZETU,  P.REAL_ILOSC_RBH,
+ P.PROCENT
+ from sp_polroczne_wyk_planu_NULL(:IN_ID_WARSZTAT) P                
+ INTO                   
+ :IDX_1,              :IDX_2,               :LP,
+ :ID_KOMORKI,         :KOD_WARSZTATU,       :NAZ_WARSZTATU,
+ :POZYCJA,            :ID_HARM,             :NAZ_REMONTU,
+ :NAZ_SPRZETU,        :INDEKS_MAT,           :RODZ_NAPRAWY,
+ :PLAN_ILOSC_SPRZETU, :PLAN_ILOSC_RBH,
+ :REAL_ILOSC_SPRZETU,  :REAL_ILOSC_RBH,
+ :PROCENT
+ DO  SUSPEND;
+/*SZCZEGOLY*/
+ for select
+ P.IDX_1,               P.IDX_2,          P.LP,   
+ P.ID_KOMORKI,          P.KOD_WARSZTATU,  P.NAZ_WARSZTATU,
+ P.POZYCJA,             P.ID_HARM,        P.NAZ_REMONTU,
+ P.NAZ_SPRZETU,         P.INDEKS_MAT,     P.RODZ_NAPRAWY, 
+ P.PLAN_ILOSC_SPRZETU,  P.PLAN_ILOSC_RBH,
+ P.REAL_ILOSC_SPRZETU,  P.REAL_ILOSC_RBH,
+ P.PROCENT
+ from sp_polroczne_wyk_planu_DET(:IN_ID_WARSZTAT) P
+ INTO                   
+ :IDX_1,              :IDX_2,               :LP,
+ :ID_KOMORKI,         :KOD_WARSZTATU,       :NAZ_WARSZTATU,
+ :POZYCJA,            :ID_HARM,             :NAZ_REMONTU,
+ :NAZ_SPRZETU,        :INDEKS_MAT,           :RODZ_NAPRAWY,
+ :PLAN_ILOSC_SPRZETU, :PLAN_ILOSC_RBH,
+ :REAL_ILOSC_SPRZETU,  :REAL_ILOSC_RBH,
+ :PROCENT
+ DO  SUSPEND;
+/*RAZEM*/
+ for select
+ P.IDX_1,               P.IDX_2,          P.LP,   
+ P.ID_KOMORKI,          P.KOD_WARSZTATU,  P.NAZ_WARSZTATU,
+ P.POZYCJA,             P.ID_HARM,        P.NAZ_REMONTU,
+ P.NAZ_SPRZETU,         P.INDEKS_MAT,     P.RODZ_NAPRAWY, 
+ P.PLAN_ILOSC_SPRZETU,  P.PLAN_ILOSC_RBH,
+ P.REAL_ILOSC_SPRZETU,  P.REAL_ILOSC_RBH,
+ P.PROCENT
+ from sp_polroczne_wyk_planu_SUM(:IN_ID_WARSZTAT) P
+ INTO                   
+ :IDX_1,              :IDX_2,               :LP,
+ :ID_KOMORKI,         :KOD_WARSZTATU,       :NAZ_WARSZTATU,
+ :POZYCJA,            :ID_HARM,             :NAZ_REMONTU,
+ :NAZ_SPRZETU,        :INDEKS_MAT,           :RODZ_NAPRAWY,
+ :PLAN_ILOSC_SPRZETU, :PLAN_ILOSC_RBH,
+ :REAL_ILOSC_SPRZETU,  :REAL_ILOSC_RBH,
+ :PROCENT
+ DO  SUSPEND;
+/*OGOLEM*/
+ for select
+ P.IDX_1,               P.IDX_2,          P.LP,   
+ P.ID_KOMORKI,          P.KOD_WARSZTATU,  P.NAZ_WARSZTATU,
+ P.POZYCJA,             P.ID_HARM,        P.NAZ_REMONTU,
+ P.NAZ_SPRZETU,         P.INDEKS_MAT,     P.RODZ_NAPRAWY, 
+ P.PLAN_ILOSC_SPRZETU,  P.PLAN_ILOSC_RBH,
+ P.REAL_ILOSC_SPRZETU,  P.REAL_ILOSC_RBH,
+ P.PROCENT
+ from sp_polroczne_wyk_planu_OG(:IN_ID_WARSZTAT) P
+ INTO                   
+ :IDX_1,              :IDX_2,               :LP,
+ :ID_KOMORKI,         :KOD_WARSZTATU,       :NAZ_WARSZTATU,
+ :POZYCJA,            :ID_HARM,             :NAZ_REMONTU,
+ :NAZ_SPRZETU,        :INDEKS_MAT,           :RODZ_NAPRAWY,
+ :PLAN_ILOSC_SPRZETU, :PLAN_ILOSC_RBH,
+ :REAL_ILOSC_SPRZETU,  :REAL_ILOSC_RBH,
+ :PROCENT
+ DO  SUSPEND;
+end
+#C

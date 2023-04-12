@@ -1,0 +1,21 @@
+insert into pr_mies4rbh(rok,nr_mies,rbh,dni_rob)
+select 2014,nr_mies,rbh,dni_rob from pr_mies4rbh where rok=2013
+#TRY
+insert into pr_mies4rbh(rok,nr_mies,rbh,dni_rob)
+select 2015,nr_mies,rbh,dni_rob from pr_mies4rbh where rok=2013
+#TRY
+insert into pr_mies4rbh(rok,nr_mies,rbh,dni_rob)
+select 2016,nr_mies,rbh,dni_rob from pr_mies4rbh where rok=2013
+#TRY
+insert into pr_mies4rbh(rok,nr_mies,rbh,dni_rob)
+select 2017,nr_mies,rbh,dni_rob from pr_mies4rbh where rok=2013
+#TRY
+insert into pr_mies4rbh(rok,nr_mies,rbh,dni_rob)
+select 2018,nr_mies,rbh,dni_rob from pr_mies4rbh where rok=2013
+#TRY
+insert into pr_mies4rbh(rok,nr_mies,rbh,dni_rob)
+select 2019,nr_mies,rbh,dni_rob from pr_mies4rbh where rok=2013
+#TRY
+insert into pr_mies4rbh(rok,nr_mies,rbh,dni_rob)
+select 2020,nr_mies,rbh,dni_rob from pr_mies4rbh where rok=2013
+#TRY

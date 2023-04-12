@@ -1,0 +1,75 @@
+CREATE OR ALTER PROCEDURE PR_KOSZTY_WG_REMONTU (ROK         Smallint,
+       DATA_ZAK    Date,
+       KOSZT_RBH   Numeric(15,2),
+       DIAGNOSTYKA Char(1)='N')
+returns (ID_SPRZETU Integer,
+         ID_REMONTU Integer,
+         NAZ_SPRZ   Varchar(200),
+         NAZ_REM    Varchar(50),
+         ILOSC_MAG  Numeric(15,2),
+         RBH        Numeric(15,2),
+         KOSZTY_RBH Numeric(15,2),
+         KOSZTY_OSB Numeric(15,2),
+         KOSZTY_TSM Numeric(15,2),
+         KOSZTY_MPS Numeric(15,2),
+         KOSZTY_USL Numeric(15,2),
+         MAG        Varchar(10000),
+         ZLEC       Varchar(10000))
+AS 
+  declare variable ROK_OD Smallint;
+  declare variable ROK_DO Smallint;
+  declare variable DATA_ZAK_OD Date;
+  declare variable DATA_ZAK_DO Date;
+begin
+ 
+ IF(ROK IS NULL OR ROK < 1 ) THEN BEGIN ROK_OD=1; ROK_DO=9999; END
+ ELSE BEGIN ROK_OD=ROK; ROK_DO=ROK; END
+ DATA_ZAK_OD = '1900-01-01';
+ IF(DATA_ZAK IS NULL OR DATA_ZAK <'1900-01-01' ) THEN DATA_ZAK_DO = '9999-12-31';
+ ELSE  DATA_ZAK_DO = DATA_ZAK; 
+ KOSZT_RBH = COALESCE(KOSZT_RBH,0.0);
+ FOR SELECT
+ s.id_sprzetu,
+ r.ID_REMONTU,
+ trim(s.nazwa) AS NAZ_SPRZ,
+ trim(r.nazwa) as NAZ_REM,
+ SUM(COALESCE(m.ILOSC,0.0) ) as ILOSC_MAG,
+ case when :DIAGNOSTYKA ='T' THEN LIST( M.SYGN_MAG,', ') END                    
+ from PR_SPRZET  s
+ inner join pr_magazyn m on m.ID_SPRZETU = s.ID_SPRZETU
+ inner join pr_remonty r on m.id_remontu = r.id_remontu
+ where m.DEPOZYT <> 'D'  and  m.DATA_ZAK is not NULL and m.DATA_ZAK BETWEEN :DATA_ZAK_OD AND :DATA_ZAK_DO
+ and exists (select null from pr_zlecenia z where z.ID_SPRZETU = s.ID_SPRZETU AND Z.ROK_MAG = M.ROK AND Z.ID_KOMORKI_GLW= M.ID_KOMORKI AND Z.DEPOZYT = M.DEPOZYT AND Z.ID_MAG= M.ID_MAG and z.ROK BETWEEN :ROK_OD AND :ROK_DO)
+ group by s.id_sprzetu,r.ID_REMONTU, s.nazwa, r.nazwa
+ ORDER BY S.NAZWA, R.NAZWA
+ INTO
+ :ID_SPRZETU, :ID_REMONTU, :NAZ_SPRZ, :NAZ_REM, :ILOSC_MAG, :MAG
+ DO
+ BEGIN
+ ILOSC_MAG = COALESCE(ILOSC_MAG,0.0);
+ SELECT 
+ SUM(ZW.LICZBA_RBH), 
+ case when :DIAGNOSTYKA ='T' THEN LIST(ZW.SYGN_ZLECENIA,', ') END
+  from  pr_zlecenia ZW
+ INNER JOIN PR_MAGAZYN M ON m.ROK = zw.ROK_MAG and m.ID_KOMORKI = zw.ID_KOMORKI_GLW and m.ROK = zw.ROK_MAG and m.ID_MAG = zw.ID_MAG
+ where zw.ID_SPRZETU = :ID_SPRZETU and m.ID_REMONTU = :ID_REMONTU and  zw.ROK  BETWEEN :ROK_OD AND :ROK_DO INTO :RBH, :ZLEC;
+ KOSZTY_RBH = IIF(ILOSC_MAG >0,COALESCE(RBH,0) * COALESCE(KOSZT_RBH,0)/ILOSC_MAG , 0.00);
+ SELECT
+ COALESCE( SUM( CASE WHEN SK.KOD= '01' AND K.ILOSC IS NOT NULL THEN K.ILOSC ELSE 0.0 END  ) ,0 ) AS KOSZTY_OSB,
+ COALESCE( SUM( CASE WHEN SK.KOD= '02' AND K.ILOSC IS NOT NULL THEN K.ILOSC ELSE 0.0 END  ) ,0 ) AS KOSZTY_TSM,
+ COALESCE( SUM( CASE WHEN SK.KOD= '03' AND K.ILOSC IS NOT NULL THEN K.ILOSC ELSE 0.0 END  ) ,0 ) AS KOSZTY_MPS,
+ COALESCE( SUM( CASE WHEN SK.KOD= '04' AND K.ILOSC IS NOT NULL THEN K.ILOSC ELSE 0.0 END  ) ,0 ) AS KOSZTY_USL
+ from pr_koszty k inner join PR_SLOW_KOSZTOW sk on sk.ID_SLOW_KOSZTOW = k.ID_SLOW_KOSZTOW
+ inner join pr_zlecenia zw on zw.ROK = k.ROK and zw.ID_KOMORKI = k.ID_KOMORKI and zw.ID_ZLECENIA = k.ID_ZLECENIA
+ INNER JOIN PR_MAGAZYN M ON m.ROK = zw.ROK_MAG and m.ID_KOMORKI = zw.ID_KOMORKI_GLW and m.ROK = zw.ROK_MAG and m.ID_MAG = zw.ID_MAG
+ where
+ zw.ID_SPRZETU = :ID_SPRZETU  and m.ID_REMONTU = :ID_REMONTU and  zw.ROK   BETWEEN :ROK_OD AND :ROK_DO
+ INTO :KOSZTY_OSB, :KOSZTY_TSM, :KOSZTY_MPS, KOSZTY_USL;
+ KOSZTY_OSB = COALESCE(KOSZTY_OSB,0.0)/ILOSC_MAG;
+ KOSZTY_TSM = COALESCE(KOSZTY_TSM,0.0)/ILOSC_MAG;
+ KOSZTY_MPS = COALESCE(KOSZTY_MPS,0.0)/ILOSC_MAG;
+ KOSZTY_USL = COALESCE(KOSZTY_USL,0.0)/ILOSC_MAG;
+ SUSPEND;
+ END
+end
+#C

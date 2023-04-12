@@ -1,0 +1,4 @@
+update pr_harmonogram h set data_do =
+(select case when max(d.MIESIAC) =12 then cast(d.rok||'-12-31' as date) else cast(d.rok|| '-' || max(d.MIESIAC+1) || '-1' as Date) -1 end
+from pr_harmonogram_det d where d.ID_HARMONOGRAMU = h.ID_HARMONOGRAMU and d.ROK = h.ROK group by d.rok)
+#C

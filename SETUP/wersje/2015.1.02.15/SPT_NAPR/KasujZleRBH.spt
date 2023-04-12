@@ -1,0 +1,7 @@
+delete from pr_zlecenia_rbh ze where
+exists
+(select null
+from PR_ZLECENIA_RBH r where r.ROK=ze.ROK and r.ID_KOMORKI = ze.ID_KOMORKI and r.ID_ZLECENIA= ze.ID_ZLECENIA
+group by r.id_komorki,r.rok,r.id_zlecenia,r.miesiac having count(*) > 1) and
+ze.ID_ZLECENIA_RBH < (select max(r.ID_ZLECENIA_RBH) from PR_ZLECENIA_RBH r where r.ROK=ze.ROK and r.ID_KOMORKI = ze.ID_KOMORKI and r.ID_ZLECENIA= ze.ID_ZLECENIA)
+#C

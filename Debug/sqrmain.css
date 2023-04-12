@@ -1,0 +1,16 @@
+.gruby { font-weight: bold; }
+.kursywa { font-style: italic ;}
+.kursgrub { font-style: italic ; font-weight: bold;}
+.kapitaliki {font-variant: small-caps;}
+.kapgrub { font-weight: bold ;font-variant: small-caps;}
+.kapkurs {font-variant: small-caps; font-style: italic ;}
+.zlam {page-break-before:always;}
+.zlamprzed {page-break-before:always;}
+.zlampo {page-break-after:always;}
+.mso_text {mso-number-format:\@;}
+.mso_number0 {mso-number-format:"0";}
+.mso_number2 {mso-number-format:"0\.00";}
+.mso_number4 {mso-number-format:"0\.0000";}
+.mso_number0T {mso-number-format:"\#\#\# \#\#\# \#\#\# \#\#0";}
+.mso_number2T {mso-number-format:"\#\#\# \#\#\# \#\#\# \#\#0\.00";}
+.mso_number4T {mso-number-format:"\#\#\# \#\#\# \#\#\# \#\#0\.0000";}

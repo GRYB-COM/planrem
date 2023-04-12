@@ -1,0 +1,81 @@
+[REPORT]
+comment=Plan
+index=
+rapgroup=
+type=0
+templatefile=
+[CHART]
+legend=0
+legendalignment=1
+description=1
+descriptionnewpage=0
+mark=0
+markstyle=0
+width=800
+height=600
+style=0
+xstyle=0
+xfield=
+chartlabelangle=0
+[CFG]
+vertical=|
+horizontal=-
+width_no=3
+no=0
+wrapline=0
+[HTML]
+font=Arial
+sizef=10
+notablehdr=0
+firstpagecnt=-1
+nextpagecnt=-1
+fixedtable=0
+[HEADER]
+no=1
+line1=Plan
+[HEADER_EXT]
+no=1
+line1=
+[FOOTER]
+no=1
+line1=
+[SQL]
+no=14
+line1=select
+line2=p.zadanie,
+line3=p.nr_zadania,
+line4=p.dostawca,
+line5=p.plan_rbh,
+line6=p.data_od,
+line7=p.data_do,
+line8=w.nazwa warsztat,
+line9=r.nazwa remont,
+line10=ku.naz_remontu
+line11=from pr_plan p
+line12=left outer join pr_kody_uslug ku on ku.id_uslugi=p.id_uslugi
+line13=left outer join pr_warsztaty w on w.id_warsztatu=p.id_warsztatu
+line14=left outer join pr_remonty r on r.id_remontu=p.id_remontu
+[DISPLAYNAMES]
+zadanie=Zadanie
+nr_zadania=Nr zadania
+dostawca=Dostawca
+plan_rbh=RBH
+data_od=Od
+data_do=Do
+warsztat=Warsztat
+remont=Remont
+naz_remontu=Us³uga
+[FIELDSIZES]
+zadanie=30
+nr_zadania=10
+dostawca=20
+plan_rbh=5
+data_od=11
+data_do=12
+warsztat=30
+remont=5
+naz_remontu=10
+[DISPLAYFORMATS]
+plan_rbh=0.00
+[SUMFIELDS]
+plan_rbh=0

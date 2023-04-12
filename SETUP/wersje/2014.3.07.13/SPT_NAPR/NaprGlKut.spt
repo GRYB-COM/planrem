@@ -1,0 +1,3 @@
+update pr_magazyn m  set glowny_kut =(select sygn_zlecenia from  pr_zlecenia z where z.DEPOZYT = m.DEPOZYT and z.ROK_MAG = m.ROK and z.ID_KOMORKI_GLW = m.ID_KOMORKI and z.ID_MAG = m.ID_MAG and z.nr_kol=0)
+where    m.GLOWNY_KUT like  '%2011%'
+#C

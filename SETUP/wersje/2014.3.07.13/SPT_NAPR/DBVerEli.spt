@@ -1,0 +1,2 @@
+update IS_REJESTR set dbversion = '131231' where id_systemu=256
+#C

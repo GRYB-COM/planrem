@@ -1,0 +1,1430 @@
+﻿	<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+		<PropertyGroup>
+			<ProjectGuid>{7B927451-E3B4-4E2D-A8DD-1DC9E9F4F2A5}</ProjectGuid>
+			<ProjectVersion>15.4</ProjectVersion>
+			<MainSource>RejRem.cpp</MainSource>
+			<Config Condition="'$(Config)'==''">Release</Config>
+			<Base>True</Base>
+			<TargetedPlatforms>1</TargetedPlatforms>
+			<AppType>Application</AppType>
+			<FrameworkType>VCL</FrameworkType>
+			<Platform Condition="'$(Platform)'==''">Win32</Platform>
+		</PropertyGroup>
+		<PropertyGroup Condition="'$(Config)'=='Base' or '$(Base)'!=''">
+			<Base>true</Base>
+		</PropertyGroup>
+		<PropertyGroup Condition="'$(Config)'=='Debug' or '$(Cfg_1)'!=''">
+			<Cfg_1>true</Cfg_1>
+			<CfgParent>Base</CfgParent>
+			<Base>true</Base>
+		</PropertyGroup>
+		<PropertyGroup Condition="'$(Config)'=='Release' or '$(Cfg_2)'!=''">
+			<Cfg_2>true</Cfg_2>
+			<CfgParent>Base</CfgParent>
+			<Base>true</Base>
+		</PropertyGroup>
+		<PropertyGroup Condition="'$(Base)'!=''">
+			<OutputExt>exe</OutputExt>
+			<VerInfo_Keys>CompanyName=;FileDescription=;FileVersion=1.1.11.465;InternalName=;LegalCopyright=;LegalTrademarks=;OriginalFilename=;ProductName=;ProductVersion=2014.0;Comments=</VerInfo_Keys>
+			<VerInfo_Build>465</VerInfo_Build>
+			<VerInfo_AutoGenVersion>true</VerInfo_AutoGenVersion>
+			<VerInfo_IncludeVerInfo>true</VerInfo_IncludeVerInfo>
+			<DCC_Namespace>Vcl;Vcl.Imaging;Vcl.Touch;Vcl.Samples;Vcl.Shell;System;Xml;Data;Datasnap;Web;Soap;$(DCC_Namespace)</DCC_Namespace>
+			<VerInfo_Release>11</VerInfo_Release>
+			<SanitizedProjectName>RejRem</SanitizedProjectName>
+			<VerInfo_MinorVer>1</VerInfo_MinorVer>
+			<VerInfo_Locale>1045</VerInfo_Locale>
+			<BCC_PCHInject>pch1.h</BCC_PCHInject>
+			<FinalOutputDir>EXE</FinalOutputDir>
+			<LinkPackageStatics>rtl.lib;vcl.lib;adortl.lib;dbrtl.lib;bdertl.lib;vclx.lib;xmlrtl.lib;vclactnband.lib;vclimg.lib;vcldb.lib;VclSmp.lib;QR504RunC2010.lib;dsnap.lib;ibxpress.lib;dbexpress.lib;DbxClientDriver.lib;DbxCommonDriver.lib;Tee.lib;IndyCore.lib;IndySystem.lib;IndyProtocols.lib;vcldbx.lib;Rave77VCL.lib;tmsexd2010.lib;tmsd2010.lib;isComponents.lib;bcboffice2k.lib;soaprtl.lib;inet.lib;DBFilterR140.lib</LinkPackageStatics>
+			<ILINK_DisableIncrementalLinking>true</ILINK_DisableIncrementalLinking>
+			<Multithreaded>true</Multithreaded>
+			<PackageImports>vclx.bpi;vcl.bpi;vclimg.bpi;dbrtl.bpi;Rave77VCL.bpi;bdertl.bpi;rtl.bpi;bcbie.bpi;vclactnband.bpi;xmlrtl.bpi;bcbsmp.bpi;vcldb.bpi;vcldbx.bpi;vcltouch.bpi;dsnap.bpi;dsnapcon.bpi;TeeUI.bpi;TeeDB.bpi;Tee.bpi;vclib.bpi;ibxpress.bpi;adortl.bpi;IndyCore.bpi;IndySystem.bpi;IndyProtocols.bpi;inet.bpi;intrawebdb_100_200.bpi;Intraweb_100_200.bpi;vclie.bpi;websnap.bpi;webdsnap.bpi;inetdb.bpi;inetdbbde.bpi;inetdbxpress.bpi;soaprtl.bpi;vclribbon.bpi;dbexpress.bpi;DbxCommonDriver.bpi;DataSnapIndy10ServerTransport.bpi;DataSnapProviderClient.bpi;DbxClientDriver.bpi;DataSnapServer.bpi;DBXInterBaseDriver.bpi;DBXMySQLDriver.bpi;dbxcds.bpi;DBXFirebirdDriver.bpi;DBXSybaseASEDriver.bpi;DBXSybaseASADriver.bpi;DBXOracleDriver.bpi;DBXMSSQLDriver.bpi;DBXInformixDriver.bpi;DBXDb2Driver.bpi;advchartd2010.bpi;VclSmp.bpi;tmsd2010.bpi;tmsexd2010.bpi;tmsxlsd2010.bpi;tmswizd2010.bpi;bcboffice2k.bpi;isComponents.bpi;DBFilter200.bpi;$(PackageImports).bpi</PackageImports>
+			<AllPackageLibs>rtl.lib;vcl.lib;adortl.lib;dbrtl.lib;bdertl.lib;vclx.lib;xmlrtl.lib;vclactnband.lib;vclimg.lib;vcldb.lib;VclSmp.lib;QR504RunC2010.lib;dsnap.lib;ibxpress.lib;dbexpress.lib;DbxClientDriver.lib;DbxCommonDriver.lib;Tee.lib;IndyCore.lib;IndySystem.lib;IndyProtocols.lib;vcldbx.lib;Rave77VCL.lib;tmsexd2010.lib;tmsd2010.lib;isComponents.lib;bcboffice2k.lib;soaprtl.lib;inet.lib;DBFilterR140.lib</AllPackageLibs>
+			<ProjectType>CppVCLApplication</ProjectType>
+			<DCC_CBuilderOutput>JPHNE</DCC_CBuilderOutput>
+			<IncludePath>MODEL\WRITERS\;MODEL\TOOLS\;VIEW\CTRLMNG\;P:\KSZOB\DATAMODS\;..\_INCLUDE;REPORTS\SPRAWOZDANIA\ROCZNE\;REPORTS\SPRAWOZDANIA\MAINREP\;IMPORT\FROMSQL\;MODEL\HANDLERS\;IMPORT\FROMXLS\;P:\_COMMON\_SLAWEK\FUNCS\SQR\;P:\_COMMON\_SLAWEK\FORMS\FORMS60\CUSTRAP\MODEL\;P:\_COMMON\FORMS\;P:\_COMMON\_SLAWEK\FORMS\FORMS60\;P:\_COMMON\_SLAWEK\FUNCS\;EKSPORT\TOMDB\;INCLUDE;VIEW\POCZTA\;ADMIN\Data_modul\;ADMIN\unit\;ADMIN\naviFrames\;ADMIN\;REPORTS\SPRAWOZDANIA\HARMDOST\;REPORTS\SPRAWOZDANIA\RBH4MIES\;CTRL\MANAGERS\;MODEL\DICTIONARES\;CTRL\MAIN\;COMMON\;REPORTS\SPRAWOZDANIA\STSPRZ\;REPORTS\SPRAWOZDANIA\PLANKWARTZAD\;REPORTS\SPRAWOZDANIA\BILMOZLPROD\;REPORTS\SPRAWOZDANIA\PLANKWART\;REPORTS\SPRAWOZDANIA\RBH4OS\;REPORTS\SPRAWOZDANIA\PotrzRem\;REPORTS\SPRAWOZDANIA\MOZLREM\;VIEW\DICT\;MODEL\EDITORS\;..\_COMMON\_SLAWEK\FUNCS\;MODEL\READERS\;..\_COMMON;MODEL\MESSENGERS\;CTRL\FINDERS\;VIEW\FORMS\;MODEL\FINDERS\;IMPORT\FROMMDB\VIEW\;REPORTS\SPRAWOZDANIA\;IMPORT\FROMMDB\;IMPORT\FROMMDB\MOVERS\;IMPORT\FROMMDB\DMODS\;..\_COMMON\_SLAWEK\FORMS\FORMS60\;..\_COMMON\FORMS\;$(BDS)\ObjRepos\Cpp\;..\_COMMON\_SLAWEK\FORMS\FORMS60\CUSTRAP\MODEL\;REPORTS\MELD\TYG\;VIEW\FRAMES\;VIEW\;..\PLANREM\;$(CG_BOOST_ROOT)\boost\tr1\tr1;$(CG_BOOST_ROOT);..\_COMMON\_SLAWEK\FORMS\FORMS60;CTRL;CTRL\MAIN;REPORTS\SPRAWOZDANIA\KWMOZLWAR\;EKSPORT\TOMDB;$(IncludePath)</IncludePath>
+			<ILINK_LibraryPath>MODEL\WRITERS\;P:\_LIBRARY\;MODEL\TOOLS\;VIEW\CTRLMNG\;REPORTS\SPRAWOZDANIA\ROCZNE\;REPORTS\SPRAWOZDANIA\MAINREP\;IMPORT\FROMSQL\;MODEL\HANDLERS\;IMPORT\FROMXLS\;P:\_COMMON\_SLAWEK\FUNCS\SQR\;EKSPORT\TOMDB\;VIEW\POCZTA\;DFM;ADMIN\Data_modul\;ADMIN\unit\;ADMIN\naviFrames\;ADMIN\;REPORTS\SPRAWOZDANIA\HARMDOST\;REPORTS\SPRAWOZDANIA\RBH4MIES\;REPORTS\SPRAWOZDANIA\KWMOZLWAR\;CTRL\MANAGERS\;MODEL\DICTIONARES\;CTRL\MAIN\;$(BDS)\lib\release\;COMMON\;REPORTS\SPRAWOZDANIA\STSPRZ\;REPORTS\SPRAWOZDANIA\PLANKWARTZAD\;REPORTS\SPRAWOZDANIA\BILMOZLPROD\;REPORTS\SPRAWOZDANIA\PLANKWART\;REPORTS\SPRAWOZDANIA\RBH4OS\;REPORTS\SPRAWOZDANIA\PotrzRem\;REPORTS\SPRAWOZDANIA\MOZLREM\;VIEW\DICT\;MODEL\EDITORS\;P:\_COMMON\_SLAWEK\FUNCS\;MODEL\READERS\;MODEL\MESSENGERS\;CTRL\FINDERS\;VIEW\FORMS\;MODEL\FINDERS\;IMPORT\FROMMDB\VIEW\;REPORTS\SPRAWOZDANIA\;IMPORT\FROMMDB\;IMPORT\FROMMDB\MOVERS\;P:\_COMMON\_SLAWEK\FORMS\FORMS60\CUSTRAP\MODEL\;P:\_COMMON\FORMS\;P:\_COMMON\_SLAWEK\FORMS\FORMS60\;..\_LIBRARY\;..\_COMMON\_SLAWEK\FORMS\FORMS60\;IMPORT\FROMMDB\DMODS\;..\_COMMON\FORMS\;$(BDS)\ObjRepos\Cpp\;..\_COMMON\_SLAWEK\FORMS\FORMS60\CUSTRAP\MODEL\;REPORTS\MELD\TYG\;VIEW\FRAMES\;VIEW\;$(BDS)\lib\obj;$(BDS)\QuickRep504C;..\_LIBRARY\DFM\MANAGER;..\_LIBRARY\DFM\JBUTILS;..\_LIBRARY\DFM\SQR;..\_LIBRARY\DFM\WPTOOLS;..\_LIBRARY\DFM\WZORCE;..\_LIBRARY\DFM\ISPRINTER62;..\_LIBRARY\RES\WPTOOLS;..\_LIBRARY\DFM\UPDATEDB;..\_LIBRARY;$(ILINK_LibraryPath)</ILINK_LibraryPath>
+			<BCC_wpar>false</BCC_wpar>
+			<BCC_OptimizeForSpeed>true</BCC_OptimizeForSpeed>
+			<BCC_ExtendedErrorInfo>true</BCC_ExtendedErrorInfo>
+		</PropertyGroup>
+		<PropertyGroup Condition="'$(Cfg_1)'!=''">
+			<BCC_OptimizeForSpeed>false</BCC_OptimizeForSpeed>
+			<BCC_DisableOptimizations>true</BCC_DisableOptimizations>
+			<DCC_Optimize>false</DCC_Optimize>
+			<DCC_DebugInfoInExe>true</DCC_DebugInfoInExe>
+			<BCC_InlineFunctionExpansion>false</BCC_InlineFunctionExpansion>
+			<IntermediateOutputDir>Debug</IntermediateOutputDir>
+			<BCC_UseRegisterVariables>None</BCC_UseRegisterVariables>
+			<DCC_Define>DEBUG</DCC_Define>
+			<BCC_DebugLineNumbers>true</BCC_DebugLineNumbers>
+			<TASM_DisplaySourceLines>true</TASM_DisplaySourceLines>
+			<BCC_StackFrames>true</BCC_StackFrames>
+			<ILINK_LibraryPath>$(BDS)\lib\debug;P:\_LIBRARY\DEBUG;$(ILINK_LibraryPath)</ILINK_LibraryPath>
+			<ILINK_FullDebugInfo>true</ILINK_FullDebugInfo>
+			<TASM_Debugging>Full</TASM_Debugging>
+			<BCC_SourceDebuggingOn>true</BCC_SourceDebuggingOn>
+		</PropertyGroup>
+		<PropertyGroup Condition="'$(Cfg_2)'!=''">
+			<IntermediateOutputDir>Release</IntermediateOutputDir>
+			<ILINK_LibraryPath>$(BDS)\lib\release;$(ILINK_LibraryPath)</ILINK_LibraryPath>
+			<TASM_Debugging>None</TASM_Debugging>
+		</PropertyGroup>
+		<ItemGroup>
+			<CppCompile Include="VIEW\FORMS\FindHarmFRM.cpp">
+				<Form>_FindHarmFRM</Form>
+				<DependentOn>VIEW\FORMS\FindHarmFRM.h</DependentOn>
+				<BuildOrder>216</BuildOrder>
+			</CppCompile>
+			<CppCompile Include="VIEW\FORMS\EditHarmRBFFRMBIZ.cpp">
+				<DependentOn>VIEW\FORMS\EditHarmRBFFRMBIZ.h</DependentOn>
+				<BuildOrder>82</BuildOrder>
+			</CppCompile>
+			<CppCompile Include="VIEW\FORMS\EditHarmRBFFRM.cpp">
+				<Form>_EditHarmRBFFRM</Form>
+				<DependentOn>VIEW\FORMS\EditHarmRBFFRM.h</DependentOn>
+				<BuildOrder>93</BuildOrder>
+			</CppCompile>
+			<CppCompile Include="VIEW\FORMS\FindProtFRM.cpp">
+				<Form>_FindProtFRM</Form>
+				<DependentOn>VIEW\FORMS\FindProtFRM.h</DependentOn>
+				<BuildOrder>204</BuildOrder>
+			</CppCompile>
+			<CppCompile Include="VIEW\FORMS\ListaOldHarmFRM.cpp">
+				<Form>_ListaOldHarmFRM</Form>
+				<DependentOn>VIEW\FORMS\ListaOldHarmFRM.h</DependentOn>
+				<BuildOrder>79</BuildOrder>
+			</CppCompile>
+			<CppCompile Include="VIEW\FORMS\ListaMagFRM.cpp">
+				<Form>_ListaMagFRM</Form>
+				<DependentOn>VIEW\FORMS\ListaMagFRM.h</DependentOn>
+				<BuildOrder>63</BuildOrder>
+			</CppCompile>
+			<CppCompile Include="VIEW\FORMS\ListaHarmFRM.cpp">
+				<Form>_ListaHarmFRM</Form>
+				<DependentOn>VIEW\FORMS\ListaHarmFRM.h</DependentOn>
+				<BuildOrder>122</BuildOrder>
+			</CppCompile>
+			<CppCompile Include="VIEW\FORMS\EditHarmFRM.cpp">
+				<Form>_EditHarmFRM</Form>
+				<DependentOn>VIEW\FORMS\EditHarmFRM.h</DependentOn>
+				<BuildOrder>86</BuildOrder>
+			</CppCompile>
+			<CppCompile Include="VIEW\DokWeFRM.cpp">
+				<Form>_DokWeFRM</Form>
+				<DependentOn>VIEW\DokWeFRM.h</DependentOn>
+				<BuildOrder>212</BuildOrder>
+			</CppCompile>
+			<CppCompile Include="VIEW\DICT\SL_EDIT_FRM.cpp">
+				<Form>_SL_EDIT_FRM</Form>
+				<DependentOn>VIEW\DICT\SL_EDIT_FRM.h</DependentOn>
+				<BuildOrder>98</BuildOrder>
+			</CppCompile>
+			<CppCompile Include="VIEW\DICT\SL_BASE_FRM.cpp">
+				<Form>_SL_BASE_FRM</Form>
+				<DependentOn>VIEW\DICT\SL_BASE_FRM.h</DependentOn>
+				<BuildOrder>97</BuildOrder>
+			</CppCompile>
+			<CppCompile Include="VIEW\EdProtPrzekDetFRM.cpp">
+				<Form>_EdProtPrzekDetFRM</Form>
+				<DependentOn>VIEW\EdProtPrzekDetFRM.h</DependentOn>
+				<BuildOrder>213</BuildOrder>
+			</CppCompile>
+			<CppCompile Include="VIEW\FORMS\DelHarmFRM.cpp">
+				<Form>_DelHarmFRM</Form>
+				<DependentOn>VIEW\FORMS\DelHarmFRM.h</DependentOn>
+				<BuildOrder>169</BuildOrder>
+			</CppCompile>
+			<CppCompile Include="VIEW\FORMS\AddRbhFRM.cpp">
+				<Form>_AddRbhFRM</Form>
+				<DependentOn>VIEW\FORMS\AddRbhFRM.h</DependentOn>
+				<BuildOrder>209</BuildOrder>
+			</CppCompile>
+			<CppCompile Include="VIEW\EdProtPrzekFRM.cpp">
+				<Form>_EdProtPrzekFRM</Form>
+				<DependentOn>VIEW\EdProtPrzekFRM.h</DependentOn>
+				<BuildOrder>214</BuildOrder>
+			</CppCompile>
+			<CppCompile Include="VIEW\FORMS\MoveHarmRBFFRM.cpp">
+				<Form>_MoveHarmRBHFRM</Form>
+				<DependentOn>VIEW\FORMS\MoveHarmRBFFRM.h</DependentOn>
+				<BuildOrder>87</BuildOrder>
+			</CppCompile>
+			<CppCompile Include="VIEW\FRAMES\NaglMagFRA.cpp">
+				<Form>_NaglMagFRA</Form>
+				<DesignClass>TFrame</DesignClass>
+				<DependentOn>VIEW\FRAMES\NaglMagFRA.h</DependentOn>
+				<BuildOrder>7</BuildOrder>
+			</CppCompile>
+			<CppCompile Include="VIEW\FRAMES\ListaProtFRA.cpp">
+				<Form>_ListaProtFRA</Form>
+				<DesignClass>TFrame</DesignClass>
+				<DependentOn>VIEW\FRAMES\ListaProtFRA.h</DependentOn>
+				<BuildOrder>202</BuildOrder>
+			</CppCompile>
+			<CppCompile Include="VIEW\FRAMES\ListaMAGFRA.cpp">
+				<Form>_ListaMAGFRA</Form>
+				<DesignClass>TFrame</DesignClass>
+				<DependentOn>VIEW\FRAMES\ListaMAGFRA.h</DependentOn>
+				<BuildOrder>15</BuildOrder>
+			</CppCompile>
+			<CppCompile Include="VIEW\FRAMES\PowiadomFRA.cpp">
+				<Form>_PowiadomFRA</Form>
+				<DesignClass>TFrame</DesignClass>
+				<DependentOn>VIEW\FRAMES\PowiadomFRA.h</DependentOn>
+				<BuildOrder>10</BuildOrder>
+			</CppCompile>
+			<CppCompile Include="VIEW\ImportFromMdbFRM.cpp">
+				<Form>_ImportFromMdbFRM</Form>
+				<DependentOn>VIEW\ImportFromMdbFRM.h</DependentOn>
+				<BuildOrder>235</BuildOrder>
+			</CppCompile>
+			<CppCompile Include="VIEW\FRAMES\SzukajFRA.cpp">
+				<Form>_SzukajFRA</Form>
+				<DesignClass>TFrame</DesignClass>
+				<DependentOn>VIEW\FRAMES\SzukajFRA.h</DependentOn>
+				<BuildOrder>4</BuildOrder>
+			</CppCompile>
+			<CppCompile Include="VIEW\KonfigFRM.cpp">
+				<Form>_KonfigFRM</Form>
+				<DependentOn>VIEW\KonfigFRM.h</DependentOn>
+				<BuildOrder>195</BuildOrder>
+			</CppCompile>
+			<CppCompile Include="VIEW\FRAMES\ListaHarmFRA.cpp">
+				<Form>_ListaHarmFRA</Form>
+				<DesignClass>TFrame</DesignClass>
+				<DependentOn>VIEW\FRAMES\ListaHarmFRA.h</DependentOn>
+				<BuildOrder>215</BuildOrder>
+			</CppCompile>
+			<CppCompile Include="VIEW\FRAMES\KosztyFRA.cpp">
+				<Form>_KosztyFRA</Form>
+				<DesignClass>TFrame</DesignClass>
+				<DependentOn>VIEW\FRAMES\KosztyFRA.h</DependentOn>
+				<BuildOrder>169</BuildOrder>
+			</CppCompile>
+			<CppCompile Include="VIEW\FRAMES\DokFRA.cpp">
+				<Form>_DokFRA</Form>
+				<DesignClass>TFrame</DesignClass>
+				<DependentOn>VIEW\FRAMES\DokFRA.h</DependentOn>
+				<BuildOrder>150</BuildOrder>
+			</CppCompile>
+			<CppCompile Include="VIEW\FORMS\PowDostFRM.cpp">
+				<Form>_PowDostFRM</Form>
+				<DependentOn>VIEW\FORMS\PowDostFRM.h</DependentOn>
+				<BuildOrder>193</BuildOrder>
+			</CppCompile>
+			<CppCompile Include="VIEW\FRAMES\KUTkosztyFRA.cpp">
+				<Form>_KUTkosztyFRA</Form>
+				<DesignClass>TFrame</DesignClass>
+				<DependentOn>VIEW\FRAMES\KUTkosztyFRA.h</DependentOn>
+				<BuildOrder>162</BuildOrder>
+			</CppCompile>
+			<CppCompile Include="VIEW\FRAMES\KutyFRA.cpp">
+				<Form>_KutyFRA</Form>
+				<DesignClass>TFrame</DesignClass>
+				<DependentOn>VIEW\FRAMES\KutyFRA.h</DependentOn>
+				<BuildOrder>146</BuildOrder>
+			</CppCompile>
+			<CppCompile Include="VIEW\FRAMES\KUTrbhFRA.cpp">
+				<Form>_KUTrbhFRA</Form>
+				<DesignClass>TFrame</DesignClass>
+				<DependentOn>VIEW\FRAMES\KUTrbhFRA.h</DependentOn>
+				<BuildOrder>147</BuildOrder>
+			</CppCompile>
+			<CppCompile Include="VIEW\FRAMES\KUTkosztySumFRA.cpp">
+				<Form>_KUTkosztySumFRA</Form>
+				<DesignClass>TFrame</DesignClass>
+				<DependentOn>VIEW\FRAMES\KUTkosztySumFRA.h</DependentOn>
+				<BuildOrder>170</BuildOrder>
+			</CppCompile>
+			<CppCompile Include="VIEW\DICT\SlPracEdFRM.cpp">
+				<Form>_SlPracEdFRM</Form>
+				<DependentOn>VIEW\DICT\SlPracEdFRM.h</DependentOn>
+				<BuildOrder>97</BuildOrder>
+			</CppCompile>
+			<CppCompile Include="VIEW\DICT\SlOddzialyFRM.cpp">
+				<Form>_SlOddzialyFRM</Form>
+				<DependentOn>VIEW\DICT\SlOddzialyFRM.h</DependentOn>
+				<BuildOrder>96</BuildOrder>
+			</CppCompile>
+			<CppCompile Include="VIEW\DICT\SlOddzialyEditFRM.cpp">
+				<Form>_SlOddzialyEditFRM</Form>
+				<DependentOn>VIEW\DICT\SlOddzialyEditFRM.h</DependentOn>
+				<BuildOrder>95</BuildOrder>
+			</CppCompile>
+			<CppCompile Include="VIEW\DICT\SlPracFRM.cpp">
+				<Form>_SlPracFRM</Form>
+				<DependentOn>VIEW\DICT\SlPracFRM.h</DependentOn>
+				<BuildOrder>98</BuildOrder>
+			</CppCompile>
+			<CppCompile Include="VIEW\DICT\SlSprzetEditFRM.cpp">
+				<Form>_SlSprzetEditFRM</Form>
+				<DependentOn>VIEW\DICT\SlSprzetEditFRM.h</DependentOn>
+				<BuildOrder>154</BuildOrder>
+			</CppCompile>
+			<CppCompile Include="VIEW\DICT\SlPracownicyFRM.cpp">
+				<Form>_SlPracownicyFRM</Form>
+				<DependentOn>VIEW\DICT\SlPracownicyFRM.h</DependentOn>
+				<BuildOrder>99</BuildOrder>
+			</CppCompile>
+			<CppCompile Include="VIEW\DICT\SlPracownicyEditFRM.cpp">
+				<Form>_SlPracownicyEditFRM</Form>
+				<DependentOn>VIEW\DICT\SlPracownicyEditFRM.h</DependentOn>
+				<BuildOrder>118</BuildOrder>
+			</CppCompile>
+			<CppCompile Include="VIEW\DICT\SlKomorkiStreamEvents.cpp">
+				<DependentOn>VIEW\DICT\SlKomorkiStreamEvents.h</DependentOn>
+				<BuildOrder>121</BuildOrder>
+			</CppCompile>
+			<CppCompile Include="VIEW\DICT\SlJednostkiFRM.cpp">
+				<Form>_SlJednostkiFRM</Form>
+				<DependentOn>VIEW\DICT\SlJednostkiFRM.h</DependentOn>
+				<BuildOrder>197</BuildOrder>
+			</CppCompile>
+			<CppCompile Include="VIEW\DICT\SlJednostkiEditFRM.cpp">
+				<Form>_SlJednostkiEditFRM</Form>
+				<DependentOn>VIEW\DICT\SlJednostkiEditFRM.h</DependentOn>
+				<BuildOrder>196</BuildOrder>
+			</CppCompile>
+			<CppCompile Include="VIEW\DICT\SlEtatyEditFRM.cpp">
+				<Form>_SlEtatyEditFRM</Form>
+				<DependentOn>VIEW\DICT\SlEtatyEditFRM.h</DependentOn>
+				<BuildOrder>132</BuildOrder>
+			</CppCompile>
+			<CppCompile Include="VIEW\DICT\SlKadraEditFRM.cpp">
+				<Form>_SlKadraEditFRM</Form>
+				<DependentOn>VIEW\DICT\SlKadraEditFRM.h</DependentOn>
+				<BuildOrder>117</BuildOrder>
+			</CppCompile>
+			<CppCompile Include="VIEW\DICT\SlKomorkiFRM.cpp">
+				<Form>_SlKomorkiFRM</Form>
+				<DependentOn>VIEW\DICT\SlKomorkiFRM.h</DependentOn>
+				<BuildOrder>94</BuildOrder>
+			</CppCompile>
+			<CppCompile Include="VIEW\DICT\SlKomorkiEditFRM.cpp">
+				<Form>_SlKomorkiEditFRM</Form>
+				<DependentOn>VIEW\DICT\SlKomorkiEditFRM.h</DependentOn>
+				<BuildOrder>93</BuildOrder>
+			</CppCompile>
+			<CppCompile Include="VIEW\DICT\SlKadraFRM.cpp">
+				<Form>_SlKadraFRM</Form>
+				<DependentOn>VIEW\DICT\SlKadraFRM.h</DependentOn>
+				<BuildOrder>116</BuildOrder>
+			</CppCompile>
+			<CppCompile Include="VIEW\DICT\SlSprzetFRM.cpp">
+				<Form>_SlSprzetFRM</Form>
+				<DependentOn>VIEW\DICT\SlSprzetFRM.h</DependentOn>
+				<BuildOrder>155</BuildOrder>
+			</CppCompile>
+			<CppCompile Include="VIEW\DICT\SlWarEdFRM.cpp">
+				<Form>_SlWarEdFRM</Form>
+				<DependentOn>VIEW\DICT\SlWarEdFRM.h</DependentOn>
+				<BuildOrder>104</BuildOrder>
+			</CppCompile>
+			<CppCompile Include="VIEW\DICT\SlUrlopyEditFRM.cpp">
+				<Form>_SlUrlopyEditFRM</Form>
+				<DependentOn>VIEW\DICT\SlUrlopyEditFRM.h</DependentOn>
+				<BuildOrder>120</BuildOrder>
+			</CppCompile>
+			<CppCompile Include="VIEW\DICT\SlSzkoleniaEditFRM.cpp">
+				<Form>_SlSzkoleniaEditFRM</Form>
+				<DependentOn>VIEW\DICT\SlSzkoleniaEditFRM.h</DependentOn>
+				<BuildOrder>119</BuildOrder>
+			</CppCompile>
+			<CppCompile Include="VIEW\DICT\SlWarFRM.cpp">
+				<Form>_SlWarFRM</Form>
+				<DependentOn>VIEW\DICT\SlWarFRM.h</DependentOn>
+				<BuildOrder>105</BuildOrder>
+			</CppCompile>
+			<CppCompile Include="VIEW\DICT\SlZwolnieniaEditFRM.cpp">
+				<Form>_SlZwolnieniaEditFRM</Form>
+				<DependentOn>VIEW\DICT\SlZwolnieniaEditFRM.h</DependentOn>
+				<BuildOrder>210</BuildOrder>
+			</CppCompile>
+			<CppCompile Include="VIEW\DICT\SlWydzialyFRM.cpp">
+				<Form>_SlWydzialyFRM</Form>
+				<DependentOn>VIEW\DICT\SlWydzialyFRM.h</DependentOn>
+				<BuildOrder>106</BuildOrder>
+			</CppCompile>
+			<CppCompile Include="VIEW\DICT\SlWydzialyEditFRM.cpp">
+				<Form>_SlWydzialyEditFRM</Form>
+				<DependentOn>VIEW\DICT\SlWydzialyEditFRM.h</DependentOn>
+				<BuildOrder>107</BuildOrder>
+			</CppCompile>
+			<CppCompile Include="VIEW\DICT\SlStanowiskaFRM.cpp">
+				<Form>_SlStanowiskaFRM</Form>
+				<DependentOn>VIEW\DICT\SlStanowiskaFRM.h</DependentOn>
+				<BuildOrder>103</BuildOrder>
+			</CppCompile>
+			<CppCompile Include="VIEW\DICT\SlSprzetRodzajeEditFRM.cpp">
+				<Form>_SlSprzetRodzajeEditFRM</Form>
+				<DependentOn>VIEW\DICT\SlSprzetRodzajeEditFRM.h</DependentOn>
+				<BuildOrder>158</BuildOrder>
+			</CppCompile>
+			<CppCompile Include="VIEW\DICT\SlSprzetGrupyFRM.cpp">
+				<Form>_SlSprzetGrupyFRM</Form>
+				<DependentOn>VIEW\DICT\SlSprzetGrupyFRM.h</DependentOn>
+				<BuildOrder>157</BuildOrder>
+			</CppCompile>
+			<CppCompile Include="VIEW\DICT\SlSprzetGrupyEditFRM.cpp">
+				<Form>_SlSprzetGrupyEditFRM</Form>
+				<DependentOn>VIEW\DICT\SlSprzetGrupyEditFRM.h</DependentOn>
+				<BuildOrder>156</BuildOrder>
+			</CppCompile>
+			<CppCompile Include="VIEW\DICT\SlSprzetRodzajeFRM.cpp">
+				<Form>_SlSprzetRodzajeFRM</Form>
+				<DependentOn>VIEW\DICT\SlSprzetRodzajeFRM.h</DependentOn>
+				<BuildOrder>159</BuildOrder>
+			</CppCompile>
+			<CppCompile Include="VIEW\DICT\SlStanowiskaEditFRM.cpp">
+				<Form>_SlStanowiskaEditFRM</Form>
+				<DependentOn>VIEW\DICT\SlStanowiskaEditFRM.h</DependentOn>
+				<BuildOrder>124</BuildOrder>
+			</CppCompile>
+			<CppCompile Include="VIEW\DICT\SlStanFRM.cpp">
+				<Form>_SlStanFRM</Form>
+				<DependentOn>VIEW\DICT\SlStanFRM.h</DependentOn>
+				<BuildOrder>101</BuildOrder>
+			</CppCompile>
+			<CppCompile Include="VIEW\DICT\SlStanEdFRM.cpp">
+				<Form>_SlStanEdFRM</Form>
+				<DependentOn>VIEW\DICT\SlStanEdFRM.h</DependentOn>
+				<BuildOrder>100</BuildOrder>
+			</CppCompile>
+			<LibFiles Include="P:\_LIBRARY\isLPTPrinter140.lib">
+				<IgnorePath>true</IgnorePath>
+				<BuildOrder>155</BuildOrder>
+			</LibFiles>
+			<CppCompile Include="P:\_COMMON\_SLAWEK\FUNCS\Translator.cpp">
+				<DependentOn>P:\_COMMON\_SLAWEK\FUNCS\Translator.h</DependentOn>
+				<BuildOrder>206</BuildOrder>
+			</CppCompile>
+			<CppCompile Include="P:\_COMMON\_SLAWEK\FUNCS\SQR\SQRTools.cpp">
+				<DependentOn>P:\_COMMON\_SLAWEK\FUNCS\SQR\SQRTools.h</DependentOn>
+				<BuildOrder>224</BuildOrder>
+			</CppCompile>
+			<LibFiles Include="P:\_LIBRARY\isManager140.lib">
+				<IgnorePath>true</IgnorePath>
+				<BuildOrder>34</BuildOrder>
+			</LibFiles>
+			<LibFiles Include="P:\_LIBRARY\isvaria140.lib">
+				<IgnorePath>true</IgnorePath>
+				<BuildOrder>36</BuildOrder>
+			</LibFiles>
+			<LibFiles Include="P:\_LIBRARY\IsPrinter140.lib">
+				<IgnorePath>true</IgnorePath>
+				<BuildOrder>152</BuildOrder>
+			</LibFiles>
+			<LibFiles Include="P:\_LIBRARY\isXml140.lib">
+				<IgnorePath>true</IgnorePath>
+				<BuildOrder>35</BuildOrder>
+			</LibFiles>
+			<CppCompile Include="P:\_COMMON\_SLAWEK\FUNCS\Globfunc.cpp">
+				<DependentOn>P:\_COMMON\_SLAWEK\FUNCS\Globfunc.h</DependentOn>
+				<BuildOrder>69</BuildOrder>
+			</CppCompile>
+			<CppCompile Include="P:\_COMMON\_SLAWEK\FORMS\FORMS60\CUSTRAP\MODEL\QRTypes.cpp">
+				<DependentOn>P:\_COMMON\_SLAWEK\FORMS\FORMS60\CUSTRAP\MODEL\QRTypes.h</DependentOn>
+				<BuildOrder>22</BuildOrder>
+			</CppCompile>
+			<CppCompile Include="P:\_COMMON\_SLAWEK\FORMS\FORMS60\CUSTRAP\MODEL\QRShadowBand.cpp">
+				<DependentOn>P:\_COMMON\_SLAWEK\FORMS\FORMS60\CUSTRAP\MODEL\QRShadowBand.h</DependentOn>
+				<BuildOrder>21</BuildOrder>
+			</CppCompile>
+			<CppCompile Include="P:\_COMMON\_SLAWEK\FORMS\FORMS60\CUSTRAP\MODEL\QRHeaderBIZ.cpp">
+				<DependentOn>P:\_COMMON\_SLAWEK\FORMS\FORMS60\CUSTRAP\MODEL\QRHeaderBIZ.h</DependentOn>
+				<BuildOrder>20</BuildOrder>
+			</CppCompile>
+			<CppCompile Include="P:\_COMMON\_SLAWEK\FORMS\FORMS60\CUSTRAP\MODEL\ValuesBuff.cpp">
+				<DependentOn>P:\_COMMON\_SLAWEK\FORMS\FORMS60\CUSTRAP\MODEL\ValuesBuff.h</DependentOn>
+				<BuildOrder>23</BuildOrder>
+			</CppCompile>
+			<CppCompile Include="P:\_COMMON\_SLAWEK\FORMS\FORMS60\PopupButton.cpp">
+				<Form>_PopupButton</Form>
+				<DesignClass>TFrame</DesignClass>
+				<DependentOn>P:\_COMMON\_SLAWEK\FORMS\FORMS60\PopupButton.h</DependentOn>
+				<BuildOrder>30</BuildOrder>
+			</CppCompile>
+			<CppCompile Include="P:\_COMMON\_SLAWEK\FORMS\FORMS60\IWaitForm.cpp">
+				<DependentOn>P:\_COMMON\_SLAWEK\FORMS\FORMS60\IWaitForm.h</DependentOn>
+				<BuildOrder>145</BuildOrder>
+			</CppCompile>
+			<CppCompile Include="P:\_COMMON\_SLAWEK\FORMS\FORMS60\FCSWYB.cpp">
+				<Form>_FCUSTWYB</Form>
+				<DependentOn>P:\_COMMON\_SLAWEK\FORMS\FORMS60\FCSWYB.h</DependentOn>
+				<BuildOrder>31</BuildOrder>
+			</CppCompile>
+			<LibFiles Include="P:\_LIBRARY\sgOfficeTools140.lib">
+				<IgnorePath>true</IgnorePath>
+				<BuildOrder>222</BuildOrder>
+			</LibFiles>
+			<CppCompile Include="MODEL\MESSENGERS\KomID.cpp">
+				<DependentOn>MODEL\MESSENGERS\KomID.h</DependentOn>
+				<BuildOrder>244</BuildOrder>
+			</CppCompile>
+			<CppCompile Include="MODEL\MESSENGERS\GlownyID.cpp">
+				<DependentOn>MODEL\MESSENGERS\GlownyID.h</DependentOn>
+				<BuildOrder>242</BuildOrder>
+			</CppCompile>
+			<LibFiles Include="P:\_LIBRARY\sqr140.lib">
+				<IgnorePath>true</IgnorePath>
+				<BuildOrder>61</BuildOrder>
+			</LibFiles>
+			<CppCompile Include="MODEL\READERS\GlownyReader.cpp">
+				<DependentOn>MODEL\READERS\GlownyReader.h</DependentOn>
+				<BuildOrder>245</BuildOrder>
+			</CppCompile>
+			<CppCompile Include="MODEL\WRITERS\EksportCfgWriter.cpp">
+				<DependentOn>MODEL\WRITERS\EksportCfgWriter.h</DependentOn>
+				<BuildOrder>248</BuildOrder>
+			</CppCompile>
+			<CppCompile Include="MODEL\READERS\EksportCfgReader.cpp">
+				<DependentOn>MODEL\READERS\EksportCfgReader.h</DependentOn>
+				<BuildOrder>247</BuildOrder>
+			</CppCompile>
+			<CppCompile Include="MODEL\MESSENGERS\EksportCfg.cpp">
+				<DependentOn>MODEL\MESSENGERS\EksportCfg.h</DependentOn>
+				<BuildOrder>246</BuildOrder>
+			</CppCompile>
+			<CppCompile Include="REPORTS\SPRAWOZDANIA\ROCZNE\SprRoczne1DAO.cpp">
+				<DependentOn>REPORTS\SPRAWOZDANIA\ROCZNE\SprRoczne1DAO.h</DependentOn>
+				<BuildOrder>241</BuildOrder>
+			</CppCompile>
+			<LibFiles Include="P:\_LIBRARY\sgDataAccess140.lib">
+				<IgnorePath>true</IgnorePath>
+				<BuildOrder>39</BuildOrder>
+			</LibFiles>
+			<LibFiles Include="P:\_LIBRARY\jbutils140.lib">
+				<IgnorePath>true</IgnorePath>
+				<BuildOrder>40</BuildOrder>
+			</LibFiles>
+			<CppCompile Include="P:\_COMMON\FORMS\_fedit02.cpp">
+				<Form>_FEDITEXT</Form>
+				<DependentOn>P:\_COMMON\FORMS\_fedit02.h</DependentOn>
+				<BuildOrder>29</BuildOrder>
+			</CppCompile>
+			<LibFiles Include="P:\_LIBRARY\IsWzorce140.lib">
+				<IgnorePath>true</IgnorePath>
+				<BuildOrder>153</BuildOrder>
+			</LibFiles>
+			<LibFiles Include="P:\_LIBRARY\XercesLib140.lib">
+				<IgnorePath>true</IgnorePath>
+				<BuildOrder>38</BuildOrder>
+			</LibFiles>
+			<LibFiles Include="P:\_LIBRARY\WPTools140.lib">
+				<IgnorePath>true</IgnorePath>
+				<BuildOrder>154</BuildOrder>
+			</LibFiles>
+			<LibFiles Include="P:\_LIBRARY\UpdaterDb140.lib">
+				<IgnorePath>true</IgnorePath>
+				<BuildOrder>161</BuildOrder>
+			</LibFiles>
+			<CppCompile Include="VIEW\POCZTA\pr_PocztaCtrl.cpp">
+				<DependentOn>VIEW\POCZTA\pr_PocztaCtrl.h</DependentOn>
+				<BuildOrder>197</BuildOrder>
+			</CppCompile>
+			<CppCompile Include="VIEW\NowePowiadFRM.cpp">
+				<Form>_NowePowiadFRM</Form>
+				<DependentOn>VIEW\NowePowiadFRM.h</DependentOn>
+				<BuildOrder>12</BuildOrder>
+			</CppCompile>
+			<CppCompile Include="VIEW\POCZTA\pr_kBase0FRM.cpp">
+				<Form>prBase0FRM</Form>
+				<DependentOn>VIEW\POCZTA\pr_kBase0FRM.h</DependentOn>
+				<BuildOrder>195</BuildOrder>
+			</CppCompile>
+			<CppCompile Include="VIEW\POCZTA\pr_ImporterWizjaJB.cpp">
+				<Form>_ImporterWizjaJB</Form>
+				<DependentOn>VIEW\POCZTA\pr_ImporterWizjaJB.h</DependentOn>
+				<BuildOrder>194</BuildOrder>
+			</CppCompile>
+			<CppCompile Include="MainMenu.cpp">
+				<Form>_MainMenu</Form>
+				<DependentOn>MainMenu.h</DependentOn>
+				<BuildOrder>2</BuildOrder>
+			</CppCompile>
+			<CppCompile Include="VIEW\POCZTA\pr_pocztaSmtpFra.cpp">
+				<Form>_pocztaSmtpFra</Form>
+				<DependentOn>VIEW\POCZTA\pr_pocztaSmtpFra.h</DependentOn>
+				<BuildOrder>200</BuildOrder>
+			</CppCompile>
+			<CppCompile Include="VIEW\POCZTA\pr_pocztaPopFra.cpp">
+				<Form>_pocztaPopFra</Form>
+				<DependentOn>VIEW\POCZTA\pr_pocztaPopFra.h</DependentOn>
+				<BuildOrder>199</BuildOrder>
+			</CppCompile>
+			<CppCompile Include="VIEW\NowyMagFRM.cpp">
+				<Form>_NowyMagFRM</Form>
+				<DependentOn>VIEW\NowyMagFRM.h</DependentOn>
+				<BuildOrder>8</BuildOrder>
+			</CppCompile>
+			<CppCompile Include="VIEW\KUTFRM.cpp">
+				<Form>_KUTFRM</Form>
+				<DependentOn>VIEW\KUTFRM.h</DependentOn>
+				<BuildOrder>14</BuildOrder>
+			</CppCompile>
+			<CppCompile Include="VIEW\TestAcc.cpp">
+				<Form>TestFRM</Form>
+				<DependentOn>VIEW\TestAcc.h</DependentOn>
+				<BuildOrder>88</BuildOrder>
+			</CppCompile>
+			<CppCompile Include="VIEW\MagFRM.cpp">
+				<Form>_MagFRM</Form>
+				<DependentOn>VIEW\MagFRM.h</DependentOn>
+				<BuildOrder>3</BuildOrder>
+			</CppCompile>
+			<CppCompile Include="VIEW\KUTkosztyEdFRM.cpp">
+				<Form>_KUTkosztyEdFRM</Form>
+				<DependentOn>VIEW\KUTkosztyEdFRM.h</DependentOn>
+				<BuildOrder>163</BuildOrder>
+			</CppCompile>
+			<CppCompile Include="VIEW\NowyKosztFRM.cpp">
+				<Form>_NowyKosztFRM</Form>
+				<DependentOn>VIEW\NowyKosztFRM.h</DependentOn>
+				<BuildOrder>11</BuildOrder>
+			</CppCompile>
+			<CppCompile Include="VIEW\POCZTA\pr_FromWizjaJB.cpp">
+				<Form>_FromWizjaJBFRM</Form>
+				<DependentOn>VIEW\POCZTA\pr_FromWizjaJB.h</DependentOn>
+				<BuildOrder>193</BuildOrder>
+			</CppCompile>
+			<CppCompile Include="VIEW\ImportPlanFromMdbFRM.cpp">
+				<Form>_ImportPlanFromMdbFRM</Form>
+				<DependentOn>VIEW\ImportPlanFromMdbFRM.h</DependentOn>
+				<BuildOrder>212</BuildOrder>
+			</CppCompile>
+			<CppCompile Include="VIEW\PrzyjSprzFRM.cpp">
+				<Form>_PrzyjSprzFRM</Form>
+				<DependentOn>VIEW\PrzyjSprzFRM.h</DependentOn>
+				<BuildOrder>211</BuildOrder>
+			</CppCompile>
+			<CppCompile Include="P:\_COMMON\FORMS\_FBASE00.cpp">
+				<Form>_FBASE</Form>
+				<DependentOn>P:\_COMMON\FORMS\_FBASE00.h</DependentOn>
+				<BuildOrder>27</BuildOrder>
+			</CppCompile>
+			<CppCompile Include="VIEW\WystWezwWaitForm.cpp">
+				<DependentOn>VIEW\WystWezwWaitForm.h</DependentOn>
+				<BuildOrder>149</BuildOrder>
+			</CppCompile>
+			<CppCompile Include="VIEW\SlEditFRM.cpp">
+				<Form>_SlEditFRM</Form>
+				<DependentOn>VIEW\SlEditFRM.h</DependentOn>
+				<BuildOrder>60</BuildOrder>
+			</CppCompile>
+			<CppCompile Include="VIEW\POCZTA\pr_ExporterWizjaJB.cpp">
+				<Form>_ExporterWizjaJB</Form>
+				<DependentOn>VIEW\POCZTA\pr_ExporterWizjaJB.h</DependentOn>
+				<BuildOrder>192</BuildOrder>
+			</CppCompile>
+			<CppCompile Include="P:\_COMMON\_SLAWEK\FORMS\FORMS60\CUSTRAP\MODEL\QRBandMng.cpp">
+				<DependentOn>P:\_COMMON\_SLAWEK\FORMS\FORMS60\CUSTRAP\MODEL\QRBandMng.h</DependentOn>
+				<BuildOrder>19</BuildOrder>
+			</CppCompile>
+			<CppCompile Include="P:\_COMMON\_SLAWEK\FORMS\FORMS60\CUSTRAP\MODEL\QRAttr.cpp">
+				<DependentOn>P:\_COMMON\_SLAWEK\FORMS\FORMS60\CUSTRAP\MODEL\QRAttr.h</DependentOn>
+				<BuildOrder>18</BuildOrder>
+			</CppCompile>
+			<CppCompile Include="P:\_COMMON\_SLAWEK\FORMS\FORMS60\CUSTRAP\MODEL\QickRepBIZ.cpp">
+				<DependentOn>P:\_COMMON\_SLAWEK\FORMS\FORMS60\CUSTRAP\MODEL\QickRepBIZ.h</DependentOn>
+				<BuildOrder>17</BuildOrder>
+			</CppCompile>
+			<CppCompile Include="P:\_COMMON\FORMS\_FEDIT01.cpp">
+				<Form>_FEDITONE</Form>
+				<DependentOn>P:\_COMMON\FORMS\_FEDIT01.h</DependentOn>
+				<BuildOrder>28</BuildOrder>
+			</CppCompile>
+			<CppCompile Include="VIEW\PrzekSprzFRM.cpp">
+				<Form>_PrzekSprzFRM</Form>
+				<DependentOn>VIEW\PrzekSprzFRM.h</DependentOn>
+				<BuildOrder>175</BuildOrder>
+			</CppCompile>
+			<CppCompile Include="VIEW\POCZTA\pr_kCopierDataSet.cpp">
+				<DependentOn>VIEW\POCZTA\pr_kCopierDataSet.h</DependentOn>
+				<BuildOrder>196</BuildOrder>
+			</CppCompile>
+			<CppCompile Include="REPORTS\SPRAWOZDANIA\STSPRZ\StSprzWybFRM.cpp">
+				<Form>_StSprzWybFRM</Form>
+				<DependentOn>REPORTS\SPRAWOZDANIA\STSPRZ\StSprzWybFRM.h</DependentOn>
+				<BuildOrder>138</BuildOrder>
+			</CppCompile>
+			<CppCompile Include="VIEW\POCZTA\pr_pocztaLoginFrm.cpp">
+				<Form>_pocztaLoginFrm</Form>
+				<DesignClass>TFrame</DesignClass>
+				<DependentOn>VIEW\POCZTA\pr_pocztaLoginFrm.h</DependentOn>
+				<BuildOrder>198</BuildOrder>
+			</CppCompile>
+			<CppCompile Include="VIEW\POCZTA\pr_ToWizjaJB.cpp">
+				<Form>_ToWizjaJBFRM</Form>
+				<DependentOn>VIEW\POCZTA\pr_ToWizjaJB.h</DependentOn>
+				<BuildOrder>201</BuildOrder>
+			</CppCompile>
+			<CppCompile Include="VIEW\WystWezwFRM.cpp">
+				<Form>_WystWezwFRM</Form>
+				<DependentOn>VIEW\WystWezwFRM.h</DependentOn>
+				<BuildOrder>146</BuildOrder>
+			</CppCompile>
+			<CppCompile Include="VIEW\wi_SlZalEditFRM.cpp">
+				<Form>_SlZalEditFRM</Form>
+				<DependentOn>VIEW\wi_SlZalEditFRM.h</DependentOn>
+				<BuildOrder>6</BuildOrder>
+			</CppCompile>
+			<CppCompile Include="VIEW\DICT\SlDelegacjeEditFRM.cpp">
+				<Form>_SlDelegacjeEditFRM</Form>
+				<DependentOn>VIEW\DICT\SlDelegacjeEditFRM.h</DependentOn>
+				<BuildOrder>160</BuildOrder>
+			</CppCompile>
+			<CppCompile Include="IMPORT\FROMMDB\VIEW\WaitFRMFCD.cpp">
+				<DependentOn>IMPORT\FROMMDB\VIEW\WaitFRMFCD.h</DependentOn>
+				<BuildOrder>60</BuildOrder>
+			</CppCompile>
+			<CppCompile Include="MODEL\DICTIONARES\DictMNG.cpp">
+				<DependentOn>MODEL\DICTIONARES\DictMNG.h</DependentOn>
+				<BuildOrder>236</BuildOrder>
+			</CppCompile>
+			<CppCompile Include="IMPORT\FROMMDB\MOVERS\StopnieMover.cpp">
+				<DependentOn>IMPORT\FROMMDB\MOVERS\StopnieMover.h</DependentOn>
+				<BuildOrder>84</BuildOrder>
+			</CppCompile>
+			<CppCompile Include="MODEL\FINDERS\ProtFinder.cpp">
+				<DependentOn>MODEL\FINDERS\ProtFinder.h</DependentOn>
+				<BuildOrder>203</BuildOrder>
+			</CppCompile>
+			<CppCompile Include="MODEL\DICTIONARES\KodyUslugDICT.cpp">
+				<DependentOn>MODEL\DICTIONARES\KodyUslugDICT.h</DependentOn>
+				<BuildOrder>229</BuildOrder>
+			</CppCompile>
+			<CppCompile Include="IMPORT\FROMMDB\VIEW\WaitFRM.cpp">
+				<Form>_WaitFRM</Form>
+				<DependentOn>IMPORT\FROMMDB\VIEW\WaitFRM.h</DependentOn>
+				<BuildOrder>59</BuildOrder>
+			</CppCompile>
+			<CppCompile Include="MODEL\DICTIONARES\RemontyDICT.cpp">
+				<DependentOn>MODEL\DICTIONARES\RemontyDICT.h</DependentOn>
+				<BuildOrder>221</BuildOrder>
+			</CppCompile>
+			<CppCompile Include="IMPORT\FROMMDB\MOVERS\ZlecMover.cpp">
+				<DependentOn>IMPORT\FROMMDB\MOVERS\ZlecMover.h</DependentOn>
+				<BuildOrder>56</BuildOrder>
+			</CppCompile>
+			<CppCompile Include="IMPORT\FROMMDB\MOVERS\SprzMover.cpp">
+				<DependentOn>IMPORT\FROMMDB\MOVERS\SprzMover.h</DependentOn>
+				<BuildOrder>49</BuildOrder>
+			</CppCompile>
+			<CppCompile Include="IMPORT\FROMMDB\MOVERS\WarsztatyMover.cpp">
+				<DependentOn>IMPORT\FROMMDB\MOVERS\WarsztatyMover.h</DependentOn>
+				<BuildOrder>50</BuildOrder>
+			</CppCompile>
+			<CppCompile Include="MODEL\MESSENGERS\HarmID.cpp">
+				<DependentOn>MODEL\MESSENGERS\HarmID.h</DependentOn>
+				<BuildOrder>86</BuildOrder>
+			</CppCompile>
+			<CppCompile Include="IMPORT\FROMMDB\MOVERS\StanowiskaMover.cpp">
+				<DependentOn>IMPORT\FROMMDB\MOVERS\StanowiskaMover.h</DependentOn>
+				<BuildOrder>85</BuildOrder>
+			</CppCompile>
+			<CppCompile Include="IMPORT\FROMMDB\MOVERS\WydzMover.cpp">
+				<DependentOn>IMPORT\FROMMDB\MOVERS\WydzMover.h</DependentOn>
+				<BuildOrder>61</BuildOrder>
+			</CppCompile>
+			<CppCompile Include="MODEL\MESSENGERS\MagID.cpp">
+				<DependentOn>MODEL\MESSENGERS\MagID.h</DependentOn>
+				<BuildOrder>66</BuildOrder>
+			</CppCompile>
+			<CppCompile Include="MODEL\MESSENGERS\model_messengers_RBH4Kadra.cpp">
+				<DependentOn>MODEL\MESSENGERS\model_messengers_RBH4Kadra.h</DependentOn>
+				<BuildOrder>90</BuildOrder>
+			</CppCompile>
+			<CppCompile Include="ADMIN\unit\defines.cpp">
+				<DependentOn>ADMIN\unit\defines.h</DependentOn>
+				<BuildOrder>187</BuildOrder>
+			</CppCompile>
+			<CppCompile Include="MODEL\READERS\KUTReader.cpp">
+				<DependentOn>MODEL\READERS\KUTReader.h</DependentOn>
+				<BuildOrder>72</BuildOrder>
+			</CppCompile>
+			<CppCompile Include="MODEL\HANDLERS\RozlGodzSQRHdlr.cpp">
+				<DependentOn>MODEL\HANDLERS\RozlGodzSQRHdlr.h</DependentOn>
+				<BuildOrder>225</BuildOrder>
+			</CppCompile>
+			<CppCompile Include="MODEL\MESSENGERS\MagPOZ.cpp">
+				<DependentOn>MODEL\MESSENGERS\MagPOZ.h</DependentOn>
+				<BuildOrder>67</BuildOrder>
+			</CppCompile>
+			<CppCompile Include="MODEL\MESSENGERS\model_messengers_RBH4Mies.cpp">
+				<DependentOn>MODEL\MESSENGERS\model_messengers_RBH4Mies.h</DependentOn>
+				<BuildOrder>131</BuildOrder>
+			</CppCompile>
+			<CppCompile Include="REPORTS\SPRAWOZDANIA\BILMOZLPROD\BilMozlProdWybFRM.cpp">
+				<Form>_BilMozlProdWybFRM</Form>
+				<DependentOn>REPORTS\SPRAWOZDANIA\BILMOZLPROD\BilMozlProdWybFRM.h</DependentOn>
+				<BuildOrder>234</BuildOrder>
+			</CppCompile>
+			<CppCompile Include="MODEL\MESSENGERS\model_messengers_RBH.cpp">
+				<DependentOn>MODEL\MESSENGERS\model_messengers_RBH.h</DependentOn>
+				<BuildOrder>89</BuildOrder>
+			</CppCompile>
+			<CppCompile Include="MODEL\FINDERS\SprzetFinder.cpp">
+				<DependentOn>MODEL\FINDERS\SprzetFinder.h</DependentOn>
+				<BuildOrder>62</BuildOrder>
+			</CppCompile>
+			<CppCompile Include="MODEL\EDITORS\KUTEditor.cpp">
+				<DependentOn>MODEL\EDITORS\KUTEditor.h</DependentOn>
+				<BuildOrder>71</BuildOrder>
+			</CppCompile>
+			<CppCompile Include="MODEL\DICTIONARES\WydzialyDICT.cpp">
+				<DependentOn>MODEL\DICTIONARES\WydzialyDICT.h</DependentOn>
+				<BuildOrder>143</BuildOrder>
+			</CppCompile>
+			<CppCompile Include="MODEL\DICTIONARES\SprzetDICT.cpp">
+				<DependentOn>MODEL\DICTIONARES\SprzetDICT.h</DependentOn>
+				<BuildOrder>230</BuildOrder>
+			</CppCompile>
+			<CppCompile Include="MODEL\EDITORS\PowiadEditor.cpp">
+				<DependentOn>MODEL\EDITORS\PowiadEditor.h</DependentOn>
+				<BuildOrder>144</BuildOrder>
+			</CppCompile>
+			<CppCompile Include="IMPORT\FROMMDB\MOVERS\ZlecRbhMover.cpp">
+				<DependentOn>IMPORT\FROMMDB\MOVERS\ZlecRbhMover.h</DependentOn>
+				<BuildOrder>57</BuildOrder>
+			</CppCompile>
+			<CppCompile Include="MODEL\FINDERS\HarmFinder.cpp">
+				<DependentOn>MODEL\FINDERS\HarmFinder.h</DependentOn>
+				<BuildOrder>217</BuildOrder>
+			</CppCompile>
+			<CppCompile Include="MODEL\EDITORS\RozlGodzEditor.cpp">
+				<DependentOn>MODEL\EDITORS\RozlGodzEditor.h</DependentOn>
+				<BuildOrder>224</BuildOrder>
+			</CppCompile>
+			<CppCompile Include="ADMIN\unit\utils.cpp">
+				<DependentOn>ADMIN\unit\utils.h</DependentOn>
+				<BuildOrder>186</BuildOrder>
+			</CppCompile>
+			<CppCompile Include="COMMON\Tools.cpp">
+				<DependentOn>COMMON\Tools.h</DependentOn>
+				<BuildOrder>139</BuildOrder>
+			</CppCompile>
+			<CppCompile Include="CTRL\FINDERS\SprzetFinderCTRL.cpp">
+				<DependentOn>CTRL\FINDERS\SprzetFinderCTRL.h</DependentOn>
+				<BuildOrder>64</BuildOrder>
+			</CppCompile>
+			<CppCompile Include="CTRL\FINDERS\ProtFinderCTRL.cpp">
+				<DependentOn>CTRL\FINDERS\ProtFinderCTRL.h</DependentOn>
+				<BuildOrder>205</BuildOrder>
+			</CppCompile>
+			<CppCompile Include="CTRL\FINDERS\HarmFinderCTRL.cpp">
+				<DependentOn>CTRL\FINDERS\HarmFinderCTRL.h</DependentOn>
+				<BuildOrder>218</BuildOrder>
+			</CppCompile>
+			<CppCompile Include="ADMIN\rv_lines.cpp">
+				<DependentOn>ADMIN\rv_lines.h</DependentOn>
+				<BuildOrder>182</BuildOrder>
+			</CppCompile>
+			<CppCompile Include="ADMIN\fm_uprawnienia.cpp">
+				<Form>UprawDlg</Form>
+				<DependentOn>ADMIN\fm_uprawnienia.h</DependentOn>
+				<BuildOrder>181</BuildOrder>
+			</CppCompile>
+			<CppCompile Include="ADMIN\fm_rej_operat.cpp">
+				<Form>RejOperat</Form>
+				<DependentOn>ADMIN\fm_rej_operat.h</DependentOn>
+				<BuildOrder>180</BuildOrder>
+			</CppCompile>
+			<CppCompile Include="ADMIN\Data_modul\dm_operat.cpp">
+				<Form>DMOperator</Form>
+				<DesignClass>TDataModule</DesignClass>
+				<DependentOn>ADMIN\Data_modul\dm_operat.h</DependentOn>
+				<BuildOrder>184</BuildOrder>
+			</CppCompile>
+			<CppCompile Include="ADMIN\naviFrames\fr_rv_navigator_ext.cpp">
+				<Form>RVFrmNavigatorExt</Form>
+				<DesignClass>TFrame</DesignClass>
+				<DependentOn>ADMIN\naviFrames\fr_rv_navigator_ext.h</DependentOn>
+				<BuildOrder>179</BuildOrder>
+			</CppCompile>
+			<CppCompile Include="ADMIN\right_checker.cpp">
+				<DependentOn>ADMIN\right_checker.h</DependentOn>
+				<BuildOrder>177</BuildOrder>
+			</CppCompile>
+			<CppCompile Include="ADMIN\naviFrames\fr_rv_navigator_smpl.cpp">
+				<Form>RVFrmNavigatorSmpl</Form>
+				<DesignClass>TFrame</DesignClass>
+				<DependentOn>ADMIN\naviFrames\fr_rv_navigator_smpl.h</DependentOn>
+				<BuildOrder>178</BuildOrder>
+			</CppCompile>
+			<CppCompile Include="ADMIN\naviFrames\fr_rv_navigator_full.cpp">
+				<Form>RVFrmNavigatorFull</Form>
+				<DesignClass>TFrame</DesignClass>
+				<DependentOn>ADMIN\naviFrames\fr_rv_navigator_full.h</DependentOn>
+				<BuildOrder>180</BuildOrder>
+			</CppCompile>
+			<CppCompile Include="IMPORT\FROMMDB\MOVERS\OddzMover.cpp">
+				<DependentOn>IMPORT\FROMMDB\MOVERS\OddzMover.h</DependentOn>
+				<BuildOrder>47</BuildOrder>
+			</CppCompile>
+			<CppCompile Include="IMPORT\FROMMDB\MOVERS\MoversTools.cpp">
+				<DependentOn>IMPORT\FROMMDB\MOVERS\MoversTools.h</DependentOn>
+				<BuildOrder>141</BuildOrder>
+			</CppCompile>
+			<CppCompile Include="IMPORT\FROMMDB\MOVERS\MagazynMover.cpp">
+				<DependentOn>IMPORT\FROMMDB\MOVERS\MagazynMover.h</DependentOn>
+				<BuildOrder>46</BuildOrder>
+			</CppCompile>
+			<CppCompile Include="IMPORT\FROMMDB\MOVERS\GrSprzMover.cpp">
+				<DependentOn>IMPORT\FROMMDB\MOVERS\GrSprzMover.h</DependentOn>
+				<BuildOrder>44</BuildOrder>
+			</CppCompile>
+			<CppCompile Include="IMPORT\FROMMDB\MOVERS\PlanMover.cpp">
+				<DependentOn>IMPORT\FROMMDB\MOVERS\PlanMover.h</DependentOn>
+				<BuildOrder>52</BuildOrder>
+			</CppCompile>
+			<CppCompile Include="IMPORT\FROMMDB\MOVERS\OsobyMover.cpp">
+				<DependentOn>IMPORT\FROMMDB\MOVERS\OsobyMover.h</DependentOn>
+				<BuildOrder>83</BuildOrder>
+			</CppCompile>
+			<CppCompile Include="IMPORT\FROMMDB\MOVERS\RodzSprzMover.cpp">
+				<DependentOn>IMPORT\FROMMDB\MOVERS\RodzSprzMover.h</DependentOn>
+				<BuildOrder>48</BuildOrder>
+			</CppCompile>
+			<CppCompile Include="CTRL\MANAGERS\WezwMNG.cpp">
+				<DependentOn>CTRL\MANAGERS\WezwMNG.h</DependentOn>
+				<BuildOrder>148</BuildOrder>
+			</CppCompile>
+			<CppCompile Include="ADMIN\unit\client_tree.cpp">
+				<DependentOn>ADMIN\unit\client_tree.h</DependentOn>
+				<BuildOrder>185</BuildOrder>
+			</CppCompile>
+			<CppCompile Include="IMPORT\FROMMDB\MOVERS\KodyUslugMover.cpp">
+				<DependentOn>IMPORT\FROMMDB\MOVERS\KodyUslugMover.h</DependentOn>
+				<BuildOrder>58</BuildOrder>
+			</CppCompile>
+			<CppCompile Include="EKSPORT\TOMDB\EksportToMdbCTRL.cpp">
+				<DependentOn>EKSPORT\TOMDB\EksportToMdbCTRL.h</DependentOn>
+				<BuildOrder>208</BuildOrder>
+			</CppCompile>
+			<CppCompile Include="IMPORT\FROMMDB\MOVERS\RodzRemMover.cpp">
+				<DependentOn>IMPORT\FROMMDB\MOVERS\RodzRemMover.h</DependentOn>
+				<BuildOrder>51</BuildOrder>
+			</CppCompile>
+			<CppCompile Include="IMPORT\FROMMDB\ImportFromMdbCTRL.cpp">
+				<DependentOn>IMPORT\FROMMDB\ImportFromMdbCTRL.h</DependentOn>
+				<BuildOrder>43</BuildOrder>
+			</CppCompile>
+			<CppCompile Include="IMPORT\FROMMDB\DMODS\AccessDM.cpp">
+				<Form>_AccessDM</Form>
+				<DesignClass>TDataModule</DesignClass>
+				<DependentOn>IMPORT\FROMMDB\DMODS\AccessDM.h</DependentOn>
+				<BuildOrder>41</BuildOrder>
+			</CppCompile>
+			<CppCompile Include="IMPORT\FROMMDB\MOVERS\JWMover.cpp">
+				<DependentOn>IMPORT\FROMMDB\MOVERS\JWMover.h</DependentOn>
+				<BuildOrder>45</BuildOrder>
+			</CppCompile>
+			<CppCompile Include="REPORTS\SPRAWOZDANIA\MOZLREM\MozlRemCTRL.cpp">
+				<DependentOn>REPORTS\SPRAWOZDANIA\MOZLREM\MozlRemCTRL.h</DependentOn>
+				<BuildOrder>174</BuildOrder>
+			</CppCompile>
+			<CppCompile Include="CTRL\MAIN\MagCTRL.cpp">
+				<DependentOn>CTRL\MAIN\MagCTRL.h</DependentOn>
+				<BuildOrder>140</BuildOrder>
+			</CppCompile>
+			<CppCompile Include="REPORTS\SPRAWOZDANIA\PLANKWART\PlanKwartDM.cpp">
+				<Form>_PlanKwartDM</Form>
+				<DesignClass>TDataModule</DesignClass>
+				<DependentOn>REPORTS\SPRAWOZDANIA\PLANKWART\PlanKwartDM.h</DependentOn>
+				<BuildOrder>109</BuildOrder>
+			</CppCompile>
+			<CppCompile Include="REPORTS\SPRAWOZDANIA\PLANKWART\PlanKwartCTRL.cpp">
+				<DependentOn>REPORTS\SPRAWOZDANIA\PLANKWART\PlanKwartCTRL.h</DependentOn>
+				<BuildOrder>108</BuildOrder>
+			</CppCompile>
+			<CppCompile Include="REPORTS\SPRAWOZDANIA\RBH4MIES\RBH4OneMiesWybFRM.cpp">
+				<Form>_RBH4OneMiesWybFRM</Form>
+				<DependentOn>REPORTS\SPRAWOZDANIA\RBH4MIES\RBH4OneMiesWybFRM.h</DependentOn>
+				<BuildOrder>127</BuildOrder>
+			</CppCompile>
+			<CppCompile Include="REPORTS\SPRAWOZDANIA\PotrzRem\PotrzRemWybFRM.cpp">
+				<Form>_PotrzRemWybFRM</Form>
+				<DependentOn>REPORTS\SPRAWOZDANIA\PotrzRem\PotrzRemWybFRM.h</DependentOn>
+				<BuildOrder>95</BuildOrder>
+			</CppCompile>
+			<CppCompile Include="REPORTS\SPRAWOZDANIA\PLANKWARTZAD\PlanKwartZadWybFRM.cpp">
+				<Form>_PlanKwartZadWybFRM</Form>
+				<DependentOn>REPORTS\SPRAWOZDANIA\PLANKWARTZAD\PlanKwartZadWybFRM.h</DependentOn>
+				<BuildOrder>135</BuildOrder>
+			</CppCompile>
+			<CppCompile Include="REPORTS\SPRAWOZDANIA\PLANKWART\PlanKwartWybFRM.cpp">
+				<Form>_PlanKwartWybFRM</Form>
+				<DependentOn>REPORTS\SPRAWOZDANIA\PLANKWART\PlanKwartWybFRM.h</DependentOn>
+				<BuildOrder>110</BuildOrder>
+			</CppCompile>
+			<CppCompile Include="MODEL\READERS\model_readers_RBHReader.cpp">
+				<DependentOn>MODEL\READERS\model_readers_RBHReader.h</DependentOn>
+				<BuildOrder>112</BuildOrder>
+			</CppCompile>
+			<CppCompile Include="REPORTS\SPRAWOZDANIA\RBH4OS\RBH4OSWybFRM.cpp">
+				<Form>_RBH4OSWybFRM</Form>
+				<DependentOn>REPORTS\SPRAWOZDANIA\RBH4OS\RBH4OSWybFRM.h</DependentOn>
+				<BuildOrder>115</BuildOrder>
+			</CppCompile>
+			<CppCompile Include="REPORTS\SPRAWOZDANIA\PotrzRem\PotrzRemDM.cpp">
+				<Form>_PotrzRemDM</Form>
+				<DesignClass>TDataModule</DesignClass>
+				<DependentOn>REPORTS\SPRAWOZDANIA\PotrzRem\PotrzRemDM.h</DependentOn>
+				<BuildOrder>96</BuildOrder>
+			</CppCompile>
+			<CppCompile Include="REPORTS\SPRAWOZDANIA\PLANKWARTZAD\PlanKwartZadDM.cpp">
+				<Form>_PlanKwartZadDM</Form>
+				<DesignClass>TDataModule</DesignClass>
+				<DependentOn>REPORTS\SPRAWOZDANIA\PLANKWARTZAD\PlanKwartZadDM.h</DependentOn>
+				<BuildOrder>134</BuildOrder>
+			</CppCompile>
+			<CppCompile Include="REPORTS\SPRAWOZDANIA\RBH4MIES\RBH4MiesCTRL.cpp">
+				<DependentOn>REPORTS\SPRAWOZDANIA\RBH4MIES\RBH4MiesCTRL.h</DependentOn>
+				<BuildOrder>219</BuildOrder>
+			</CppCompile>
+			<CppCompile Include="REPORTS\SPRAWOZDANIA\MOZLREM\PotrzRemCTRL.cpp">
+				<DependentOn>REPORTS\SPRAWOZDANIA\MOZLREM\PotrzRemCTRL.h</DependentOn>
+				<BuildOrder>96</BuildOrder>
+			</CppCompile>
+			<CppCompile Include="REPORTS\SPRAWOZDANIA\KWMOZLWAR\KwMozlWarSprzDM.cpp">
+				<Form>_KwMozlWarSprzDM</Form>
+				<DesignClass>TDataModule</DesignClass>
+				<DependentOn>REPORTS\SPRAWOZDANIA\KWMOZLWAR\KwMozlWarSprzDM.h</DependentOn>
+				<BuildOrder>173</BuildOrder>
+			</CppCompile>
+			<CppCompile Include="REPORTS\SPRAWOZDANIA\RBH4MIES\RBH4OneMiesDM.cpp">
+				<Form>_RBH4OneMiesDM</Form>
+				<DesignClass>TDataModule</DesignClass>
+				<DependentOn>REPORTS\SPRAWOZDANIA\RBH4MIES\RBH4OneMiesDM.h</DependentOn>
+				<BuildOrder>129</BuildOrder>
+			</CppCompile>
+			<CppCompile Include="REPORTS\SPRAWOZDANIA\SprKwartalCTRL.cpp">
+				<DependentOn>REPORTS\SPRAWOZDANIA\SprKwartalCTRL.h</DependentOn>
+				<BuildOrder>53</BuildOrder>
+			</CppCompile>
+			<CppCompile Include="REPORTS\SPRAWOZDANIA\KWMOZLWAR\KwMozlWarWybFRM.cpp">
+				<Form>_KwMozlWarWybFRM</Form>
+				<DependentOn>REPORTS\SPRAWOZDANIA\KWMOZLWAR\KwMozlWarWybFRM.h</DependentOn>
+				<BuildOrder>168</BuildOrder>
+			</CppCompile>
+			<CppCompile Include="REPORTS\SPRAWOZDANIA\MOZLREM\MozlRemWybFRM.cpp">
+				<Form>_MozlRemWybFRM</Form>
+				<DependentOn>REPORTS\SPRAWOZDANIA\MOZLREM\MozlRemWybFRM.h</DependentOn>
+				<BuildOrder>130</BuildOrder>
+			</CppCompile>
+			<CppCompile Include="REPORTS\SPRAWOZDANIA\RBH4MIES\RBH4MiesDM.cpp">
+				<Form>_RBH4MiesDM</Form>
+				<DesignClass>TDataModule</DesignClass>
+				<DependentOn>REPORTS\SPRAWOZDANIA\RBH4MIES\RBH4MiesDM.h</DependentOn>
+				<BuildOrder>219</BuildOrder>
+			</CppCompile>
+			<CppCompile Include="REPORTS\SPRAWOZDANIA\SprKwartalWybFRM.cpp">
+				<Form>_SprKwartalWybFRM</Form>
+				<DependentOn>REPORTS\SPRAWOZDANIA\SprKwartalWybFRM.h</DependentOn>
+				<BuildOrder>55</BuildOrder>
+			</CppCompile>
+			<CppCompile Include="REPORTS\SPRAWOZDANIA\STSPRZ\StSprzDM.cpp">
+				<Form>_StSprzDM</Form>
+				<DesignClass>TDataModule</DesignClass>
+				<DependentOn>REPORTS\SPRAWOZDANIA\STSPRZ\StSprzDM.h</DependentOn>
+				<BuildOrder>137</BuildOrder>
+			</CppCompile>
+			<CppCompile Include="REPORTS\SPRAWOZDANIA\SprRoczneCTRL.cpp">
+				<DependentOn>REPORTS\SPRAWOZDANIA\SprRoczneCTRL.h</DependentOn>
+				<BuildOrder>234</BuildOrder>
+			</CppCompile>
+			<CppCompile Include="REPORTS\SPRAWOZDANIA\SprMiesCTRL.cpp">
+				<DependentOn>REPORTS\SPRAWOZDANIA\SprMiesCTRL.h</DependentOn>
+				<BuildOrder>231</BuildOrder>
+			</CppCompile>
+			<CppCompile Include="VIEW\CTRLMNG\HarmHeadComboMNG.cpp">
+				<DependentOn>VIEW\CTRLMNG\HarmHeadComboMNG.h</DependentOn>
+				<BuildOrder>237</BuildOrder>
+			</CppCompile>
+			<CppCompile Include="MODEL\DICTIONARES\KomorkiDICT.cpp">
+				<DependentOn>MODEL\DICTIONARES\KomorkiDICT.h</DependentOn>
+				<BuildOrder>231</BuildOrder>
+			</CppCompile>
+			<CppCompile Include="IMPORT\FROMSQL\ExportMaker.cpp">
+				<DependentOn>IMPORT\FROMSQL\ExportMaker.h</DependentOn>
+				<BuildOrder>226</BuildOrder>
+			</CppCompile>
+			<CppCompile Include="REPORTS\SPRAWOZDANIA\ROCZNE\SprRoczneWybFRM.cpp">
+				<Form>_SprRoczneWybFRM</Form>
+				<DependentOn>REPORTS\SPRAWOZDANIA\ROCZNE\SprRoczneWybFRM.h</DependentOn>
+				<BuildOrder>233</BuildOrder>
+			</CppCompile>
+			<CppCompile Include="REPORTS\SPRAWOZDANIA\MOZLREM\MozlRemDM.cpp">
+				<Form>_MozlRemDM</Form>
+				<DesignClass>TDataModule</DesignClass>
+				<DependentOn>REPORTS\SPRAWOZDANIA\MOZLREM\MozlRemDM.h</DependentOn>
+				<BuildOrder>172</BuildOrder>
+			</CppCompile>
+			<CppCompile Include="REPORTS\SPRAWOZDANIA\STSPRZ\StSprzCTRL.cpp">
+				<DependentOn>REPORTS\SPRAWOZDANIA\STSPRZ\StSprzCTRL.h</DependentOn>
+				<BuildOrder>136</BuildOrder>
+			</CppCompile>
+			<CppCompile Include="REPORTS\SPRAWOZDANIA\RBH4OS\RBH4OSDM.cpp">
+				<Form>_RBH4OSDM</Form>
+				<DesignClass>TDataModule</DesignClass>
+				<DependentOn>REPORTS\SPRAWOZDANIA\RBH4OS\RBH4OSDM.h</DependentOn>
+				<BuildOrder>114</BuildOrder>
+			</CppCompile>
+			<CppCompile Include="REPORTS\SPRAWOZDANIA\RBH4OS\RBH4OSCTRL.cpp">
+				<DependentOn>REPORTS\SPRAWOZDANIA\RBH4OS\RBH4OSCTRL.h</DependentOn>
+				<BuildOrder>113</BuildOrder>
+			</CppCompile>
+			<CppCompile Include="REPORTS\SPRAWOZDANIA\ROCZNE\SprRoczneIDAO.cpp">
+				<DependentOn>REPORTS\SPRAWOZDANIA\ROCZNE\SprRoczneIDAO.h</DependentOn>
+				<BuildOrder>232</BuildOrder>
+			</CppCompile>
+			<CppCompile Include="MODEL\READERS\model_readers_RBHPlanReader.cpp">
+				<DependentOn>MODEL\READERS\model_readers_RBHPlanReader.h</DependentOn>
+				<BuildOrder>92</BuildOrder>
+			</CppCompile>
+			<CppCompile Include="REPORTS\SPRAWOZDANIA\RBH4MIES\RBH4OneMiesCTRL.cpp">
+				<DependentOn>REPORTS\SPRAWOZDANIA\RBH4MIES\RBH4OneMiesCTRL.h</DependentOn>
+				<BuildOrder>128</BuildOrder>
+			</CppCompile>
+			<CppCompile Include="REPORTS\MELD\TYG\MeldTygWybFRM.cpp">
+				<Form>_MeldTygWybFRM</Form>
+				<DependentOn>REPORTS\MELD\TYG\MeldTygWybFRM.h</DependentOn>
+				<BuildOrder>54</BuildOrder>
+			</CppCompile>
+			<CppCompile Include="MODEL\READERS\MagPOZReader.cpp">
+				<DependentOn>MODEL\READERS\MagPOZReader.h</DependentOn>
+				<BuildOrder>68</BuildOrder>
+			</CppCompile>
+			<CppCompile Include="MODEL\READERS\SPReader.cpp">
+				<DependentOn>MODEL\READERS\SPReader.h</DependentOn>
+				<BuildOrder>194</BuildOrder>
+			</CppCompile>
+			<None Include="pch1.h">
+				<BuildOrder>239</BuildOrder>
+			</None>
+			<CppCompile Include="REPORTS\SPRAWOZDANIA\ROCZNE\SprRocznePars.cpp">
+				<DependentOn>REPORTS\SPRAWOZDANIA\ROCZNE\SprRocznePars.h</DependentOn>
+				<BuildOrder>240</BuildOrder>
+			</CppCompile>
+			<CppCompile Include="MODEL\READERS\Sprz4SprReader.cpp">
+				<DependentOn>MODEL\READERS\Sprz4SprReader.h</DependentOn>
+				<BuildOrder>228</BuildOrder>
+			</CppCompile>
+			<CppCompile Include="MODEL\READERS\MagNaglReader.cpp">
+				<DependentOn>MODEL\READERS\MagNaglReader.h</DependentOn>
+				<BuildOrder>70</BuildOrder>
+			</CppCompile>
+			<CppCompile Include="MODEL\MESSENGERS\Sprz4Spr.cpp">
+				<DependentOn>MODEL\MESSENGERS\Sprz4Spr.h</DependentOn>
+				<BuildOrder>227</BuildOrder>
+			</CppCompile>
+			<CppCompile Include="MODEL\MESSENGERS\model_messengers_RBH4War.cpp">
+				<DependentOn>MODEL\MESSENGERS\model_messengers_RBH4War.h</DependentOn>
+				<BuildOrder>206</BuildOrder>
+			</CppCompile>
+			<CppCompile Include="MODEL\MESSENGERS\model_messengers_RBH4Os.cpp">
+				<DependentOn>MODEL\MESSENGERS\model_messengers_RBH4Os.h</DependentOn>
+				<BuildOrder>91</BuildOrder>
+			</CppCompile>
+			<CppCompile Include="MODEL\MESSENGERS\SprzID.cpp">
+				<DependentOn>MODEL\MESSENGERS\SprzID.h</DependentOn>
+				<BuildOrder>65</BuildOrder>
+			</CppCompile>
+			<CppCompile Include="REPORTS\SPRAWOZDANIA\KWMOZLWAR\KwMozlWarDM.cpp">
+				<Form>_KwMozlWarDM</Form>
+				<DesignClass>TDataModule</DesignClass>
+				<DependentOn>REPORTS\SPRAWOZDANIA\KWMOZLWAR\KwMozlWarDM.h</DependentOn>
+				<BuildOrder>165</BuildOrder>
+			</CppCompile>
+			<CppCompile Include="MODEL\MESSENGERS\ZlecREC.cpp">
+				<DependentOn>MODEL\MESSENGERS\ZlecREC.h</DependentOn>
+				<BuildOrder>207</BuildOrder>
+			</CppCompile>
+			<CppCompile Include="MODEL\MESSENGERS\ZlecID.cpp">
+				<DependentOn>MODEL\MESSENGERS\ZlecID.h</DependentOn>
+				<BuildOrder>142</BuildOrder>
+			</CppCompile>
+			<CppCompile Include="REPORTS\SPRAWOZDANIA\HARMDOST\HarmDostCTRL.cpp">
+				<DependentOn>REPORTS\SPRAWOZDANIA\HARMDOST\HarmDostCTRL.h</DependentOn>
+				<BuildOrder>171</BuildOrder>
+			</CppCompile>
+			<CppCompile Include="REPORTS\MELD\TYG\MeldTygCTRL.cpp">
+				<DependentOn>REPORTS\MELD\TYG\MeldTygCTRL.h</DependentOn>
+				<BuildOrder>24</BuildOrder>
+			</CppCompile>
+			<CppCompile Include="REPORTS\SPRAWOZDANIA\KWMOZLWAR\KwMozlWarSprzCTRL.cpp">
+				<DependentOn>REPORTS\SPRAWOZDANIA\KWMOZLWAR\KwMozlWarSprzCTRL.h</DependentOn>
+				<BuildOrder>166</BuildOrder>
+			</CppCompile>
+			<CppCompile Include="REPORTS\SPRAWOZDANIA\PLANKWARTZAD\PlanKwartZadCTRL.cpp">
+				<DependentOn>REPORTS\SPRAWOZDANIA\PLANKWARTZAD\PlanKwartZadCTRL.h</DependentOn>
+				<BuildOrder>133</BuildOrder>
+			</CppCompile>
+			<CppCompile Include="REPORTS\SPRAWOZDANIA\BILMOZLPROD\BilMozlProdDM.cpp">
+				<Form>_BilMozlProdDM</Form>
+				<DesignClass>TDataModule</DesignClass>
+				<DependentOn>REPORTS\SPRAWOZDANIA\BILMOZLPROD\BilMozlProdDM.h</DependentOn>
+				<BuildOrder>125</BuildOrder>
+			</CppCompile>
+			<CppCompile Include="REPORTS\SPRAWOZDANIA\BILMOZLPROD\BilMozlProdCTRL.cpp">
+				<DependentOn>REPORTS\SPRAWOZDANIA\BILMOZLPROD\BilMozlProdCTRL.h</DependentOn>
+				<BuildOrder>126</BuildOrder>
+			</CppCompile>
+			<CppCompile Include="REPORTS\SPRAWOZDANIA\SprKwartalQR.cpp">
+				<Form>_SprKwartalneQR</Form>
+				<DependentOn>REPORTS\SPRAWOZDANIA\SprKwartalQR.h</DependentOn>
+				<BuildOrder>54</BuildOrder>
+			</CppCompile>
+			<CppCompile Include="MODEL\TOOLS\Miesiace.cpp">
+				<DependentOn>MODEL\TOOLS\Miesiace.h</DependentOn>
+				<BuildOrder>238</BuildOrder>
+			</CppCompile>
+			<CppCompile Include="REPORTS\SPRAWOZDANIA\KWMOZLWAR\KwMozlWarCTRL.cpp">
+				<DependentOn>REPORTS\SPRAWOZDANIA\KWMOZLWAR\KwMozlWarCTRL.h</DependentOn>
+				<BuildOrder>164</BuildOrder>
+			</CppCompile>
+			<CppCompile Include="REPORTS\SPRAWOZDANIA\HARMDOST\HarmDostDM.cpp">
+				<Form>_HarmDostDM</Form>
+				<DesignClass>TDataModule</DesignClass>
+				<DependentOn>REPORTS\SPRAWOZDANIA\HARMDOST\HarmDostDM.h</DependentOn>
+				<BuildOrder>167</BuildOrder>
+			</CppCompile>
+			<CppCompile Include="MODEL\MESSENGERS\WydzID.cpp">
+				<DependentOn>MODEL\MESSENGERS\WydzID.h</DependentOn>
+				<BuildOrder>244</BuildOrder>
+			</CppCompile>
+			<CppCompile Include="RejRem.cpp">
+				<BuildOrder>0</BuildOrder>
+			</CppCompile>
+			<CppCompile Include="platform.cpp">
+				<DependentOn>platform.h</DependentOn>
+				<BuildOrder>37</BuildOrder>
+			</CppCompile>
+			<CppCompile Include="REPORTS\SPRAWOZDANIA\ROCZNE\SprRoczneDAO.cpp">
+				<DependentOn>REPORTS\SPRAWOZDANIA\ROCZNE\SprRoczneDAO.h</DependentOn>
+				<BuildOrder>239</BuildOrder>
+			</CppCompile>
+			<ResFiles Include="RejRem.res">
+				<BuildOrder>1</BuildOrder>
+			</ResFiles>
+			<CppCompile Include="REPORTS\MELD\TYG\MeldTygQRP.cpp">
+				<Form>_MeldTygQRP</Form>
+				<DependentOn>REPORTS\MELD\TYG\MeldTygQRP.h</DependentOn>
+				<BuildOrder>16</BuildOrder>
+			</CppCompile>
+			<CppCompile Include="REPORTS\MELD\TYG\MeldTygDM.cpp">
+				<Form>_MeldTygDM</Form>
+				<DesignClass>TDataModule</DesignClass>
+				<DependentOn>REPORTS\MELD\TYG\MeldTygDM.h</DependentOn>
+				<BuildOrder>220</BuildOrder>
+			</CppCompile>
+			<FormResources Include="VIEW\FORMS\FindHarmFRM.dfm"/>
+			<FormResources Include="VIEW\FORMS\EditHarmRBFFRM.dfm"/>
+			<FormResources Include="VIEW\FORMS\FindProtFRM.dfm"/>
+			<FormResources Include="VIEW\FORMS\ListaOldHarmFRM.dfm"/>
+			<FormResources Include="VIEW\FORMS\ListaMagFRM.dfm"/>
+			<FormResources Include="VIEW\FORMS\ListaHarmFRM.dfm"/>
+			<FormResources Include="VIEW\FORMS\EditHarmFRM.dfm"/>
+			<FormResources Include="VIEW\DokWeFRM.dfm"/>
+			<FormResources Include="VIEW\DICT\SL_EDIT_FRM.dfm"/>
+			<FormResources Include="VIEW\DICT\SL_BASE_FRM.dfm"/>
+			<FormResources Include="VIEW\EdProtPrzekDetFRM.dfm"/>
+			<FormResources Include="VIEW\FORMS\DelHarmFRM.dfm"/>
+			<FormResources Include="VIEW\FORMS\AddRbhFRM.dfm"/>
+			<FormResources Include="VIEW\EdProtPrzekFRM.dfm"/>
+			<FormResources Include="VIEW\FORMS\MoveHarmRBFFRM.dfm"/>
+			<FormResources Include="VIEW\FRAMES\NaglMagFRA.dfm"/>
+			<FormResources Include="VIEW\FRAMES\ListaProtFRA.dfm"/>
+			<FormResources Include="VIEW\FRAMES\ListaMAGFRA.dfm"/>
+			<FormResources Include="VIEW\FRAMES\PowiadomFRA.dfm"/>
+			<FormResources Include="VIEW\ImportFromMdbFRM.dfm"/>
+			<FormResources Include="VIEW\FRAMES\SzukajFRA.dfm"/>
+			<FormResources Include="VIEW\KonfigFRM.dfm"/>
+			<FormResources Include="VIEW\FRAMES\ListaHarmFRA.dfm"/>
+			<FormResources Include="VIEW\FRAMES\KosztyFRA.dfm"/>
+			<FormResources Include="VIEW\FRAMES\DokFRA.dfm"/>
+			<FormResources Include="VIEW\FORMS\PowDostFRM.dfm"/>
+			<FormResources Include="VIEW\FRAMES\KUTkosztyFRA.dfm"/>
+			<FormResources Include="VIEW\FRAMES\KutyFRA.dfm"/>
+			<FormResources Include="VIEW\FRAMES\KUTrbhFRA.dfm"/>
+			<FormResources Include="VIEW\FRAMES\KUTkosztySumFRA.dfm"/>
+			<FormResources Include="VIEW\DICT\SlPracEdFRM.dfm"/>
+			<FormResources Include="VIEW\DICT\SlOddzialyFRM.dfm"/>
+			<FormResources Include="VIEW\DICT\SlOddzialyEditFRM.dfm"/>
+			<FormResources Include="VIEW\DICT\SlPracFRM.dfm"/>
+			<FormResources Include="VIEW\DICT\SlSprzetEditFRM.dfm"/>
+			<FormResources Include="VIEW\DICT\SlPracownicyFRM.dfm"/>
+			<FormResources Include="VIEW\DICT\SlPracownicyEditFRM.dfm"/>
+			<FormResources Include="VIEW\DICT\SlJednostkiFRM.dfm"/>
+			<FormResources Include="VIEW\DICT\SlJednostkiEditFRM.dfm"/>
+			<FormResources Include="VIEW\DICT\SlEtatyEditFRM.dfm"/>
+			<FormResources Include="VIEW\DICT\SlKadraEditFRM.dfm"/>
+			<FormResources Include="VIEW\DICT\SlKomorkiFRM.dfm"/>
+			<FormResources Include="VIEW\DICT\SlKomorkiEditFRM.dfm"/>
+			<FormResources Include="VIEW\DICT\SlKadraFRM.dfm"/>
+			<FormResources Include="VIEW\DICT\SlSprzetFRM.dfm"/>
+			<FormResources Include="VIEW\DICT\SlWarEdFRM.dfm"/>
+			<FormResources Include="VIEW\DICT\SlUrlopyEditFRM.dfm"/>
+			<FormResources Include="VIEW\DICT\SlSzkoleniaEditFRM.dfm"/>
+			<FormResources Include="VIEW\DICT\SlWarFRM.dfm"/>
+			<FormResources Include="VIEW\DICT\SlZwolnieniaEditFRM.dfm"/>
+			<FormResources Include="VIEW\DICT\SlWydzialyFRM.dfm"/>
+			<FormResources Include="VIEW\DICT\SlWydzialyEditFRM.dfm"/>
+			<FormResources Include="VIEW\DICT\SlStanowiskaFRM.dfm"/>
+			<FormResources Include="VIEW\DICT\SlSprzetRodzajeEditFRM.dfm"/>
+			<FormResources Include="VIEW\DICT\SlSprzetGrupyFRM.dfm"/>
+			<FormResources Include="VIEW\DICT\SlSprzetGrupyEditFRM.dfm"/>
+			<FormResources Include="VIEW\DICT\SlSprzetRodzajeFRM.dfm"/>
+			<FormResources Include="VIEW\DICT\SlStanowiskaEditFRM.dfm"/>
+			<FormResources Include="VIEW\DICT\SlStanFRM.dfm"/>
+			<FormResources Include="VIEW\DICT\SlStanEdFRM.dfm"/>
+			<FormResources Include="P:\_COMMON\_SLAWEK\FORMS\FORMS60\PopupButton.dfm"/>
+			<FormResources Include="P:\_COMMON\_SLAWEK\FORMS\FORMS60\FCSWYB.dfm"/>
+			<FormResources Include="P:\_COMMON\FORMS\_fedit02.dfm"/>
+			<FormResources Include="VIEW\NowePowiadFRM.dfm"/>
+			<FormResources Include="VIEW\POCZTA\pr_kBase0FRM.dfm"/>
+			<FormResources Include="VIEW\POCZTA\pr_ImporterWizjaJB.dfm"/>
+			<FormResources Include="MainMenu.dfm"/>
+			<FormResources Include="VIEW\POCZTA\pr_pocztaSmtpFra.dfm"/>
+			<FormResources Include="VIEW\POCZTA\pr_pocztaPopFra.dfm"/>
+			<FormResources Include="VIEW\NowyMagFRM.dfm"/>
+			<FormResources Include="VIEW\KUTFRM.dfm"/>
+			<FormResources Include="VIEW\TestAcc.dfm"/>
+			<FormResources Include="VIEW\MagFRM.dfm"/>
+			<FormResources Include="VIEW\KUTkosztyEdFRM.dfm"/>
+			<FormResources Include="VIEW\NowyKosztFRM.dfm"/>
+			<FormResources Include="VIEW\POCZTA\pr_FromWizjaJB.dfm"/>
+			<FormResources Include="VIEW\ImportPlanFromMdbFRM.dfm"/>
+			<FormResources Include="VIEW\PrzyjSprzFRM.dfm"/>
+			<FormResources Include="P:\_COMMON\FORMS\_FBASE00.dfm"/>
+			<FormResources Include="VIEW\SlEditFRM.dfm"/>
+			<FormResources Include="VIEW\POCZTA\pr_ExporterWizjaJB.dfm"/>
+			<FormResources Include="P:\_COMMON\FORMS\_FEDIT01.dfm"/>
+			<FormResources Include="VIEW\PrzekSprzFRM.dfm"/>
+			<FormResources Include="REPORTS\SPRAWOZDANIA\STSPRZ\StSprzWybFRM.dfm"/>
+			<FormResources Include="VIEW\POCZTA\pr_pocztaLoginFrm.dfm"/>
+			<FormResources Include="VIEW\POCZTA\pr_ToWizjaJB.dfm"/>
+			<FormResources Include="VIEW\WystWezwFRM.dfm"/>
+			<FormResources Include="VIEW\wi_SlZalEditFRM.dfm"/>
+			<FormResources Include="VIEW\DICT\SlDelegacjeEditFRM.dfm"/>
+			<FormResources Include="IMPORT\FROMMDB\VIEW\WaitFRM.dfm"/>
+			<FormResources Include="REPORTS\SPRAWOZDANIA\BILMOZLPROD\BilMozlProdWybFRM.dfm"/>
+			<FormResources Include="ADMIN\fm_uprawnienia.dfm"/>
+			<FormResources Include="ADMIN\fm_rej_operat.dfm"/>
+			<FormResources Include="ADMIN\Data_modul\dm_operat.dfm"/>
+			<FormResources Include="ADMIN\naviFrames\fr_rv_navigator_ext.dfm"/>
+			<FormResources Include="ADMIN\naviFrames\fr_rv_navigator_smpl.dfm"/>
+			<FormResources Include="ADMIN\naviFrames\fr_rv_navigator_full.dfm"/>
+			<FormResources Include="IMPORT\FROMMDB\DMODS\AccessDM.dfm"/>
+			<FormResources Include="REPORTS\SPRAWOZDANIA\PLANKWART\PlanKwartDM.dfm"/>
+			<FormResources Include="REPORTS\SPRAWOZDANIA\RBH4MIES\RBH4OneMiesWybFRM.dfm"/>
+			<FormResources Include="REPORTS\SPRAWOZDANIA\PotrzRem\PotrzRemWybFRM.dfm"/>
+			<FormResources Include="REPORTS\SPRAWOZDANIA\PLANKWARTZAD\PlanKwartZadWybFRM.dfm"/>
+			<FormResources Include="REPORTS\SPRAWOZDANIA\PLANKWART\PlanKwartWybFRM.dfm"/>
+			<FormResources Include="REPORTS\SPRAWOZDANIA\RBH4OS\RBH4OSWybFRM.dfm"/>
+			<FormResources Include="REPORTS\SPRAWOZDANIA\PotrzRem\PotrzRemDM.dfm"/>
+			<FormResources Include="REPORTS\SPRAWOZDANIA\PLANKWARTZAD\PlanKwartZadDM.dfm"/>
+			<FormResources Include="REPORTS\SPRAWOZDANIA\KWMOZLWAR\KwMozlWarSprzDM.dfm"/>
+			<FormResources Include="REPORTS\SPRAWOZDANIA\RBH4MIES\RBH4OneMiesDM.dfm"/>
+			<FormResources Include="REPORTS\SPRAWOZDANIA\KWMOZLWAR\KwMozlWarWybFRM.dfm"/>
+			<FormResources Include="REPORTS\SPRAWOZDANIA\MOZLREM\MozlRemWybFRM.dfm"/>
+			<FormResources Include="REPORTS\SPRAWOZDANIA\RBH4MIES\RBH4MiesDM.dfm"/>
+			<FormResources Include="REPORTS\SPRAWOZDANIA\SprKwartalWybFRM.dfm"/>
+			<FormResources Include="REPORTS\SPRAWOZDANIA\STSPRZ\StSprzDM.dfm"/>
+			<FormResources Include="REPORTS\SPRAWOZDANIA\ROCZNE\SprRoczneWybFRM.dfm"/>
+			<FormResources Include="REPORTS\SPRAWOZDANIA\MOZLREM\MozlRemDM.dfm"/>
+			<FormResources Include="REPORTS\SPRAWOZDANIA\RBH4OS\RBH4OSDM.dfm"/>
+			<FormResources Include="REPORTS\MELD\TYG\MeldTygWybFRM.dfm"/>
+			<FormResources Include="REPORTS\SPRAWOZDANIA\KWMOZLWAR\KwMozlWarDM.dfm"/>
+			<FormResources Include="REPORTS\SPRAWOZDANIA\BILMOZLPROD\BilMozlProdDM.dfm"/>
+			<FormResources Include="REPORTS\SPRAWOZDANIA\SprKwartalQR.dfm"/>
+			<FormResources Include="REPORTS\SPRAWOZDANIA\HARMDOST\HarmDostDM.dfm"/>
+			<FormResources Include="REPORTS\MELD\TYG\MeldTygQRP.dfm"/>
+			<FormResources Include="REPORTS\MELD\TYG\MeldTygDM.dfm"/>
+			<BuildConfiguration Include="Base">
+				<Key>Base</Key>
+			</BuildConfiguration>
+			<BuildConfiguration Include="Release">
+				<Key>Cfg_2</Key>
+				<CfgParent>Base</CfgParent>
+			</BuildConfiguration>
+			<BuildConfiguration Include="Debug">
+				<Key>Cfg_1</Key>
+				<CfgParent>Base</CfgParent>
+			</BuildConfiguration>
+		</ItemGroup>
+		<Import Project="$(BDS)\Bin\CodeGear.Cpp.Targets" Condition="Exists('$(BDS)\Bin\CodeGear.Cpp.Targets')"/>
+		<ProjectExtensions>
+			<Borland.Personality>CPlusPlusBuilder.Personality.12</Borland.Personality>
+			<Borland.ProjectType>CppVCLApplication</Borland.ProjectType>
+			<BorlandProject>
+				<CPlusPlusBuilder.Personality>
+					<Source>
+						<Source Name="MainSource">RejRem.cpp</Source>
+					</Source>
+					<VersionInfo>
+						<VersionInfo Name="IncludeVerInfo">True</VersionInfo>
+						<VersionInfo Name="AutoIncBuild">True</VersionInfo>
+						<VersionInfo Name="MajorVer">1</VersionInfo>
+						<VersionInfo Name="MinorVer">2</VersionInfo>
+						<VersionInfo Name="Release">15</VersionInfo>
+						<VersionInfo Name="Build">754</VersionInfo>
+						<VersionInfo Name="Debug">False</VersionInfo>
+						<VersionInfo Name="PreRelease">False</VersionInfo>
+						<VersionInfo Name="Special">False</VersionInfo>
+						<VersionInfo Name="Private">False</VersionInfo>
+						<VersionInfo Name="DLL">False</VersionInfo>
+						<VersionInfo Name="Locale">1045</VersionInfo>
+						<VersionInfo Name="CodePage">1250</VersionInfo>
+					</VersionInfo>
+					<VersionInfoKeys>
+						<VersionInfoKeys Name="CompanyName"/>
+						<VersionInfoKeys Name="FileDescription"/>
+						<VersionInfoKeys Name="FileVersion">1.2.15.754</VersionInfoKeys>
+						<VersionInfoKeys Name="InternalName"/>
+						<VersionInfoKeys Name="LegalCopyright"/>
+						<VersionInfoKeys Name="LegalTrademarks"/>
+						<VersionInfoKeys Name="OriginalFilename"/>
+						<VersionInfoKeys Name="ProductName"/>
+						<VersionInfoKeys Name="ProductVersion">2015</VersionInfoKeys>
+						<VersionInfoKeys Name="Comments"/>
+					</VersionInfoKeys>
+					<Debugging>
+						<Debugging Name="DebugSourceDirs">..\TOOLS\DataAccess\;C:\Program Files\Embarcadero\RAD Studio\7.0\source\Win32\ComServers\Office2K\;C:\Program Files\Embarcadero\RAD Studio\7.0\include\vcl\;P:\MY_LIBS\SQR\sqr\</Debugging>
+					</Debugging>
+					<Parameters>
+						<Parameters Name="RunParams"/>
+						<Parameters Name="Launcher"/>
+						<Parameters Name="UseLauncher">False</Parameters>
+						<Parameters Name="DebugCWD"/>
+						<Parameters Name="HostApplication"/>
+						<Parameters Name="RemoteHost"/>
+						<Parameters Name="RemotePath"/>
+						<Parameters Name="RemoteParams"/>
+						<Parameters Name="RemoteLauncher"/>
+						<Parameters Name="UseRemoteLauncher">False</Parameters>
+						<Parameters Name="RemoteCWD"/>
+						<Parameters Name="RemoteDebug">False</Parameters>
+						<Parameters Name="Debug Symbols Search Path"/>
+						<Parameters Name="LoadAllSymbols">True</Parameters>
+						<Parameters Name="LoadUnspecifiedSymbols">False</Parameters>
+					</Parameters>
+					<Excluded_Packages/>
+					<ProjectProperties>
+						<ProjectProperties Name="AutoShowDeps">False</ProjectProperties>
+						<ProjectProperties Name="ManagePaths">True</ProjectProperties>
+						<ProjectProperties Name="VerifyPackages">True</ProjectProperties>
+						<ProjectProperties Name="IndexFiles">False</ProjectProperties>
+					</ProjectProperties>
+				</CPlusPlusBuilder.Personality>
+				<ModelSupport>False</ModelSupport>
+				<Platforms>
+					<Platform value="Win32">True</Platform>
+					<Platform value="Win64">False</Platform>
+				</Platforms>
+			</BorlandProject>
+			<ProjectFileVersion>12</ProjectFileVersion>
+		</ProjectExtensions>
+	</Project>

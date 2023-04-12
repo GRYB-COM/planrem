@@ -1,0 +1,2 @@
+UPDATE IS_REJESTR SET NAZWA = 'REJREM', OPIS='Rejestr remontów' where ID_SYSTEMU = 256
+#C

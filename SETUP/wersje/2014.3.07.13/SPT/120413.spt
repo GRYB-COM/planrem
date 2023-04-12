@@ -1,0 +1,10 @@
+update pr_zlecenia ze set SYGN_ZLECENIA =
+(select
+LPAD(m.NR_MAG,4,0) ||'/' || z.NR_KOL || '/' || z.ROK ||'/'|| w.KOD || case when z.depozyt <> 'R' then '/' || z.DEPOZYT else '' end as sygn_zlecenia_bis
+from pr_zlecenia z 
+inner join pr_magazyn  m on m.rok=z.ROK_MAG and m.ID_KOMORKI = z.ID_KOMORKI_GLW and m.DEPOZYT = z.DEPOZYT and m.ID_MAG=z.ID_MAG
+inner join pr_komorki  k on k.ID_KOMORKI = m.ID_KOMORKI 
+inner join pr_wydzialy w on w.ID_WYDZIALU =k.ID_WYDZIALU
+where z.ROK=ze.ROK and z.ID_KOMORKI = ze.ID_KOMORKI and  z.ID_ZLECENIA = ze.ID_ZLECENIA)
+where ze.NR_KOL >0 
+#C

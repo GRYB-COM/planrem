@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="windows-1250" ?>
+<configuration title="U.I. INFO-SYSTEM" owner="U.I. INFO-SYSTEM" version="3.0">
+<glbLinks />
+<applications >
+<application sysid="8" name="Księgowość Zobowiązań" key="59JY-9X12-D7IS-7B63">
+<links >
+<link id="L1" alias="C:\baza\__test\baza.gdb" user="s3uMfJd3" password="qLmsrLq/3dDk"  kind= "Firebird" dialect="3" protocol="Lokalny" owner="TEST" name="TEST">
+<parameters />
+</link>
+</links>
+<parameters />
+</application>
+</applications>
+</configuration>

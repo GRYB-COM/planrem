@@ -1,0 +1,370 @@
+CREATE UNIQUE INDEX PR_ZLECENIA_IDX_SYGN_KUT ON PR_ZLECENIA(ROK_MAG,ID_KOMORKI_GLW,DEPOZYT,ID_MAG,ROK,ID_KOMORKI,NR_KOL)
+#TRY
+
+CREATE UNIQUE INDEX PR_ZLECENIA_RBH_IDX_KUT_MIES ON PR_ZLECENIA_RBH(ID_KOMORKI,ROK,ID_ZLECENIA,ID_ZLECENIA_RBH)
+#TRY
+
+ALTER TABLE PR_KOMORKI add GLOWNY_K Char(1)
+#TRY
+
+delete from pr_koszty ze where exists
+(select null from pr_koszty k where k.ID_KOMORKI =ze.ID_KOMORKI and k.ROK=ze.ROK and k.ID_ZLECENIA=ze.ID_ZLECENIA and k.ID_SLOW_KOSZTOW = ze.ID_SLOW_KOSZTOW group by k.ID_KOMORKI,k.ROK,k.ID_ZLECENIA, k.ID_SLOW_KOSZTOW having count(k.ID_KOSZTU) >1) and
+ze.ID_KOSZTU = (select max(k.ID_KOSZTU) from pr_koszty k where k.ID_KOMORKI =ze.ID_KOMORKI and k.ROK=ze.ROK and k.ID_ZLECENIA=ze.ID_ZLECENIA and k.ID_SLOW_KOSZTOW = ze.ID_SLOW_KOSZTOW group by k.ID_KOMORKI,k.ROK,k.ID_ZLECENIA, k.ID_SLOW_KOSZTOW having count(k.ID_KOSZTU) >1)
+#C
+
+
+CREATE UNIQUE INDEX PR_KOSZTY_IDX ON PR_KOSZTY(ROK,ID_KOMORKI,ID_ZLECENIA,ID_SLOW_KOSZTOW)
+#TRY
+
+CREATE EXCEPTION PR_BAD_ID_KOMORKI 'B³êdny id komórki'
+#TRY
+
+
+
+CREATE OR ALTER PROCEDURE PR_ADD2MAGAZYN (SYGN_MAG      Varchar(50),
+       DEPOZYT       Char(1),
+       ID_MAG        Integer,
+       ID_SPRZETU    Integer,
+       ID_HARM       Integer,
+       ILOSC         Numeric(15,2),
+       UWAGI         Varchar(200),
+       DATA_PRZEKAZ  Date,
+       STATUS        Char(1),
+       DATA_PRZYJ    Date,
+       NR_FABR       Varchar(60),
+       PODSTAWA      Varchar(200),
+       ID_JEDNOSTKI  Integer,
+       ID_REMONTU    Integer,
+       NR_HARM       Integer,
+       KOD_WARSZTATU Varchar(5),
+       ROK           Integer,
+       NR_REJ        Varchar(60),
+       GLOWNY_KUT    Varchar(60),
+       ID_KOMORKI    Integer,
+       NR_MAG        Integer,
+       PROT_PRZEKAZ  Varchar(200),
+       PROT_PRZYJ    Varchar(200),
+       DATA_PROP_ZAK Date,
+       DATA_ZAK      Date,
+       GLOWNY        Char(1),
+       NAZ_SPRZETU   Varchar(200),
+       JW            Varchar(60))
+AS 
+  declare variable COUNTER Integer;
+  declare variable ID_MAG_LOC Integer;
+  declare variable ID_SPRZETU_LOC Integer;
+  declare variable ID_JW_LOC Integer;
+  declare variable ID_WYDZIALU_LOC Integer;
+  declare variable KOD_WYDZIALU_LOC Varchar(10);
+  declare variable NAZ_WYDZIALU_LOC Varchar(80);
+  declare variable GLOWNY_LOC Char(1);
+  declare variable GLOWNY_K_LOC Char(1);
+begin
+/*KONTROLA SLOWNIKA KOMOREK*/
+  SELECT K.GLOWNY_K FROM PR_KOMORKI K WHERE K.ID_KOMORKI = :ID_KOMORKI INTO :GLOWNY_K_LOC;
+  select w.ID_WYDZIALU, w.KOD, w.NAZWA, w.GLOWNY from pr_wydzialy w inner join  PR_KOMORKI k  on k.ID_wydzialu=w.ID_WYDZIALU  where k.ID_KOMORKI = :ID_KOMORKI
+  into :ID_WYDZIALU_LOC, :KOD_WYDZIALU_LOC, :NAZ_WYDZIALU_LOC, :GLOWNY_LOC;
+  IF(ID_WYDZIALU_LOC IS NULL ) THEN EXCEPTION PR_BAD_ID_KOMORKI 'Niepoprawny identyfikator warszatu: ' || :ID_KOMORKI || ' (' || :KOD_WARSZTATU || ')';
+  IF(GLOWNY_K_LOC IS NOT NULL and GLOWNY_K_LOC = 'T') THEN GLOWNY_LOC = GLOWNY_K_LOC;  
+  ELSE IF(GLOWNY_LOC IS NULL) THEN GLOWNY_LOC = 'N';
+
+/*KONTROLA - MAGAZYNU */
+select coalesce(count(*),0) from pr_magazyn m where m.ROK = :ROK and m.ID_KOMORKI = :ID_KOMORKI and M.DEPOZYT = :DEPOZYT AND M.NR_MAG = :NR_MAG  INTO :COUNTER;
+IF(COUNTER >1) THEN EXCEPTION PR_BAD_NR_MAG 'Zwielokrotniony nr magazynowy: ' || :NR_MAG || '/' ||:ROK || '/' || :DEPOZYT|| '/'|| :KOD_WYDZIALU_LOC;
+ELSE IF(COUNTER =1 AND GLOWNY_LOC ='T' ) THEN  exit;
+ELSE
+BEGIN
+
+/*KONTROLA SLOWNIKA SPRZETU*/
+  SELECT S.ID_SPRZETU FROM PR_SPRZET s WHERE S.NAZWA = :NAZ_SPRZETU INTO :ID_SPRZETU_LOC;
+  if(ID_SPRZETU_LOC IS NULL ) THEN EXCEPTION PR_NO_SPRZET 'Brak w ewidencji sprzêtu o nazwie: "' || :NAZ_SPRZETU || '"'; 
+
+/*KONTROLA SLOWNIKA JEDNOSTEK*/
+  SELECT J.ID_JEDNOSTKI FROM PR_JEDNOSTKI J WHERE  J.JW = :JW INTO :ID_JW_LOC;
+  if(ID_JW_LOC IS NULL ) then EXCEPTION PR_NO_JEDN 'Brak w ewidencji jednostki o kodzie: '  || :JW;
+ 
+/*AKTUALIZACJA OBCEGO SPRZETU*/ 
+  IF(COUNTER =1 AND GLOWNY <>'T') THEN
+  BEGIN
+    select ID_MAG from pr_magazyn m where m.ROK = :ROK and m.ID_KOMORKI = :ID_KOMORKI and M.DEPOZYT = :DEPOZYT AND M.NR_MAG = :NR_MAG  INTO :ID_MAG_LOC;
+    UPDATE PR_MAGAZYN SET
+     SYGN_MAG      =:SYGN_MAG,      ID_SPRZETU =:ID_SPRZETU_LOC, ID_HARM    =:ID_HARM, 
+     UWAGI         =:UWAGI,         ILOSC      =:ILOSC,          DATA_PRZEKAZ =:DATA_PRZEKAZ,   STATUS       =:STATUS,         DATA_PRZYJ =:DATA_PRZYJ, 
+     NR_FABR       =:NR_FABR,       PODSTAWA   =:PODSTAWA,       ID_JEDNOSTKI =:ID_JW_LOC,      NR_HARM      =:NR_HARM,        ID_REMONTU =:ID_REMONTU,
+     KOD_WARSZTATU =:KOD_WARSZTATU, NR_REJ     =:NR_REJ,         GLOWNY_KUT   =:GLOWNY_KUT,     ID_KOMORKI =:ID_KOMORKI, 
+     NR_MAG        =:NR_MAG,       PROT_PRZEKAZ=:PROT_PRZEKAZ,   PROT_PRZYJ   =:PROT_PRZYJ,     DATA_PROP_ZAK=:DATA_PROP_ZAK,  DATA_ZAK=:DATA_ZAK
+   WHERE
+    ID_KOMORKI= :ID_KOMORKI AND ROK = :ROK AND  DEPOZYT =:DEPOZYT AND ID_MAG = :ID_MAG_LOC;  
+  END
+  
+/*NOWY SPRZET NIEZALEZNIE CZY GLOWNY CZY NIE*/
+  ELSE
+  BEGIN
+   ID_MAG_LOC = GEN_ID(PR_MAGAZYN_GEN,1); 
+   INSERT INTO
+   PR_MAGAZYN(DEPOZYT, SYGN_MAG, ID_MAG, ID_SPRZETU, ID_HARM, UWAGI, ILOSC, DATA_PRZEKAZ, STATUS, DATA_PRZYJ, NR_FABR, PODSTAWA, ID_JEDNOSTKI, NR_HARM, ID_REMONTU,
+   KOD_WARSZTATU, NR_REJ, ROK, GLOWNY_KUT, ID_KOMORKI, NR_MAG, PROT_PRZEKAZ, PROT_PRZYJ, DATA_PROP_ZAK, DATA_ZAK)
+   VALUES(:DEPOZYT, :SYGN_MAG, :ID_MAG_LOC, :ID_SPRZETU_LOC, :ID_HARM, :UWAGI, :ILOSC, :DATA_PRZEKAZ, :STATUS, :DATA_PRZYJ, :NR_FABR, :PODSTAWA, :ID_JW_LOC, :NR_HARM, :ID_REMONTU,
+   :KOD_WARSZTATU, :NR_REJ, :ROK, :GLOWNY_KUT, :ID_KOMORKI, :NR_MAG, :PROT_PRZEKAZ, :PROT_PRZYJ, :DATA_PROP_ZAK, :DATA_ZAK);
+
+  END 
+END
+end
+#C
+
+
+
+CREATE OR ALTER PROCEDURE PR_ADD2ZLECENIA (ID_ZLECENIA    Integer,
+       SYGN_ZLECENIA  Varchar(60),
+       ID_KOD_U       Integer,
+       ID_RODZAJ_R    Integer,
+       DATA_WYST      Date,
+       DATA_PROP_ZAK  Date,
+       ID_SPRZETU     Integer,
+       PRZESTOJ_OD    Date,
+       DATA_ZDA_KUT   Date,
+       LICZBA_RBH     Numeric(15,2),
+       DATA_ZAK       Date,
+       ID_GR_SPRZ     Integer,
+       ID_RODZ_SPRZ   Integer,
+       DEPOZYT        Char(1),
+       STATUS         Char(1),
+       ID_MAG         Integer,
+       ID_HARM        Integer,
+       NR_HARM        Integer,
+       UWAGI          Varchar(250),
+       ZADANIE        Varchar(250),
+       ID_JEDNOSTKI   Integer,
+       ID_KOMORKI     Integer,
+       ROK            Integer,
+       ID_KOMORKI_GLW Integer,
+       ROK_MAG        Integer,
+       NR_KOL         Integer,
+       SYGN_MAG       Varchar(11),
+       NR_MAG         Integer,
+       ILOSC          Numeric(15,2),
+       WYDANY         Char(1),
+       NAZ_SPRZETU    Varchar(200),
+       JW             Varchar(60))
+AS 
+  declare variable COUNTER Integer;
+  declare variable ID_MAG_LOC Integer;
+  declare variable ID_WYDZIALU_LOC Integer;
+  declare variable KOD_WYDZIALU_LOC Varchar(10);
+  declare variable NAZ_WYDZIALU_LOC Varchar(80);
+  declare variable GLOWNY_LOC Char(1);
+  declare variable ID_SPRZETU_LOC Integer;
+  declare variable ID_JW_LOC Integer;
+  declare variable ID_ZLECENIA_LOC Integer;
+  declare variable GLOWNY_K_LOC Char(1);
+  declare variable COUNTER_MAG Integer;
+  declare variable KOD_WYDZIALU_GLW Varchar(10);
+  declare variable SYGN_MAG_BAD Char(11);
+begin
+ /*KONTROLA SLOWNIKA KOMOREK*/
+ select w.KOD from pr_wydzialy w inner join  PR_KOMORKI k  on k.ID_wydzialu=w.ID_WYDZIALU  where k.ID_KOMORKI = :ID_KOMORKI_GLW into :KOD_WYDZIALU_GLW;
+ IF(KOD_WYDZIALU_GLW IS NULL ) THEN EXCEPTION PR_BAD_ID_KOMORKI 'Niepoprawny identyfikator warszatu w sygnaturze magazynu: ' || :ID_KOMORKI_GLW ;
+ /*KONTROLA SLOWNIKA  4 KUT*/
+ SELECT K.GLOWNY_K FROM PR_KOMORKI K WHERE K.ID_KOMORKI = :ID_KOMORKI INTO :GLOWNY_K_LOC;
+ select w.ID_WYDZIALU, w.KOD, w.NAZWA, w.GLOWNY from pr_wydzialy w inner join  PR_KOMORKI k  on k.ID_wydzialu=w.ID_WYDZIALU  where k.ID_KOMORKI = :ID_KOMORKI
+ into :ID_WYDZIALU_LOC, :KOD_WYDZIALU_LOC, :NAZ_WYDZIALU_LOC, :GLOWNY_LOC;
+ IF(ID_WYDZIALU_LOC IS NULL ) THEN EXCEPTION PR_BAD_ID_KOMORKI 'Niepoprawny identyfikator warszatu w KUT: ' || :ID_KOMORKI ;
+ IF(GLOWNY_K_LOC IS NOT NULL and GLOWNY_K_LOC = 'T') THEN GLOWNY_LOC = GLOWNY_K_LOC;
+ ELSE IF(GLOWNY_LOC IS NULL) THEN GLOWNY_LOC = 'N';
+ /*KONTROLA - MAGAZYNU */
+ select ID_MAG from pr_magazyn m where m.ROK = :ROK_MAG and m.ID_KOMORKI = :ID_KOMORKI_GLW and M.DEPOZYT = :DEPOZYT AND M.NR_MAG = :NR_MAG  INTO :ID_MAG_LOC;
+ if(ID_MAG_LOC IS NULL ) THEN EXCEPTION PR_NO_NR_MAG  'Brak pozycji magazynowej o parametrach: ' || :NR_MAG || '/' ||:ROK_MAG || '/' || :DEPOZYT || '/' || KOD_WYDZIALU_GLW;
+ /*KONTROLA SLOWNIKA SPRZETU*/
+ if(NAZ_SPRZETU IS NOT NULL) THEN
+ BEGIN
+ SELECT S.ID_SPRZETU FROM PR_SPRZET s WHERE S.NAZWA = :NAZ_SPRZETU INTO :ID_SPRZETU_LOC;
+ if(ID_SPRZETU_LOC IS NULL ) THEN EXCEPTION PR_NO_SPRZET 'Brak w ewidencji sprzêtu o nazwie: "' || :NAZ_SPRZETU || '"';
+ END
+ ELSE ID_SPRZETU_LOC = NULL;
+ /*KONTROLA SLOWNIKA JEDNOSTEK*/
+ IF(JW IS NOT NULL) THEN
+ BEGIN
+ SELECT J.ID_JEDNOSTKI FROM PR_JEDNOSTKI J WHERE  J.JW = :JW INTO :ID_JW_LOC;
+ if(ID_JW_LOC IS NULL ) then EXCEPTION PR_NO_JEDN 'Brak w ewidencji jednostki o kodzie: '  || :JW;
+ END
+ ELSE ID_JW_LOC = NULL;
+ /*KONTROLA KUTOW*/
+ SELECT coalesce(COUNT(*),0)  FROM PR_ZLECENIA z WHERE z.ROK_MAG = :ROK_MAG and z.ID_KOMORKI_GLW = :ID_KOMORKI_GLW and Z.DEPOZYT = :DEPOZYT AND Z.ID_MAG = :ID_MAG_LOC and z.ROK= :ROK  AND z.ID_KOMORKI = :ID_KOMORKI AND z.NR_KOL=:NR_KOL INTO :COUNTER;
+ IF(COUNTER >1) THEN EXCEPTION PR_BAD_ZLEC_ATTR 'Zwielokrotniona POZYCJA KUT: ' || :NR_MAG || '/' ||:NR_KOL || '/' ||:ROK ||'/'||:KOD_WYDZIALU_LOC;
+ IF(COUNTER = 1) then
+ begin
+ select z.id_zlecenia  from pr_zlecenia z
+ where
+ z.ROK_MAG = :ROK_MAG and z.ID_KOMORKI_GLW = :ID_KOMORKI_GLW and z.DEPOZYT = :DEPOZYT AND z.ID_MAG = :ID_MAG_LOC AND
+ z.ID_KOMORKI = :ID_KOMORKI AND z.ROK=:ROK AND z.NR_KOL = :NR_KOL
+ INTO :ID_zlecenia_LOC;
+ IF(ID_ZLECENIA_LOC IS NULL) THEN
+ begin
+ select m.NR_MAG || '/' || m.ROK ||'/' ||m.DEPOZYT || '/' || w.KOD AS SYGN_MAG from pr_zlecenia z
+ left join pr_magazyn m  on m.ROK =z.ROK_MAG and m.ID_KOMORKI = z.ID_KOMORKI_GLW and m.DEPOZYT =z.DEPOZYT and m.ID_MAG = z.ID_MAG
+ left join pr_komorki k  on k.ID_KOMORKI  = m.ID_KOMORKI
+ left join pr_wydzialy w on w.ID_WYDZIALU = k.ID_WYDZIALU
+ where z.ROK =:ROK and z.id_komorki  =:ID_KOMORKI and z.ID_ZLECENIA=:ID_ZLECENIA_LOC
+ into :SYGN_MAG_BAD;
+ EXCEPTION PR_BAD_ZLEC_ATTR
+ 'KUT o sygnaturze: ' || :NR_MAG || '/' ||:NR_KOL || '/' ||:ROK ||'/'||:KOD_WYDZIALU_LOC ||
+ 'przypisany jest do pozycji magazynowej : ' || :NR_MAG || '/' ||:ROK_MAG || '/' || :DEPOZYT || '/' || KOD_WYDZIALU_GLW ||
+ 'zamiast do' || SYGN_MAG_BAD;
+ end
+ end
+ IF(Counter = 1 and GLOWNY_LOC ='T') then exit;
+ /*KONTROLA ILOSCI - NIE KONTROLUJEMY*/
+ /*KUT JUZ JEST*/
+ if(Counter = 1 AND GLOWNY_LOC <> 'T') THEN
+ BEGIN
+ /*KONTROLA MAGZYNU CD*/
+ select coalesce(count(*),0) from pr_zlecenia z where z.ID_ZLECENIA = :ID_ZLECENIA_LOC and z.ROK = :ROK and z.ID_KOMORKI = :ID_KOMORKI and z.ROK_MAG = :ROK_MAG and z.ID_KOMORKI_GLW = :ID_KOMORKI_GLW and z.DEPOZYT = :DEPOZYT AND z.ID_MAG = :ID_MAG_LOC  INTO :COUNTER_MAG;
+ IF(COUNTER_MAG =0) THEN EXCEPTION PR_BAD_ZLEC_ATTR 'Brak identyfikatora zlecenia dla ROK_MAG=' ||:ROK_MAG ||', ID_KOMORKI_GLW ='||:ID_KOMORKI_GLW||', AND ID_MAG = '||:ID_MAG ||', DEPOZYT='||:DEPOZYT||', ROK = '||:ROK||', ID_KOMORKI ='|| :ID_KOMORKI||', NR_KOL='||:NR_KOL||', ID_ZLECENIA = '||:ID_ZLECENIA_LOC ;
+ /*Aktualizujemy isniejace zewnetrzne*/
+ UPDATE PR_ZLECENIA Z SET
+ SYGN_ZLECENIA = :SYGN_ZLECENIA , ID_KOD_U    =:ID_KOD_U,     ID_RODZAJ_R =:ID_RODZAJ_R,  DATA_WYST  =:DATA_WYST,  ID_SPRZETU   =:ID_SPRZETU_LOC,
+ DATA_PROP_ZAK = :DATA_PROP_ZAK,  PRZESTOJ_OD =:PRZESTOJ_OD,  DATA_ZDA_KUT=:DATA_ZDA_KUT, LICZBA_RBH =:LICZBA_RBH, DATA_ZAK     =:DATA_ZAK,
+ ID_GR_SPRZ    = :ID_GR_SPRZ,     ID_RODZ_SPRZ=:ID_RODZ_SPRZ, DEPOZYT     =:DEPOZYT,      STATUS     =:STATUS,     iD_MAG       =:ID_MAG_LOC,
+ ID_HARM       = :ID_HARM,        NR_HARM     =:NR_HARM,      UWAGI       =:UWAGI,        ZADANIE    =:ZADANIE,    ID_JEDNOSTKI =:ID_JEDNOSTKI,
+ SYGN_MAG      = :SYGN_MAG,       NR_MAG      =:NR_MAG,       WYDANY      =:WYDANY,       ILOSC      =:ILOSC
+ where z.ID_ZLECENIA = :ID_ZLECENIA_LOC and z.ROK = :ROK and z.ID_KOMORKI = :ID_KOMORKI;
+ END
+ /*dodajemy nowe*/
+ ELSE
+ BEGIN
+ id_zlecenia = gen_id(PR_ZLECENIA_GEN,1);
+ insert INTO PR_ZLECENIA
+ (ID_ZLECENIA, SYGN_ZLECENIA, ID_KOD_U, ID_RODZAJ_R, DATA_WYST, ID_SPRZETU, DATA_PROP_ZAK, PRZESTOJ_OD, DATA_ZDA_KUT, LICZBA_RBH, DATA_ZAK, ID_GR_SPRZ,
+ ID_RODZ_SPRZ, DEPOZYT, STATUS, ID_MAG, ID_HARM, NR_HARM, UWAGI, ZADANIE, ID_JEDNOSTKI, ID_KOMORKI, ROK, ID_KOMORKI_GLW, ROK_MAG, NR_KOL, SYGN_MAG, NR_MAG,wydany,ilosc)
+ VALUES
+ (:ID_ZLECENIA, :SYGN_ZLECENIA, :ID_KOD_U, :ID_RODZAJ_R, :DATA_WYST, :ID_SPRZETU, :DATA_PROP_ZAK, :PRZESTOJ_OD, :DATA_ZDA_KUT, :LICZBA_RBH, :DATA_ZAK, :ID_GR_SPRZ, :
+ ID_RODZ_SPRZ, :DEPOZYT, :STATUS, :ID_MAG_LOC, :ID_HARM, :NR_HARM, :UWAGI, :ZADANIE, :ID_JEDNOSTKI, :ID_KOMORKI, :ROK, :ID_KOMORKI_GLW, :ROK_MAG, :NR_KOL, :SYGN_MAG, :NR_MAG,:WYDANY,:ILOSC);
+ END
+end
+#C
+
+CREATE OR ALTER PROCEDURE PR_ADD2RBH (ROK_MAG        Integer,
+       ID_KOMORKI_GLW Integer,
+       DEPOZYT        Char(1),
+       NR_MAG         Integer,
+       MIESIAC        Integer,
+       PLAN_RBH       Numeric(15,2),
+       ILOSC          Numeric(15,2),
+       ROK            Integer,
+       ID_KOMORKI     Integer,
+       LICZBA_RBH     Numeric(10,2),
+       PLAN_ILOSC     Numeric(15,2),
+       NR_KOL         Integer)
+AS 
+  declare variable ID_ZLECENIA_LOC Integer;
+  declare variable ID_ZLECENIA_RBH_LOC Integer;
+  declare variable GLOWNY_K_LOC Char(1);
+  declare variable KOD_WYDZIALU_LOC Varchar(10);
+  declare variable GLOWNY_LOC Char(1);
+  declare variable KOD_WYDZIALU_GLW Varchar(10);
+  declare variable ID_MAG_LOC Integer;
+begin
+ /*KONTROLA SLOWNIKA KOMOREK  4 MAG*/
+   select w.KOD from pr_wydzialy w inner join  PR_KOMORKI k  on k.ID_wydzialu=w.ID_WYDZIALU  where k.ID_KOMORKI = :ID_KOMORKI_GLW into :KOD_WYDZIALU_GLW;
+   IF(KOD_WYDZIALU_GLW IS NULL ) THEN EXCEPTION PR_BAD_ID_KOMORKI 'Niepoprawny identyfikator warszatu w sygnaturze magazynu: ' || :ID_KOMORKI_GLW ; 
+
+
+ /*KONTROLA SLOWNIKA KOMOREK  4 KUT*/
+   SELECT K.GLOWNY_K FROM PR_KOMORKI K WHERE K.ID_KOMORKI = :ID_KOMORKI INTO :GLOWNY_K_LOC;
+   select  w.KOD, w.GLOWNY from pr_wydzialy w inner join  PR_KOMORKI k  on k.ID_wydzialu=w.ID_WYDZIALU  where k.ID_KOMORKI = :ID_KOMORKI
+   into  :KOD_WYDZIALU_LOC,  :GLOWNY_LOC;
+   IF(KOD_WYDZIALU_LOC IS NULL ) THEN EXCEPTION PR_BAD_ID_KOMORKI 'Niepoprawny identyfikator warszatu w przenoszeniu RBH: ' || :ID_KOMORKI ; 
+   IF(GLOWNY_K_LOC IS NOT NULL and GLOWNY_K_LOC = 'T') THEN GLOWNY_LOC = GLOWNY_K_LOC;  
+   ELSE IF(GLOWNY_LOC IS NULL) THEN GLOWNY_LOC = 'N';
+
+ /*KONTROLA - MAGAZYNU */
+   select ID_MAG from pr_magazyn m where m.ROK = :ROK_MAG and m.ID_KOMORKI = :ID_KOMORKI_GLW and M.DEPOZYT = :DEPOZYT AND M.NR_MAG = :NR_MAG  INTO :ID_MAG_LOC;
+   if(ID_MAG_LOC IS NULL ) THEN EXCEPTION PR_NO_NR_MAG  'Brak pozycji magazynowej o parametrach: ' || :NR_MAG || '/' ||:ROK_MAG || '/' || :DEPOZYT || '/' || KOD_WYDZIALU_GLW;
+ 
+ /*KONTROLA ZLECENIA*/  
+   select z.id_zlecenia  from pr_zlecenia z 
+   where z.ROK_MAG = :ROK_MAG and z.ID_KOMORKI_GLW = :ID_KOMORKI_GLW and z.DEPOZYT = :DEPOZYT AND z.ID_MAG = :ID_MAG_LOC AND z.ID_KOMORKI = :ID_KOMORKI AND z.ROK=:ROK AND z.NR_KOL = :NR_KOL
+   INTO  :ID_ZLECENIA_LOC;   
+   IF(ID_ZLECENIA_LOC IS NULL) THEN EXCEPTION PR_BAD_ZLEC_ATTR 'Brak KUTa o sygnaturze: '  || :NR_MAG || '/' ||:NR_KOL || '/' ||:ROK ||'/'||:KOD_WYDZIALU_LOC || ' na pozycji magazynowej: ' || :NR_MAG || '/' ||:ROK_MAG || '/' || :DEPOZYT || '/' || KOD_WYDZIALU_GLW; 
+
+ /*KONTROLA RBH*/
+   SELECT ID_ZLECENIA_RBH FROM PR_ZLECENIA_RBH R WHERE R.ROK=:ROK AND R.ID_KOMORKI=:ID_KOMORKI AND R.ID_ZLECENIA = :ID_ZLECENIA_LOC AND R.MIESIAC = :MIESIAC INTO :ID_ZLECENIA_RBH_LOC; 
+ /*SAM ZAPIS*/
+   IF(ID_ZLECENIA_RBH_LOC IS NULL) THEN
+   BEGIN
+    ID_ZLECENIA_RBH_LOC = GEN_ID(PR_ZLECENIA_RBH_GEN,1);
+    insert into 
+    PR_ZLECENIA_RBH(ID_ZLECENIA,   MIESIAC,  ID_ZLECENIA_RBH,  LICZBA_RBH,  ROK,  ILOSC,  ID_KOMORKI,  PLAN_RBH,  PLAN_ILOSC)
+             VALUES(:ID_ZLECENIA_LOC, :MIESIAC, :ID_ZLECENIA_RBH_LOC, :LICZBA_RBH, :ROK, :ILOSC, :ID_KOMORKI, :PLAN_RBH, :PLAN_ILOSC);
+   END
+   ELSE
+   UPDATE PR_ZLECENIA_RBH R SET          
+          LICZBA_RBH       = :LICZBA_RBH,
+          ILOSC            = :ILOSC,
+          PLAN_RBH         = :PLAN_RBH,
+          PLAN_ILOSC       = :PLAN_ILOSC
+   WHERE R.ROK=:ROK AND R.ID_KOMORKI=:ID_KOMORKI AND R.ID_ZLECENIA = :ID_ZLECENIA_LOC AND R.MIESIAC = :MIESIAC AND R.ID_ZLECENIA_RBH =:ID_ZLECENIA_RBH_LOC;
+end
+#C
+
+
+
+CREATE OR ALTER PROCEDURE PR_ADD2KOSZTY (ROK_MAG         Integer,
+       ID_KOMORKI_GLW  Integer,
+       DEPOZYT         Char(1),
+       NR_MAG          Integer,
+       ID_SLOW_KOSZTOW Integer,
+       PLAN_RBH        Numeric(15,2),
+       ILOSC           Numeric(15,2),
+       ROK             Integer,
+       ID_KOMORKI      Integer,
+       LICZBA_RBH      Numeric(10,2),
+       PLAN_ILOSC      Numeric(15,2),
+       NR_KOL          Integer)
+AS 
+  declare variable ID_ZLECENIA_LOC Integer;
+  declare variable ID_KOSZTU_LOC Integer;
+  declare variable GLOWNY_K_LOC Char(1);
+  declare variable KOD_WYDZIALU_LOC Varchar(10);
+  declare variable GLOWNY_LOC Char(1);
+  declare variable KOD_WYDZIALU_GLW Varchar(10);
+  declare variable ID_MAG_LOC Integer;
+begin
+ /*KONTROLA SLOWNIKA KOMOREK  4 MAG*/
+   select w.KOD from pr_wydzialy w inner join  PR_KOMORKI k  on k.ID_wydzialu=w.ID_WYDZIALU  where k.ID_KOMORKI = :ID_KOMORKI_GLW into :KOD_WYDZIALU_GLW;
+   IF(KOD_WYDZIALU_GLW IS NULL ) THEN EXCEPTION PR_BAD_ID_KOMORKI 'Niepoprawny identyfikator warszatu w sygnaturze magazynu: ' || :ID_KOMORKI_GLW ; 
+
+
+ /*KONTROLA SLOWNIKA KOMOREK  4 KUT*/
+   SELECT K.GLOWNY_K FROM PR_KOMORKI K WHERE K.ID_KOMORKI = :ID_KOMORKI INTO :GLOWNY_K_LOC;
+   select  w.KOD, w.GLOWNY from pr_wydzialy w inner join  PR_KOMORKI k  on k.ID_wydzialu=w.ID_WYDZIALU  where k.ID_KOMORKI = :ID_KOMORKI
+   into  :KOD_WYDZIALU_LOC,  :GLOWNY_LOC;
+   IF(KOD_WYDZIALU_LOC IS NULL ) THEN EXCEPTION PR_BAD_ID_KOMORKI 'Niepoprawny identyfikator warszatu w RBH: ' || :ID_KOMORKI ; 
+   IF(GLOWNY_K_LOC IS NOT NULL) THEN GLOWNY_LOC = GLOWNY_K_LOC;  
+   ELSE IF(GLOWNY_LOC IS NULL and GLOWNY_K_LOC = 'T') THEN GLOWNY_LOC = 'N';
+
+ /*KONTROLA - MAGAZYNU */
+   select ID_MAG from pr_magazyn m where m.ROK = :ROK_MAG and m.ID_KOMORKI = :ID_KOMORKI_GLW and M.DEPOZYT = :DEPOZYT AND M.NR_MAG = :NR_MAG  INTO :ID_MAG_LOC;
+   if(ID_MAG_LOC IS NULL ) THEN EXCEPTION PR_NO_NR_MAG  'Brak pozycji magazynowej o parametrach: ' || :NR_MAG || '/' ||:ROK_MAG || '/' || :DEPOZYT || '/' || KOD_WYDZIALU_GLW;
+ 
+ /*KONTROLA ZLECENIA*/  
+   select z.id_zlecenia  from pr_zlecenia z 
+   where z.ROK_MAG = :ROK_MAG and z.ID_KOMORKI_GLW = :ID_KOMORKI_GLW and z.DEPOZYT = :DEPOZYT AND z.ID_MAG = :ID_MAG_LOC AND z.ID_KOMORKI = :ID_KOMORKI AND z.ROK=:ROK AND z.NR_KOL = :NR_KOL
+   INTO  :ID_ZLECENIA_LOC;   
+   IF(ID_ZLECENIA_LOC IS NULL) THEN EXCEPTION PR_BAD_ZLEC_ATTR 'Brak KUTa o sygnaturze: '  || :NR_MAG || '/' ||:NR_KOL || '/' ||:ROK ||'/'||:KOD_WYDZIALU_LOC || ' na pozycji magazynowej: ' || :NR_MAG || '/' ||:ROK_MAG || '/' || :DEPOZYT || '/' || KOD_WYDZIALU_GLW; 
+
+ /*KONTROLA KOSZTOW*/
+   SELECT ID_KOSZTU FROM PR_KOSZTY K WHERE k.ROK=:ROK AND k.ID_KOMORKI=:ID_KOMORKI AND k.ID_ZLECENIA = :ID_ZLECENIA_LOC AND K.ID_SLOW_KOSZTOW = :ID_SLOW_KOSZTOW INTO :ID_KOSZTU_LOC; 
+ /*SAM ZAPIS*/
+   IF(ID_KOSZTU_LOC IS NULL) THEN
+   BEGIN
+    ID_KOSZTU_LOC = GEN_ID(PR_KOSZTY_GEN,1);
+      insert into PR_KOSZTY( ID_KOSZTU,      ID_SLOW_KOSZTOW,   ILOSC,  ROK,  ID_KOMORKI,  ID_ZLECENIA)
+                     values(:ID_KOSZTU_LOC, :ID_SLOW_KOSZTOW,  :ILOSC, :ROK, :ID_KOMORKI, :ID_ZLECENIA_LOC);
+   END
+   ELSE
+   UPDATE PR_KOSZTY K SET          
+          ILOSC            = :ILOSC
+   WHERE k.ROK=:ROK AND k.ID_KOMORKI=:ID_KOMORKI AND K.ID_ZLECENIA = :ID_ZLECENIA_LOC AND K.ID_SLOW_KOSZTOW = :ID_SLOW_KOSZTOW AND K.ID_KOSZTU =:ID_KOSZTU_LOC;
+end
+#C

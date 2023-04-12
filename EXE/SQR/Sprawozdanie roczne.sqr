@@ -1,0 +1,88 @@
+[REPORT]
+comment=Sprawozdanie roczne
+index=
+rapgroup=Sprawozdania
+type=-1
+templatefile=
+[HEADER]
+no=1
+line1=SPRAWOZDANIE Z DZIA£ALNOŒCI PRODUKCYJNEJ I OBS£UGOWO-REMONTOWEJ ZA ROK 2011
+[HEADER_EXT]
+no=1
+line1=
+[FOOTER]
+no=1
+line1=
+[CHART]
+legend=0
+legendalignment=1
+description=1
+descriptionnewpage=0
+mark=0
+markstyle=0
+width=800
+height=600
+style=0
+xstyle=0
+xfield=
+chartlabelangle=0
+[SQL]
+no=45
+line1=SELECT 
+line2= W.ID_KOMORKI, W.KOD AS KOD_WARSZTATU, 
+line3= (case when w.ID_KOMORKI is null then 'POZOSTA£E' else W.KOD || ' - ' || W.NAZWA end) as naz_warsztatu, 
+line4= (case when ku.pozycja is null then 999 else ku.pozycja end) as pozycja , 
+line5= (case when (ku.pozycja is null OR  ku.pozycja = 999) then 'POZOSTA£E' else ku.naz_remontu end ) as naz_remontu, 
+line6= case when s.nazwa is null then '' else s.nazwa end || '   ' 
+line7=  || case when m.NR_REJ is null then '' else m.NR_REJ end || '   '  
+line8=  || case when m.NR_FABR is null then '' else m.NR_FABR end  as naz_sprzetu,   
+line9=P.INDEKS_MAT,
+line10=P.ILOSC AS PLAN_ILOSC_SPRZETU,
+line11=P.REMONT AS RODZ_NAPRAWY,
+line12=P.ILOSC * P.PLAN_RBH AS PLAN_ILOSC_RBH,
+line13=P.KWARTAL_I * P.PLAN_RBH AS PLAN_ILOSC_RBH_KWARTAL_I,
+line14=P.KWARTAL_II * P.PLAN_RBH AS PLAN_ILOSC_RBH_KWARTAL_II,
+line15=P.KWARTAL_III * P.PLAN_RBH AS PLAN_ILOSC_RBH_KWARTAL_III,
+line16=P.KWARTAL_IV * P.PLAN_RBH AS PLAN_ILOSC_RBH_KWARTAL_IV,
+line17=SUM(CASE WHEN R.MIESIAC BETWEEN 1  AND 3  THEN R.LICZBA_RBH END) AS REALIZACJA_RBH_KWARTAL_I,
+line18=SUM(CASE WHEN R.MIESIAC BETWEEN 4  AND 6  THEN R.LICZBA_RBH END) AS REALIZACJA_RBH_KWARTAL_II,
+line19=SUM(CASE WHEN R.MIESIAC BETWEEN 7  AND 9  THEN R.LICZBA_RBH END) AS REALIZACJA_RBH_KWARTAL_III,
+line20=SUM(CASE WHEN R.MIESIAC BETWEEN 10 AND 12 THEN R.LICZBA_RBH END) AS REALIZACJA_RBH_KWARTAL_IV,
+line21=SUM(CASE WHEN R.MIESIAC BETWEEN 1  AND 3  THEN R.ILOSC END) AS ILOSC_SPRZET_KWARTAL_I,
+line22=SUM(CASE WHEN R.MIESIAC BETWEEN 4  AND 6  THEN R.ILOSC END) AS ILOSC_SPRZET_KWARTAL_II,
+line23=SUM(CASE WHEN R.MIESIAC BETWEEN 7  AND 9  THEN R.ILOSC END) AS ILOSC_SPRZET_KWARTAL_III,
+line24=SUM(CASE WHEN R.MIESIAC BETWEEN 10 AND 12 THEN R.ILOSC END) AS ILOSC_SPRZET_KWARTAL_IV,
+line25=SUM(R.ILOSC) AS ILOSC_SPRZET,
+line26='-' AS ILOSC_PLAN,
+line27='-' AS PROC_PLAN,
+line28=CASE WHEN SUM(R.ILOSC) = P.ILOSC THEN '-' ELSE P.ILOSC - SUM(R.ILOSC) END AS ILOSC_ZAL,
+line29=CASE WHEN SUM(R.ILOSC) = P.ILOSC THEN '-' ELSE SUM(R.ILOSC)/P.ILOSC END AS ILOSC_ZAL
+line30=FROM pr_zlecenia z 
+line31= left outer join PR_KOMORKI     w  on w.ID_KOMORKI = z.ID_KOMORKI 
+line32= left outer join pr_plan          p  on p.ID_HARM      = z.ID_HARM  
+line33= left outer join pr_kody_uslug    ku on ku.ID_USLUGI   = p.ID_USLUGI 
+line34= left outer join pr_magazyn       m  on m.ID_MAG       = z.ID_MAG  AND M.ID_KOMORKI = Z.ID_KOMORKI_GLW AND M.DEPOZYT =Z.DEPOZYT AND M.ROK =Z.ROK_MAG 
+line35= left outer join pr_sprzet        s  on s.ID_SPRZETU   = m.ID_SPRZETU 
+line36= left outer join pr_zlecenia_rbh  r  on r.ID_ZLECENIA  = z.ID_ZLECENIA  AND R.ID_KOMORKI = Z.ID_KOMORKI AND R.ROK = Z.ROK 
+line37= left outer join pr_jednostki     j  on j.ID_JEDNOSTKI = z.ID_JEDNOSTKI  
+line38= left outer join pr_remonty       re on re.ID_REMONTU  = m.id_remontu  
+line39=group by
+line40=w.ID_KOMORKI, w.KOD, w.NAZWA,  ku.POZYCJA, ku.NAZ_REMONTU,   s.NAZWA,   p.ZADANIE,  m.NR_REJ,  m.NR_FABR,
+line41= P.ZADANIE,P.INDEKS_MAT,P.ILOSC,P.REMONT,P.ILOSC,P.PLAN_RBH,P.KWARTAL_I,P.KWARTAL_II,P.KWARTAL_III,P.KWARTAL_IV
+line42=ORDER BY 
+line43=  case when W.ID_KOMORKI is null then 999 else W.KOD end,  
+line44=  case when ku.pozycja     is null then 999      else ku.POZYCJA end,  
+line45=  s.nazwa
+[CFG]
+vertical=
+horizontal=
+width_no=3
+no=0
+wrapline=0
+[HTML]
+font=Arial
+sizef=10
+notablehdr=0
+firstpagecnt=-1
+nextpagecnt=-1
+fixedtable=0

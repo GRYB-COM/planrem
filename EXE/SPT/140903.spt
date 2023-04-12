@@ -1,0 +1,79 @@
+create exception PR_NO_SPRZET 'Brak sprzêtu o podanym identyfikatorze'
+#TRY
+
+create exception PR_NO_JEDN 'Brak jednostki o podanym identyfikatorze'
+#TRY
+
+create exception PR_BAD_SPRZET 'Brak sprzêtu o podanym identyfikatorze'
+#TRY
+
+create exception PR_BAD_JEDN 'Brak jednostki o podanym identyfikatorze'
+#TRY
+
+ALTER PROCEDURE PR_ADD2MAGAZYN (SYGN_MAG      Varchar(50),
+       DEPOZYT       Char(1),
+       ID_MAG        Integer,
+       ID_SPRZETU    Integer,
+       ID_HARM       Integer,
+       ILOSC         Numeric(15,2),
+       UWAGI         Varchar(200),
+       DATA_PRZEKAZ  Date,
+       STATUS        Char(1),
+       DATA_PRZYJ    Date,
+       NR_FABR       Varchar(60),
+       PODSTAWA      Varchar(200),
+       ID_JEDNOSTKI  Integer,
+       ID_REMONTU    Integer,
+       NR_HARM       Integer,
+       KOD_WARSZTATU Varchar(5),
+       ROK           Integer,
+       NR_REJ        Varchar(60),
+       GLOWNY_KUT    Varchar(60),
+       ID_KOMORKI    Integer,
+       NR_MAG        Integer,
+       PROT_PRZEKAZ  Varchar(200),
+       PROT_PRZYJ    Varchar(200),
+       DATA_PROP_ZAK Date,
+       DATA_ZAK      Date,
+       GLOWNY        Char(1),
+       NAZ_SPRZETU   Varchar(200),
+       JW            Varchar(60))
+AS 
+  declare variable COUNTER Integer;
+  declare variable ID_MAG_LOC Integer;
+  declare variable NAZ_SPRZETU_LOC   Varchar(200);
+  declare variable JW_LOC            Varchar(60);
+begin
+ select NAZWA from pr_sprzet where id_sprzetu =:ID_SPRZETU INTO :NAZ_SPRZETU_LOC;
+if(NAZ_SPRZETU_LOC IS NULL ) then EXCEPTION PR_NO_SPRZET 'Brak sprzetu w slowniku o identyfikatorze: ' || :ID_SPRZETU || 'i nazwie: '  || :NAZ_SPRZETU;
+if(NAZ_SPRZETU_LOC <> NAZ_SPRZETU) THEN EXCEPTION PR_BAD_SPRZET 'B³¹d w s³owniku sprzêtu!\n Ró¿ne nazwy sprzêtu dla tego samego identyfikatora ('||ID_SPRZETU||').\n Lokalna: ' ||NAZ_SPRZETU_LOC ||'.\nImportowana: '||NAZ_SPRZETU;
+select JW from pr_jednostki where id_jednostki =:ID_jednostki into :JW_LOC;
+if(JW_LOC IS NULL ) then EXCEPTION PR_NO_JEDN 'Brak jednostki w slowniku o idetyfikatorze: ' || :ID_JEDNOSTKI || 'i kodzie: '  || :JW;
+if(JW_LOC <> JW) THEN EXCEPTION PR_BAD_JEDN 'B³¹d w s³owniku jednostek!\n Ró¿ne kody jednostki dla tego samego identyfikatora ('||ID_jednostki||').\n Lokalna: ' ||JW_LOC || '.\nImportowana: '||JW;
+ select coalesce(count(*),0) from pr_magazyn m where m.ROK = :ROK and m.ID_KOMORKI = :ID_KOMORKI and M.DEPOZYT = :DEPOZYT AND M.NR_MAG = :NR_MAG  INTO :COUNTER;
+ IF(COUNTER >1) THEN EXCEPTION PR_BAD_NR_MAG;
+ IF(GLOWNY = 'T')  THEN
+ BEGIN
+ IF(COUNTER =1) THEN   select ID_MAG from pr_magazyn m where m.ROK = :ROK and m.ID_KOMORKI = :ID_KOMORKI and M.DEPOZYT = :DEPOZYT AND M.NR_MAG = :NR_MAG  INTO :ID_MAG;
+ ELSE
+ BEGIN
+ select ID_MAG from pr_magazyn m where m.ROK = :ROK and m.ID_KOMORKI = :ID_KOMORKI and M.DEPOZYT = :DEPOZYT AND M.ID_MAG = :ID_MAG  INTO :ID_MAG_LOC;
+ IF(ID_MAG_LOC IS NOT NULL OR ID_MAG_LOC > 0) THEN ID_MAG = GEN_ID(PR_MAGAZYN_GEN,1);
+ END
+ UPDATE OR INSERT INTO
+ PR_MAGAZYN(DEPOZYT, SYGN_MAG, ID_MAG, ID_SPRZETU, ID_HARM, UWAGI, ILOSC, DATA_PRZEKAZ, STATUS, DATA_PRZYJ, NR_FABR, PODSTAWA, ID_JEDNOSTKI, NR_HARM, ID_REMONTU,
+ KOD_WARSZTATU, NR_REJ, ROK, GLOWNY_KUT, ID_KOMORKI, NR_MAG, PROT_PRZEKAZ, PROT_PRZYJ, DATA_PROP_ZAK, DATA_ZAK)
+ VALUES(:DEPOZYT, :SYGN_MAG, :ID_MAG, :ID_SPRZETU, :ID_HARM, :UWAGI, :ILOSC, :DATA_PRZEKAZ, :STATUS, :DATA_PRZYJ, :NR_FABR, :PODSTAWA, :ID_JEDNOSTKI, :NR_HARM, :ID_REMONTU,
+ :KOD_WARSZTATU, :NR_REJ, :ROK, :GLOWNY_KUT, :ID_KOMORKI, :NR_MAG, :PROT_PRZEKAZ, :PROT_PRZYJ, :DATA_PROP_ZAK, :DATA_ZAK);
+ END
+ ELSE IF(COUNTER = 0) THEN
+ BEGIN
+ INSERT INTO
+ PR_MAGAZYN(DEPOZYT, SYGN_MAG, ID_MAG, ID_SPRZETU, ID_HARM, UWAGI, ILOSC, DATA_PRZEKAZ, STATUS, DATA_PRZYJ, NR_FABR, PODSTAWA, ID_JEDNOSTKI, NR_HARM, ID_REMONTU,
+ KOD_WARSZTATU, NR_REJ, ROK, GLOWNY_KUT, ID_KOMORKI, NR_MAG, PROT_PRZEKAZ, PROT_PRZYJ, DATA_PROP_ZAK, DATA_ZAK)
+ VALUES(:DEPOZYT, :SYGN_MAG, GEN_ID(PR_MAGAZYN_GEN,1), :ID_SPRZETU, :ID_HARM, :UWAGI, :ILOSC, :DATA_PRZEKAZ, :STATUS, :DATA_PRZYJ, :NR_FABR, :PODSTAWA, :ID_JEDNOSTKI, :NR_HARM, :ID_REMONTU,
+ :KOD_WARSZTATU, :NR_REJ, :ROK, :GLOWNY_KUT, :ID_KOMORKI, :NR_MAG, :PROT_PRZEKAZ, :PROT_PRZYJ, :DATA_PROP_ZAK, :DATA_ZAK);
+ END
+end
+#C
+

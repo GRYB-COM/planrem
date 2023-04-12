@@ -1,0 +1,65 @@
+CREATE OR ALTER PROCEDURE SP_MIES_OD_DO (POZYCJA    Integer,
+       ID_KOMORKI Integer,
+       ID_SPRZETU Integer,
+       ROK        Integer,
+       MIES_OD    Integer,
+       MIES_DO    Integer,
+       ZADANIE    Varchar(255))
+returns (ILOSC_P   Decimal(15,2),
+         ILOSC_R   Numeric(15,2),
+         RBH_P     Numeric(15,2),
+         RBH_R     Numeric(15,2),
+         ILOSC_WP  Numeric(15,2),
+         ILOSC_WZ  Numeric(15,2),
+         PROC_WP   Varchar(20),
+         PROC_WZ   Varchar(20),
+         RODZ_REM  Varchar(10),
+         ILOSC_WPS Varchar(20),
+         ILOSC_WZS Varchar(20))
+AS 
+  declare variable ILOSC_P_DET Numeric(15,2);
+  declare variable ILOSC_R_DET Numeric(15,2);
+  declare variable RBH_P_DET Numeric(15,2);
+  declare variable RBH_R_DET Numeric(15,2);
+  declare variable ILOSC_WP_DET Numeric(15,2);
+  declare variable ILOSC_WZ_DET Numeric(15,2);
+begin
+ IF(ZADANIE IS NULL) THEN
+ SELECT ILOSC_P, ILOSC_R, RODZ_REM, RBH_P, RBH_R
+ FROM SP_MIES_OD_DO_SPRZ(:POZYCJA,:ID_KOMORKI,:ID_SPRZETU,:ROK,:MIES_OD,:MIES_DO)
+ INTO  :ILOSC_P, :ILOSC_R, :RODZ_REM, :RBH_P, :RBH_R;
+ IF(ZADANIE IS NOT NULL OR ID_SPRZETU IS NULL) THEN
+ SELECT ILOSC_P, ILOSC_R, RODZ_REM, RBH_P, RBH_R
+ FROM SP_MIES_OD_DO_ZAD(:POZYCJA,:ID_KOMORKI,:ROK,:MIES_OD,:MIES_DO,:ZADANIE)
+ INTO  :ILOSC_P_DET, :ILOSC_R_DET, :RODZ_REM, :RBH_P_DET, :RBH_R_DET;
+ IF(ILOSC_P     IS NULL) THEN ILOSC_P     = 0;
+ IF(ILOSC_R     IS NULL) THEN ILOSC_R     = 0;
+ IF(RBH_P       IS NULL) THEN RBH_P       = 0;
+ IF(RBH_R       IS NULL) THEN RBH_R       = 0;
+ IF(ILOSC_P_DET IS NULL) THEN ILOSC_P_DET = 0;
+ IF(ILOSC_R_DET IS NULL) THEN ILOSC_R_DET = 0;
+ IF(RBH_P_DET   IS NULL) THEN RBH_P_DET   = 0;
+ IF(RBH_R_DET   IS NULL) THEN RBH_R_DET   = 0;
+ ILOSC_P = ILOSC_P + ILOSC_P_DET;
+ ILOSC_R = ILOSC_R + ILOSC_R_DET;
+ RBH_P   = RBH_P   + RBH_P_DET;
+ RBH_R   = RBH_R   + RBH_R_DET;
+ /*ZALEGLOSCI MOGA BYC*/
+ ILOSC_WZ = ILOSC_P - ILOSC_R;
+ IF(ILOSC_WZ >0 AND POZYCJA IS NOT NULL AND POZYCJA <>999) THEN
+ BEGIN
+ ILOSC_WZS = CAST(ILOSC_WZ AS DECIMAL(15,2) );
+ PROC_WZ   = CAST(ILOSC_WZ/ILOSC_P*100 AS DECIMAL(15,2));
+ END
+ ELSE
+ BEGIN
+ ILOSC_WZS ='-';
+ PROC_WZ   ='-';
+ END
+ /*W PLANOWANYM TRAKCIE REMONTU ZAWSZE to samo co zal*/
+ ILOSC_WP  = ILOSC_WZ;
+ ILOSC_WPS = ILOSC_WZS;
+ PROC_WP   = PROC_WZ;
+ SUSPEND;
+end
+#C

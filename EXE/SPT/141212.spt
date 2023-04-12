@@ -1,0 +1,85 @@
+CREATE OR ALTER PROCEDURE PR_ADD2MAGAZYN (SYGN_MAG      Varchar(50),
+       DEPOZYT       Char(1),
+       ID_MAG        Integer,
+       ID_SPRZETU    Integer,
+       ID_HARM       Integer,
+       ILOSC         Numeric(15,2),
+       UWAGI         Varchar(200),
+       DATA_PRZEKAZ  Date,
+       STATUS        Char(1),
+       DATA_PRZYJ    Date,
+       NR_FABR       Varchar(60),
+       PODSTAWA      Varchar(200),
+       ID_JEDNOSTKI  Integer,
+       ID_REMONTU    Integer,
+       NR_HARM       Integer,
+       KOD_WARSZTATU Varchar(5),
+       ROK           Integer,
+       NR_REJ        Varchar(60),
+       GLOWNY_KUT    Varchar(60),
+       ID_KOMORKI    Integer,
+       NR_MAG        Integer,
+       PROT_PRZEKAZ  Varchar(200),
+       PROT_PRZYJ    Varchar(200),
+       DATA_PROP_ZAK Date,
+       DATA_ZAK      Date,
+       GLOWNY        Char(1),
+       NAZ_SPRZETU   Varchar(200),
+       JW            Varchar(60))
+AS 
+  declare variable COUNTER Integer;
+  declare variable ID_MAG_LOC Integer;
+  declare variable ID_SPRZETU_LOC Integer;
+  declare variable ID_JW_LOC Integer;
+  declare variable ID_WYDZIALU_LOC Integer;
+  declare variable KOD_WYDZIALU_LOC Varchar(10);
+  declare variable NAZ_WYDZIALU_LOC Varchar(80);
+  declare variable GLOWNY_LOC Char(1);
+  declare variable GLOWNY_K_LOC Char(1);
+begin
+ /*KONTROLA SŁOWNIKA KOMÓREK*/
+ SELECT K.GLOWNY_K FROM PR_KOMORKI K WHERE K.ID_KOMORKI = :ID_KOMORKI INTO :GLOWNY_K_LOC;
+ select w.ID_WYDZIALU, w.KOD, w.NAZWA, w.GLOWNY from pr_wydzialy w inner join  PR_KOMORKI k  on k.ID_wydzialu=w.ID_WYDZIALU  where k.ID_KOMORKI = :ID_KOMORKI
+ into :ID_WYDZIALU_LOC, :KOD_WYDZIALU_LOC, :NAZ_WYDZIALU_LOC, :GLOWNY_LOC;
+ IF(ID_WYDZIALU_LOC IS NULL ) THEN EXCEPTION PR_BAD_ID_KOMORKI 'Niepoprawny identyfikator warszatu: ' || :ID_KOMORKI || ' (' || :KOD_WARSZTATU || ')';
+ IF(GLOWNY_K_LOC IS NOT NULL) THEN GLOWNY_LOC = GLOWNY_K_LOC;
+ ELSE IF(GLOWNY_LOC IS NULL) THEN GLOWNY_LOC = 'N';
+ /*KONTROLA - MAGAZYNU */
+ select coalesce(count(*),0) from pr_magazyn m where m.ROK = :ROK and m.ID_KOMORKI = :ID_KOMORKI and M.DEPOZYT = :DEPOZYT AND M.NR_MAG = :NR_MAG  INTO :COUNTER;
+ IF(COUNTER >1) THEN EXCEPTION PR_BAD_NR_MAG 'Zwielokrotniony nr magazynowy: ' || :NR_MAG || '/' ||:ROK || '/' || :DEPOZYT|| '/'|| :KOD_WYDZIALU_LOC;
+ ELSE IF(COUNTER =1 AND GLOWNY_LOC ='T' ) THEN  exit;
+ ELSE
+ BEGIN
+ /*KONTROLA SŁOWNIKA SPRZĘTU*/
+ SELECT S.ID_SPRZETU FROM PR_SPRZET s WHERE S.NAZWA = :NAZ_SPRZETU INTO :ID_SPRZETU_LOC;
+ if(ID_SPRZETU_LOC IS NULL ) THEN EXCEPTION PR_NO_SPRZET 'Brak sprzętu w słowniku o nazwie: "' || :NAZ_SPRZETU || '"';
+ /*KONTROLA SLOWNIKA JEDNOSTEK*/
+ SELECT J.ID_JEDNOSTKI FROM PR_JEDNOSTKI J WHERE  J.JW = :JW INTO :ID_JW_LOC;
+ if(ID_JW_LOC IS NULL ) then EXCEPTION PR_NO_JEDN 'Brak jednostki w słowniku o kodzie: '  || :JW;
+ /*AKTUALIZACJA OBCEGO SPRZETU*/
+ IF(COUNTER =1 AND GLOWNY_LOC <>'T') THEN
+ BEGIN
+ select ID_MAG from pr_magazyn m where m.ROK = :ROK and m.ID_KOMORKI = :ID_KOMORKI and M.DEPOZYT = :DEPOZYT AND M.NR_MAG = :NR_MAG  INTO :ID_MAG_LOC;
+
+ UPDATE PR_MAGAZYN SET
+ SYGN_MAG      =:SYGN_MAG,      ID_SPRZETU =:ID_SPRZETU_LOC, ID_HARM    =:ID_HARM,
+ UWAGI         =:UWAGI,         ILOSC      =:ILOSC,          DATA_PRZEKAZ =:DATA_PRZEKAZ,   STATUS       =:STATUS,         DATA_PRZYJ =:DATA_PRZYJ,
+ NR_FABR       =:NR_FABR,       PODSTAWA   =:PODSTAWA,       ID_JEDNOSTKI =:ID_JW_LOC,      NR_HARM      =:NR_HARM,        ID_REMONTU =:ID_REMONTU,
+ KOD_WARSZTATU =:KOD_WARSZTATU, NR_REJ     =:NR_REJ,         GLOWNY_KUT   =:GLOWNY_KUT,     ID_KOMORKI =:ID_KOMORKI,
+ NR_MAG        =:NR_MAG,       PROT_PRZEKAZ=:PROT_PRZEKAZ,   PROT_PRZYJ   =:PROT_PRZYJ,     DATA_PROP_ZAK=:DATA_PROP_ZAK,  DATA_ZAK=:DATA_ZAK
+ WHERE
+ ID_KOMORKI= :ID_KOMORKI AND ROK = :ROK AND  DEPOZYT =:DEPOZYT AND ID_MAG = :ID_MAG_LOC;
+ END
+ /*NOWY SPRZET NIEZALEZNIE CZY GLOWNY CZY NIE*/
+ ELSE
+ BEGIN
+ ID_MAG_LOC = GEN_ID(PR_MAGAZYN_GEN,1);
+ INSERT INTO
+ PR_MAGAZYN(DEPOZYT, SYGN_MAG, ID_MAG, ID_SPRZETU, ID_HARM, UWAGI, ILOSC, DATA_PRZEKAZ, STATUS, DATA_PRZYJ, NR_FABR, PODSTAWA, ID_JEDNOSTKI, NR_HARM, ID_REMONTU,
+ KOD_WARSZTATU, NR_REJ, ROK, GLOWNY_KUT, ID_KOMORKI, NR_MAG, PROT_PRZEKAZ, PROT_PRZYJ, DATA_PROP_ZAK, DATA_ZAK)
+ VALUES(:DEPOZYT, :SYGN_MAG, :ID_MAG_LOC, :ID_SPRZETU_LOC, :ID_HARM, :UWAGI, :ILOSC, :DATA_PRZEKAZ, :STATUS, :DATA_PRZYJ, :NR_FABR, :PODSTAWA, :ID_JW_LOC, :NR_HARM, :ID_REMONTU,
+ :KOD_WARSZTATU, :NR_REJ, :ROK, :GLOWNY_KUT, :ID_KOMORKI, :NR_MAG, :PROT_PRZEKAZ, :PROT_PRZYJ, :DATA_PROP_ZAK, :DATA_ZAK);
+ END
+ END
+end
+#C

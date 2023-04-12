@@ -1,0 +1,2 @@
+delete from pr_zlecenia where rok= 2014 and id_komorki in (23,24)
+#C

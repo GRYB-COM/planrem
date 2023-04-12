@@ -1,0 +1,199 @@
+[REPORT]
+comment=RBH na miesi¹ce i warsztaty
+index=
+rapgroup=Kontrolne
+type=-1
+templatefile=
+[CHART]
+legend=0
+legendalignment=1
+description=1
+descriptionnewpage=0
+mark=0
+markstyle=0
+width=800
+height=600
+style=0
+xstyle=0
+xfield=
+chartlabelangle=0
+chartmultibar=0
+[CFG]
+vertical=|
+horizontal=_
+width_no=3
+no=0
+wrapline=0
+[HTML]
+font=Arial
+sizef=10
+notablehdr=0
+noth=0
+firstpagecnt=-1
+nextpagecnt=-1
+fixedtable=0
+[HEADER]
+no=1
+line1=ROZLICZENIE PRZEPRACOWANYCH GODZIN W PODZIALE NA WARSZTATY I MIESI¥CE
+[HEADER_EXT]
+no=1
+line1=
+[FOOTER]
+no=1
+line1=
+[SQL]
+no=45
+line1=SELECT
+line2='&nbsp&nbsp&nbsp<b>' || KOD || '</b>&nbsp&nbsp' as kod,
+line3='  bgcolor="silver"  font-weight ="bold" ' AS  tdatrib_KOD,
+line4='  bgcolor="silver"  font-weight ="bold" ' AS  thatrib,
+line5=SUM( CASE WHEN R.MIESIAC = 1 THEN R.LICZBA_RBH END) AS STY,
+line6='  bgcolor="#EDFFEA"  ' AS  tdatrib_STY,
+line7=SUM( CASE WHEN R.MIESIAC = 2 THEN R.LICZBA_RBH END) AS LUT,
+line8='  bgcolor="#B7FFAA"  ' AS  tdatrib_LUT,
+line9=SUM( CASE WHEN R.MIESIAC = 3 THEN R.LICZBA_RBH END) AS MAR,
+line10='  bgcolor="#81FFAA"  ' AS  tdatrib_MAR,
+line11=SUM( CASE WHEN R.MIESIAC BETWEEN 1 AND 3 THEN R.LICZBA_RBH END) AS I_KW,
+line12='  bgcolor="#00EAEA"  ' AS  tdatrib_I_KW,
+line13=SUM( CASE WHEN R.MIESIAC = 4 THEN R.LICZBA_RBH END) AS KWI,
+line14='  bgcolor="#EDFFEA"  ' AS  tdatrib_KWI,
+line15=SUM( CASE WHEN R.MIESIAC = 5 THEN R.LICZBA_RBH END) AS MAJ,
+line16='  bgcolor="#B7FFAA"  ' AS  tdatrib_MAJ,
+line17=SUM( CASE WHEN R.MIESIAC = 6 THEN R.LICZBA_RBH END) AS CZE,
+line18='  bgcolor="#81FFAA"  ' AS  tdatrib_CZE,
+line19=SUM( CASE WHEN R.MIESIAC BETWEEN 4 AND 6 THEN R.LICZBA_RBH END) AS II_KW,
+line20='  bgcolor="#00EAEA"  ' AS  tdatrib_II_KW,
+line21=SUM( CASE WHEN R.MIESIAC BETWEEN 1 AND 6 THEN R.LICZBA_RBH END) AS I_PR,
+line22='  bgcolor="#4083FF"  ' AS  tdatrib_I_PR,
+line23=SUM( CASE WHEN R.MIESIAC = 7 THEN R.LICZBA_RBH END) AS LIP,
+line24='  bgcolor="#EDFFEA"  ' AS  tdatrib_LIP,
+line25=SUM( CASE WHEN R.MIESIAC = 8 THEN R.LICZBA_RBH END) AS SIE,
+line26='  bgcolor="#B7FFAA"  ' AS  tdatrib_SIE,
+line27=SUM( CASE WHEN R.MIESIAC = 9 THEN R.LICZBA_RBH END) AS WRZ,
+line28='  bgcolor="#81FFAA"  ' AS  tdatrib_WRZ,
+line29=SUM( CASE WHEN R.MIESIAC BETWEEN 7 AND 9 THEN R.LICZBA_RBH END) AS III_KW,
+line30='  bgcolor="#00EAEA"  ' AS  tdatrib_III_KW,
+line31=SUM( CASE WHEN R.MIESIAC = 10 THEN R.LICZBA_RBH END) AS PAZ,
+line32='  bgcolor="#EDFFEA"  ' AS  tdatrib_PAZ,
+line33=SUM( CASE WHEN R.MIESIAC = 11 THEN R.LICZBA_RBH END) AS LIS,
+line34='  bgcolor="#B7FFAA"  ' AS  tdatrib_LIS,
+line35=SUM( CASE WHEN R.MIESIAC = 12 THEN R.LICZBA_RBH END) AS GRU,
+line36='  bgcolor="#81FFAA"  ' AS  tdatrib_GRU,
+line37=SUM( CASE WHEN R.MIESIAC BETWEEN 10 AND 12 THEN R.LICZBA_RBH END) AS IV_KW,
+line38='  bgcolor="#00EAEA"  ' AS  tdatrib_IV_KW,
+line39=SUM( CASE WHEN R.MIESIAC BETWEEN 7 AND 12 THEN R.LICZBA_RBH END) AS II_PR,
+line40='  bgcolor="#4083FF"  ' AS  tdatrib_II_PR,
+line41=SUM(R.LICZBA_RBH) AS ROK,
+line42='  bgcolor="orange"  ' AS  tdatrib_ROK
+line43=FROM PR_ZLECENIA_RBH R LEFT JOIN PR_KOMORKI K ON K.ID_KOMORKI = R.ID_KOMORKI
+line44=WHERE R.ROK = :ROK
+line45=GROUP BY KOD
+[DISPLAYNAMES]
+KOD=Warsztat
+STY=Styczeñ
+LUT=Luty
+MAR=Marzec
+I_KW=Pierwszy<br>kwarta³
+KWI=Kwiecieñ
+MAJ=Maj
+CZE=Czerwiec
+II_KW=Drugi<br>kwarta³
+I_PR=Pierwsze<br>pó³rocze
+LIP=Lipiec
+SIE=Sierpieñ
+WRZ=Wrzesieñ
+III_KW=Trzeci<br>kwarta³
+PAZ=PaŸdziernik
+LIS=Listopad
+GRU=Grudzieñ
+IV_KW=Czwarty<br>kwarta³
+II_PR=Drugie<br>pó³rocze
+ROK=Ca³y<br>rok
+[FIELDSIZES]
+KOD=3
+STY=7
+tdatrib_STY=-1
+LUT=7
+MAR=7
+I_KW=7
+KWI=7
+MAJ=7
+CZE=7
+II_KW=7
+I_PR=7
+LIP=7
+SIE=7
+WRZ=7
+III_KW=7
+PAZ=7
+LIS=7
+GRU=7
+IV_KW=7
+II_PR=7
+ROK=7
+tdatrib_KOD=-1
+tdatrib_LUT=-1
+tdatrib_MAR=-1
+tdatrib_I_KW=-1
+tdatrib_KWI=-1
+tdatrib_MAJ=-1
+tdatrib_CZE=-1
+tdatrib_II_KW=-1
+tdatrib_I_PR=-1
+tdatrib_LIP=-1
+tdatrib_SIE=-1
+tdatrib_WRZ=-1
+tdatrib_III_KW=-1
+tdatrib_PAZ=-1
+tdatrib_LIS=-1
+tdatrib_GRU=-1
+thatrib=-1
+tdatrib_IV_KW=-1
+tdatrib_II_PR=-1
+tdatrib_ROK=-1
+[DISPLAYFORMATS]
+STY=###,##0.00
+LUT=###,##0.00
+MAR=###,##0.00
+I_KW=###,##0.00
+KWI=###,##0.00
+MAJ=###,##0.00
+CZE=###,##0.00
+II_KW=###,##0.00
+I_PR=###,##0.00
+LIP=###,##0.00
+SIE=###,##0.00
+WRZ=###,##0.00
+III_KW=###,##0.00
+PAZ=###,##0.00
+LIS=###,##0.00
+GRU=###,##0.00
+IV_KW=###,##0.00
+II_PR=###,##0.00
+ROK=###,##0.00
+[PARAMS]
+ROK=@ROK#
+[SUMFIELDS]
+STY=0
+LUT=0
+MAR=0
+I_KW=0
+KWI=0
+MAJ=0
+CZE=0
+II_KW=0
+I_PR=0
+LIP=0
+SIE=0
+WRZ=0
+III_KW=0
+PAZ=0
+LIS=0
+GRU=0
+IV_KW=0
+II_PR=0
+ROK=0
+[PARAM_ROK]
+TYP=-1
+RODZAJ=-1
+SQLCNT=0

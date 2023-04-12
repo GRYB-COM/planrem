@@ -1,0 +1,61 @@
+CREATE EXCEPTION PR_BAD_ZLEC_ATTR 'Nieprawid³owe dane KUT'
+#TRY
+
+CREATE OR ALTER PROCEDURE PR_ADD2ZLECENIA (ID_ZLECENIA    Integer,
+       SYGN_ZLECENIA  Varchar(60),
+       ID_KOD_U       Integer,
+       ID_RODZAJ_R    Integer,
+       DATA_WYST      Date,
+       DATA_PROP_ZAK  Date,
+       ID_SPRZETU     Integer,
+       PRZESTOJ_OD    Date,
+       DATA_ZDA_KUT   Date,
+       LICZBA_RBH     Numeric(15,2),
+       DATA_ZAK       Date,
+       ID_GR_SPRZ     Integer,
+       ID_RODZ_SPRZ   Integer,
+       DEPOZYT        Char(1),
+       STATUS         Char(1),
+       ID_MAG         Integer,
+       ID_HARM        Integer,
+       NR_HARM        Integer,
+       UWAGI          Varchar(250),
+       ZADANIE        Varchar(250),
+       ID_JEDNOSTKI   Integer,
+       ID_KOMORKI     Integer,
+       ROK            Integer,
+       ID_KOMORKI_GLW Integer,
+       ROK_MAG        Integer,
+       NR_KOL         Integer,
+       SYGN_MAG       Varchar(11),
+       NR_MAG         Integer)
+AS 
+  declare variable COUNTER Integer;
+  declare variable ID_MAG_LOC Integer;
+  declare variable CZY_RUN Char(1);
+begin
+ select coalesce(count(*),0) from pr_magazyn m where m.ROK = :ROK_MAG and m.ID_KOMORKI = :ID_KOMORKI_GLW and M.DEPOZYT = :DEPOZYT AND M.NR_MAG = :NR_MAG  INTO :COUNTER;
+ if(counter >1) then exception PR_BAD_NR_MAG;
+ else if(counter <0) then EXCEPTION PR_NO_NR_MAG;
+ select ID_MAG from pr_magazyn m where m.ROK = :ROK_MAG and m.ID_KOMORKI = :ID_KOMORKI_GLW and M.DEPOZYT = :DEPOZYT AND M.NR_MAG = :NR_MAG  INTO :ID_MAG_LOC;
+ IF(ID_MAG_LOC IS NULL) THEN EXCEPTION PR_NO_NR_MAG;
+ SELECT COUNT(*) FROM PR_ZLECENIA 
+ WHERE rok_mag=:ROK_MAG AND ID_KOMORKI_GLW =:ID_KOMORKI_GLW AND ID_MAG = :ID_MAG AND DEPOZYT=:DEPOZYT AND ROK = :ROK AND ID_HARM=:ID_HARM AND ID_KOMORKI = :ID_KOMORKI AND NR_KOL=:NR_KOL
+ INTO :COUNTER;
+ CZY_RUN ='T';
+ IF(COUNTER > 1) THEN EXCEPTION PR_BAD_ZLEC_ATTR;
+ ELSE IF (COUNTER =1 ) THEN
+ BEGIN
+  SELECT COUNT(*) FROM PR_KOMORKI K INNER JOIN PR_WYDZIALY W ON W.ID_WYDZIALU = K.ID_WYDZIALU WHERE K.ID_KOMORKI = :ID_KOMORKI_GLW  AND W.GLOWNY='T' INTO :COUNTER;
+  IF(COUNTER >0) THEN CZY_RUN='N';
+ END
+ IF(CZY_RUN ='T')  THEN
+ UPDATE OR INSERT INTO PR_ZLECENIA
+ (ID_ZLECENIA, SYGN_ZLECENIA, ID_KOD_U, ID_RODZAJ_R, DATA_WYST, ID_SPRZETU, DATA_PROP_ZAK, PRZESTOJ_OD, DATA_ZDA_KUT, LICZBA_RBH, DATA_ZAK, ID_GR_SPRZ,
+ ID_RODZ_SPRZ, DEPOZYT, STATUS, ID_MAG, ID_HARM, NR_HARM, UWAGI, ZADANIE, ID_JEDNOSTKI, ID_KOMORKI, ROK, ID_KOMORKI_GLW, ROK_MAG, NR_KOL, SYGN_MAG, NR_MAG)
+ VALUES
+ (:ID_ZLECENIA, :SYGN_ZLECENIA, :ID_KOD_U, :ID_RODZAJ_R, :DATA_WYST, :ID_SPRZETU, :DATA_PROP_ZAK, :PRZESTOJ_OD, :DATA_ZDA_KUT, :LICZBA_RBH, :DATA_ZAK, :ID_GR_SPRZ, :
+ ID_RODZ_SPRZ, :DEPOZYT, :STATUS, :ID_MAG_LOC, :ID_HARM, :NR_HARM, :UWAGI, :ZADANIE, :ID_JEDNOSTKI, :ID_KOMORKI, :ROK, :ID_KOMORKI_GLW, :ROK_MAG, :NR_KOL, :SYGN_MAG, :NR_MAG)
+ matching(rok_mag,ID_KOMORKI_GLW,ID_MAG,DEPOZYT,ROK,ID_HARM,ID_KOMORKI,NR_KOL);
+end
+#C

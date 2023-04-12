@@ -1,0 +1,147 @@
+[REPORT]
+comment=SzczegÛ≥owe rozliczenie KUTÛw na miesiπce
+index=
+rapgroup=Kontrolne
+type=-1
+templatefile=
+[CHART]
+legend=0
+legendalignment=1
+description=1
+descriptionnewpage=0
+mark=0
+markstyle=0
+width=800
+height=600
+style=0
+xstyle=0
+xfield=
+chartlabelangle=0
+chartmultibar=0
+[CFG]
+vertical=|
+horizontal=_
+width_no=3
+no=0
+wrapline=0
+[HTML]
+font=Arial
+sizef=10
+notablehdr=0
+noth=0
+firstpagecnt=-1
+nextpagecnt=-1
+fixedtable=0
+[PARAM_ID_KOMORKI]
+TYP=-1
+RODZAJ=-1
+SQLCNT=0
+[HEADER]
+no=1
+line1=SzczegÛ≥owe rozliczenie KUTÛw na miesiπce
+[HEADER_EXT]
+no=1
+line1=
+[FOOTER]
+no=1
+line1=
+[SQL]
+no=20
+line1=select zl.SYGN_ZLECENIA ,
+line2=sum(case when rbh.MIESIAC =1 then rbh.LICZBA_RBH else 0.00 end) AS STYCZEN,
+line3=sum(case when rbh.MIESIAC =2 then rbh.LICZBA_RBH else 0.00 end) AS LUTY,
+line4=sum(case when rbh.MIESIAC =3 then rbh.LICZBA_RBH else 0.00 end) AS MARZEC,
+line5=sum(case when rbh.MIESIAC =4 then rbh.LICZBA_RBH else 0.00 end) AS KWIECIEN,
+line6=sum(case when rbh.MIESIAC =5 then rbh.LICZBA_RBH else 0.00 end) AS MAJ,
+line7=sum(case when rbh.MIESIAC =6 then rbh.LICZBA_RBH else 0.00 end) AS CZERWIEC,
+line8=sum(case when rbh.MIESIAC between 1 and 6 then rbh.LICZBA_RBH else 0.00 end) AS POLROCZE,
+line9=sum(case when rbh.MIESIAC =7 then rbh.LICZBA_RBH else 0.00 end) AS LIPIEC,
+line10=sum(case when rbh.MIESIAC =8 then rbh.LICZBA_RBH else 0.00 end) AS SIERPIEN,
+line11=sum(case when rbh.MIESIAC =9 then rbh.LICZBA_RBH else 0.00 end) AS WRZESIEN,
+line12=sum(case when rbh.MIESIAC =10 then rbh.LICZBA_RBH else 0.00 end) AS PAZDZIERNIK,
+line13=sum(case when rbh.MIESIAC =11 then rbh.LICZBA_RBH else 0.00 end) AS LISTOPAD,
+line14=sum(case when rbh.MIESIAC =12 then rbh.LICZBA_RBH else 0.00 end) AS GRUDZIEN,
+line15=sum(rbh.LICZBA_RBH) AS ROK
+line16=from pr_zlecenia zl
+line17=inner join PR_ZLECENIA_RBH rbh on rbh.ID_KOMORKI = zl.ID_KOMORKI and rbh.ROK= zl.ROK and rbh.ID_ZLECENIA = zl.ID_ZLECENIA
+line18=inner join pr_komorki k on k.ID_KOMORKI = zl.ID_KOMORKI
+line19=where zl.rok=:ROK and k.KOD = :KOD
+line20=group by zl.SYGN_ZLECENIA
+[DISPLAYNAMES]
+SYGN_ZLECENIA=SYGNATURA
+STYCZEN=STYCZE—
+LUTY=LUTY
+MARZEC=MARZEC
+KWIECIEN=KWIECIE—
+MAJ=MAJ
+CZERWIEC=CZERWIEC
+POLROCZE=I P”LROCZE
+LIPIEC=LIPIEC
+SIERPIEN=SIERPIE—
+WRZESIEN=WRZESIE—
+PAZDZIERNIK=PAèDZIERNIK
+LISTOPAD=LISTOPAD
+GRUDZIEN=GRUDZIE—
+ROK=CA£Y ROK
+[FIELDSIZES]
+SYGN_ZLECENIA=20
+STYCZEN=10
+LUTY=10
+MARZEC=10
+KWIECIEN=10
+MAJ=10
+CZERWIEC=10
+POLROCZE=10
+LIPIEC=10
+SIERPIEN=10
+WRZESIEN=10
+PAZDZIERNIK=10
+LISTOPAD=10
+GRUDZIEN=10
+ROK=10
+[DISPLAYFORMATS]
+STYCZEN=###,##0.00
+LUTY=###,##0.00
+MARZEC=###,##0.00
+KWIECIEN=###,##0.00
+MAJ=###,##0.00
+CZERWIEC=###,##0.00
+POLROCZE=###,##0.00
+LIPIEC=###,##0.00
+SIERPIEN=###,##0.00
+WRZESIEN=###,##0.00
+PAZDZIERNIK=###,##0.00
+LISTOPAD=###,##0.00
+GRUDZIEN=###,##0.00
+ROK=###,##0.00
+[PARAMS]
+ROK=@ROK#
+KOD=1/1
+[SUMFIELDS]
+STYCZEN=0
+LUTY=0
+MARZEC=0
+KWIECIEN=0
+MAJ=0
+CZERWIEC=0
+POLROCZE=0
+LIPIEC=0
+SIERPIEN=0
+WRZESIEN=0
+PAZDZIERNIK=0
+LISTOPAD=0
+GRUDZIEN=0
+ROK=0
+[PARAM_KOD]
+TYP=4
+RODZAJ=1
+KEYFIELD=KOD
+LISTFIELDS=KOD;NAZWA
+DISPLAYNAMES=Kod; i nazwa warsztatu
+LONGNAME=Kod warsztatu
+SQLCNT=1
+SQL0=select * from pr_komorki where warsztat='T' and kod not in ('-1/-1','0/0') ORDER BY KOD
+[PARAM_ROK]
+TYP=-1
+RODZAJ=-1
+SQLCNT=0

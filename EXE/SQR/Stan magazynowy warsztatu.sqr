@@ -1,0 +1,100 @@
+[REPORT]
+comment=Stan magazynowy warsztatu
+index=
+rapgroup=Kontrolne
+type=-1
+templatefile=
+[CHART]
+legend=0
+legendalignment=1
+description=1
+descriptionnewpage=0
+mark=0
+markstyle=0
+width=800
+height=600
+style=0
+xstyle=0
+xfield=
+chartlabelangle=0
+chartmultibar=0
+[CFG]
+vertical=|
+horizontal=_
+width_no=3
+no=0
+wrapline=0
+[HTML]
+font=Arial
+sizef=10
+notablehdr=0
+noth=0
+firstpagecnt=-1
+nextpagecnt=-1
+fixedtable=0
+[PARAM_DATA_OD]
+TYP=-1
+RODZAJ=-1
+SQLCNT=0
+[HEADER]
+no=1
+line1=Stan magazynowy warsztatu :KOD na dzieñ :DATA_DO
+[HEADER_EXT]
+no=1
+line1=
+[FOOTER]
+no=1
+line1=
+[SQL]
+no=12
+line1=select
+line2=m.SYGN_MAG, '&nbsp;' || k.kod as kod, s.NAZWA, r.KOD_REM,
+line3=m.NR_FABR, m.NR_REJ, j.JW ||' ' || j.MIEJSCOWOSC as JW,
+line4=m.ILOSC, m.DATA_PRZYJ, m.PROT_PRZYJ
+line5=from pr_magazyn m
+line6=inner join pr_komorki k on k.ID_KOMORKI = m.ID_KOMORKI
+line7=inner join pr_sprzet  s on s.ID_SPRZETU = m.ID_SPRZETU
+line8=inner join pr_remonty r on r.ID_REMONTU = m.ID_REMONTU
+line9=inner join pr_jednostki j on j.ID_JEDNOSTKI = m.ID_JEDNOSTKI
+line10=where m.DATA_PRZYJ <= :DATA_DO AND
+line11=(m.DATA_PRZEKAZ is null or m.DATA_PRZEKAZ < '1900-01-01'  or m.DATA_PRZEKAZ > :DATA_DO)
+line12=and (:KOD IN ('0/0','-1/-1') OR K.KOD = :KOD)
+[DISPLAYNAMES]
+SYGN_MAG=Nr<br>magazynowy
+KOD=Warsztat
+NAZWA=Nazwa sprzêtu
+KOD_REM=Rodzaj<br>naprawy
+NR_FABR=Nr<br>fabryczny
+NR_REJ=Nr<br>rejestracyjny
+JW=Dostawca
+ILOSC=Iloœæ
+DATA_PRZYJ=Data<br>przyjêcia
+PROT_PRZYJ=Protokó³<br>przyjêcia
+[FIELDSIZES]
+SYGN_MAG=15
+KOD=15
+NAZWA=30
+KOD_REM=10
+NR_FABR=20
+NR_REJ=20
+JW=30
+ILOSC=12
+DATA_PRZYJ=12
+PROT_PRZYJ=20
+[PARAMS]
+KOD=0/0
+DATA_DO=@DATA#
+[PARAM_DATA_DO]
+TYP=0
+RODZAJ=0
+LONGNAME=Na dzieñ
+SQLCNT=0
+[PARAM_KOD]
+TYP=4
+RODZAJ=1
+KEYFIELD=KOD
+LISTFIELDS=KOD;NAZWA
+DISPLAYNAMES=Kod;Nazwa
+LONGNAME=Kod warsztatu
+SQLCNT=1
+SQL0=select * from pr_komorki where warsztat='T' and kod <> '-1/-1' order by kod

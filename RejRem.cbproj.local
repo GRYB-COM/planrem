@@ -1,0 +1,24 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<BorlandProject>
+	<Transactions>
+    <Transaction>1899-12-30 00:00:00.000.h,P:\PLANREM\Unit1.h=P:\PLANREM\MODEL\HANDLERS\RozlGodzSQRHdlr.h</Transaction>
+    <Transaction>1899-12-30 00:00:00.000.h,P:\PLANREM\Unit1.h=P:\PLANREM\VIEW\FORMS\AddRbhFRM.h</Transaction>
+    <Transaction>1899-12-30 00:00:00.000.h,P:\PLANREM\REPORTS\SPRAWOZDANIA\BILMOZLPROD\BilMozlProdWybFRM.h=P:\PLANREM\REPORTS\SPRAWOZDANIA\RBH4MIES\RBH4OneMiesWybFRM.h</Transaction>
+    <Transaction>1899-12-30 00:00:00.000.h,P:\PLANREM\Unit1.h=P:\_COMMON\_SLAWEK\FUNCS\SQR\SQRTools.h</Transaction>
+    <Transaction>1899-12-30 00:00:00.000.h,P:\PLANREM\Unit1.h=P:\PLANREM\MODEL\EDITORS\RozlGodzEditor.h</Transaction>
+    <Transaction>1899-12-30 00:00:00.000.h,P:\PLANREM\REPORTS\SPRAWOZDANIA\RBH4MIES\RBH4MiesCTRL.h=P:\PLANREM\REPORTS\SPRAWOZDANIA\RBH4MIES\RBH4OneMiesCTRL.h</Transaction>
+    <Transaction>1899-12-30 00:00:00.000.dfm,P:\PLANREM\REPORTS\SPRAWOZDANIA\BILMOZLPROD\BilMozlProdWybFRM.dfm=P:\PLANREM\REPORTS\SPRAWOZDANIA\RBH4MIES\RBH4OneMiesWybFRM.dfm</Transaction>
+    <Transaction>1899-12-30 00:00:00.000.cpp,P:\PLANREM\Unit6.cpp=P:\PLANREM\VIEW\EdProtPrzekFRM.cpp</Transaction>
+    <Transaction>1899-12-30 00:00:00.000.dfm,P:\PLANREM\Unit1.dfm=P:\PLANREM\VIEW\FORMS\AddRbhFRM.dfm</Transaction>
+    <Transaction>1899-12-30 00:00:00.000.dfm,P:\PLANREM\REPORTS\MELD\TYG\MeldTygDM.dfm=</Transaction>
+    <Transaction>1899-12-30 00:00:00.000.cpp,P:\PLANREM\Unit1.cpp=P:\PLANREM\MODEL\EDITORS\RozlGodzEditor.cpp</Transaction>
+    <Transaction>1899-12-30 00:00:00.000.cpp,P:\PLANREM\Unit1.cpp=P:\_COMMON\_SLAWEK\FUNCS\SQR\SQRTools.cpp</Transaction>
+    <Transaction>1899-12-30 00:00:00.000.cpp,P:\PLANREM\Unit1.cpp=P:\PLANREM\VIEW\FORMS\AddRbhFRM.cpp</Transaction>
+    <Transaction>1899-12-30 00:00:00.000.cpp,P:\PLANREM\Unit1.cpp=P:\PLANREM\MODEL\HANDLERS\RozlGodzSQRHdlr.cpp</Transaction>
+    <Transaction>1899-12-30 00:00:00.000.h,P:\PLANREM\Unit6.h=P:\PLANREM\VIEW\EdProtPrzekFRM.h</Transaction>
+    <Transaction>1899-12-30 00:00:00.000.dfm,P:\PLANREM\Unit6.dfm=P:\PLANREM\VIEW\EdProtPrzekFRM.dfm</Transaction>
+    <Transaction>1899-12-30 00:00:00.000.cpp,P:\PLANREM\REPORTS\SPRAWOZDANIA\RBH4MIES\RBH4MiesCTRL.cpp=P:\PLANREM\REPORTS\SPRAWOZDANIA\RBH4MIES\RBH4OneMiesCTRL.cpp</Transaction>
+    <Transaction>1899-12-30 00:00:00.000.cpp,P:\PLANREM\REPORTS\MELD\TYG\MeldTygDM.cpp=</Transaction>
+    <Transaction>1899-12-30 00:00:00.000.cpp,P:\PLANREM\REPORTS\SPRAWOZDANIA\BILMOZLPROD\BilMozlProdWybFRM.cpp=P:\PLANREM\REPORTS\SPRAWOZDANIA\RBH4MIES\RBH4OneMiesWybFRM.cpp</Transaction>
+  </Transactions>
+</BorlandProject>

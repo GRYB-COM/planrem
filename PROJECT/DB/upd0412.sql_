@@ -1,0 +1,32 @@
+/******************************************************************************/
+/*                          IMPORTANT NOTES !                                 */
+/* Before running this script please check that you are only one who          */
+/* connected to the database at this time. Otherwise the script may fail.     */
+/* If at least one foreign key constraint is going to be dropped or created   */
+/* you must disconnect other users to execute script.                         */
+/* We recommend to make a backup of the database before executing the script. */
+/*                                                                            */
+/******************************************************************************/
+SET TERM ^ ;
+
+/**** PROCESSING FIELDS *****/
+
+ALTER TABLE PR_ZLECENIA
+ADD TEMP$$UWAGI Varchar(250),
+ADD TEMP$$ZADANIE Varchar(250) NOT NULL^
+
+UPDATE PR_ZLECENIA
+   SET 
+   TEMP$$UWAGI=UWAGI,
+   TEMP$$ZADANIE=ZADANIE^
+
+ALTER TABLE PR_ZLECENIA
+DROP UWAGI,
+DROP ZADANIE^
+
+ALTER TABLE PR_ZLECENIA
+  ALTER COLUMN TEMP$$UWAGI TO UWAGI,
+  ALTER COLUMN TEMP$$ZADANIE TO ZADANIE^
+
+/****************************/
+

@@ -1,0 +1,44 @@
+DROP INDEX PR_SPRZET_NAZWA_IDX
+#TRY
+
+CREATE INDEX PR_SPRZET_NAZWA_IDX ON PR_SPRZET(NAZWA)
+#C
+
+ALTER TABLE PR_SPRZET add ID_SPRZETU_ADD Integer NOT NULL
+#TRY
+
+update pr_sprzet zew set id_sprzetu_add =(select min(wew.id_sprzetu) from pr_sprzet wew where wew.NAZWA = zew.NAZWA  )
+#C
+
+update pr_magazyn m set id_sprzetu = (select s.id_sprzetu_add from pr_sprzet s where s.ID_SPRZETU = m.ID_SPRZETU) 
+where exists (select null from pr_sprzet s where s.ID_SPRZETU = m.ID_SPRZETU and s.ID_SPRZETU <> s.ID_SPRZETU_ADD)
+#C
+
+update pr_zlecenia m set id_sprzetu = (select s.id_sprzetu_add from pr_sprzet s where s.ID_SPRZETU = m.ID_SPRZETU) 
+where exists (select null from pr_sprzet s where s.ID_SPRZETU = m.ID_SPRZETU and s.ID_SPRZETU <> s.ID_SPRZETU_ADD)
+#C
+
+update pr_harmonogram m set id_sprzetu = (select s.id_sprzetu_add from pr_sprzet s where s.ID_SPRZETU = m.ID_SPRZETU) 
+where exists (select null from pr_sprzet s where s.ID_SPRZETU = m.ID_SPRZETU and s.ID_SPRZETU <> s.ID_SPRZETU_ADD)
+#C
+
+delete from pr_sprzet where id_sprzetu <> id_sprzetu_add
+#C
+
+ALTER TABLE PR_SPRZET drop ID_SPRZETU_ADD
+#C
+
+DROP INDEX PR_SPRZET_NAZWA_IDX
+#C
+
+CREATE UNIQUE INDEX PR_SPRZET_NAZWA_IDX ON PR_SPRZET(NAZWA)
+#C
+
+update pr_sprzet set id_sprzetu = id_sprzetu + 1000000
+#C
+
+set generator PR_SPRZET_GEN to 0
+#C
+
+update pr_sprzet set id_sprzetu = gen_id(PR_SPRZET_GEN,1)
+#C

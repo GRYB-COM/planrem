@@ -1,0 +1,54 @@
+/******************************************************************************/
+/*                          IMPORTANT NOTES !                                 */
+/* Before running this script please check that you are only one who          */
+/* connected to the database at this time. Otherwise the script may fail.     */
+/* If at least one foreign key constraint is going to be dropped or created   */
+/* you must disconnect other users to execute script.                         */
+/* We recommend to make a backup of the database before executing the script. */
+/*                                                                            */
+/******************************************************************************/
+SET TERM ^ ;
+
+ALTER TABLE PR_OSOBY
+  DROP CONSTRAINT FK_PR_OSOBY_0^
+
+/**** PROCESSING FIELDS *****/
+
+ALTER TABLE PR_OSOBY
+ADD TEMP$$ID_STANOWISKA Integer^
+
+UPDATE PR_OSOBY
+   SET 
+   TEMP$$ID_STANOWISKA=ID_STANOWISKA^
+
+ALTER TABLE PR_OSOBY
+DROP ID_STANOWISKA^
+
+ALTER TABLE PR_OSOBY
+  ALTER COLUMN TEMP$$ID_STANOWISKA TO ID_STANOWISKA^
+
+/****************************/
+
+ALTER TABLE PR_OSOBY ADD CONSTRAINT FK_PR_OSOBY_0 FOREIGN KEY (ID_STANOWISKA) REFERENCES PR_STANOWISKA(ID_STANOWISKA)^
+
+ALTER TABLE PR_OSOBY
+  DROP CONSTRAINT FK_PR_OSOBY_1^
+
+/**** PROCESSING FIELDS *****/
+
+ALTER TABLE PR_OSOBY
+ADD TEMP$$ID_STOPNIA Integer^
+
+UPDATE PR_OSOBY
+   SET 
+   TEMP$$ID_STOPNIA=ID_STOPNIA^
+
+ALTER TABLE PR_OSOBY
+DROP ID_STOPNIA^
+
+ALTER TABLE PR_OSOBY
+  ALTER COLUMN TEMP$$ID_STOPNIA TO ID_STOPNIA^
+
+/****************************/
+
+ALTER TABLE PR_OSOBY ADD CONSTRAINT FK_PR_OSOBY_1 FOREIGN KEY (ID_STOPNIA) REFERENCES PR_STOPNIE(ID_STOPNIA)^

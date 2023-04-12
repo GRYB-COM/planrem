@@ -1,0 +1,290 @@
+CREATE OR ALTER PROCEDURE SP_ROCZNE (IN_ID_WARSZTAT Integer)
+returns (IDX_1                      Integer,
+         IDX_2                      Integer,
+         LP                         Integer,
+         ID_KOMORKI                 Integer,
+         KOD_WARSZTATU              Varchar(20),
+         NAZ_WARSZTATU              Varchar(120),
+         POZYCJA                    Varchar(20),
+         NAZ_REMONTU                Varchar(120),
+         NAZ_SPRZETU                Varchar(120),
+         INDEKS_MAT                 Varchar(120),
+         PLAN_ILOSC_SPRZETU         Numeric(15,2),
+         RODZ_NAPRAWY               Varchar(120),
+         PLAN_ILOSC_RBH             Numeric(15,2),
+         PLAN_ILOSC_RBH_KWARTAL_I   Numeric(15,2),
+         PLAN_ILOSC_RBH_KWARTAL_II  Numeric(15,2),
+         PLAN_ILOSC_RBH_KWARTAL_III Numeric(15,2),
+         PLAN_ILOSC_RBH_KWARTAL_IV  Numeric(15,2),
+         REALIZACJA_RBH_KWARTAL_I   Numeric(15,2),
+         REALIZACJA_RBH_KWARTAL_II  Numeric(15,2),
+         REALIZACJA_RBH_KWARTAL_III Numeric(15,2),
+         REALIZACJA_RBH_KWARTAL_IV  Numeric(15,2),
+         ILOSC_SPRZET_KWARTAL_I     Numeric(15,2),
+         ILOSC_SPRZET_KWARTAL_II    Numeric(15,2),
+         ILOSC_SPRZET_KWARTAL_III   Numeric(15,2),
+         ILOSC_SPRZET_KWARTAL_IV    Numeric(15,2),
+         ILOSC_SPRZET               Numeric(15,2),
+         ILOSC_PLAN                 Numeric(15,2),
+         PROC_PLAN                  Numeric(15,4),
+         ILOSC_ZAL                  Numeric(15,2),
+         PROC_ZAL                   Numeric(15,2))
+AS 
+  declare variable locLP Integer;
+begin
+
+
+/*naglowki
+
+for
+select pozycja ,
+1,
+MAX((case when (pozycja is null OR  pozycja = 999) then 'POZOSTA£E' else naz_remontu end )) as naz_remontu
+from PR_KODY_USLUG
+group by pozycja
+into :IDX_1,:IDX_2,:naz_remontu 
+do suspend;   */
+
+
+for SELECT distinct
+(case when ku.pozycja is null then 999 else ku.pozycja end) IDX_1,
+1 IDX_2,
+W.ID_KOMORKI, W.KOD AS KOD_WARSZTATU,
+null as naz_warsztatu,
+(case when ku.pozycja is null then 999 else ku.pozycja end) as pozycja ,
+(case when (ku.pozycja is null OR  ku.pozycja = 999) then 'POZOSTA£E' else ku.naz_remontu end ) as naz_remontu,
+null  as naz_sprzetu,
+null INDEKS_MAT,
+null AS PLAN_ILOSC_SPRZETU,
+null AS RODZ_NAPRAWY,
+null AS PLAN_ILOSC_RBH,
+null AS PLAN_ILOSC_RBH_KWARTAL_I,
+null AS PLAN_ILOSC_RBH_KWARTAL_II,
+null AS PLAN_ILOSC_RBH_KWARTAL_III,
+null AS PLAN_ILOSC_RBH_KWARTAL_IV,
+null AS REALIZACJA_RBH_KWARTAL_I,
+null AS REALIZACJA_RBH_KWARTAL_II,
+null AS REALIZACJA_RBH_KWARTAL_III,
+null AS REALIZACJA_RBH_KWARTAL_IV,
+null AS ILOSC_SPRZET_KWARTAL_I,
+null AS ILOSC_SPRZET_KWARTAL_II,
+null AS ILOSC_SPRZET_KWARTAL_III,
+null AS ILOSC_SPRZET_KWARTAL_IV,
+null AS ILOSC_SPRZET,
+null AS ILOSC_PLAN,
+null AS PROC_PLAN,
+null AS ILOSC_ZAL,
+null AS PROC_ZAL
+FROM pr_zlecenia z
+left outer join PR_KOMORKI     w  on w.ID_KOMORKI = z.ID_KOMORKI
+left outer join pr_plan          p  on p.ID_HARM      = z.ID_HARM
+left outer join pr_kody_uslug    ku on ku.ID_USLUGI   = p.ID_USLUGI
+left outer join pr_magazyn       m  on m.ID_MAG       = z.ID_MAG  AND M.ID_KOMORKI = Z.ID_KOMORKI_GLW AND M.DEPOZYT =Z.DEPOZYT AND M.ROK =Z.ROK_MAG
+left outer join pr_sprzet        s  on s.ID_SPRZETU   = m.ID_SPRZETU
+left outer join pr_zlecenia_rbh  r  on r.ID_ZLECENIA  = z.ID_ZLECENIA  AND R.ID_KOMORKI = Z.ID_KOMORKI AND R.ROK = Z.ROK
+left outer join pr_jednostki     j  on j.ID_JEDNOSTKI = z.ID_JEDNOSTKI
+left outer join pr_remonty       re on re.ID_REMONTU  = m.id_remontu
+where     (-1=:IN_ID_WARSZTAT or W.ID_KOMORKI = :IN_ID_WARSZTAT)
+into 
+:IDX_1,
+:IDX_2,
+:ID_KOMORKI ,
+:KOD_WARSZTATU , 
+:naz_warsztatu  ,
+:pozycja  ,
+:naz_remontu  ,
+:naz_sprzetu ,
+:INDEKS_MAT  ,
+:PLAN_ILOSC_SPRZETU,
+:RODZ_NAPRAWY  ,
+:PLAN_ILOSC_RBH ,
+:PLAN_ILOSC_RBH_KWARTAL_I ,
+:PLAN_ILOSC_RBH_KWARTAL_II ,
+:PLAN_ILOSC_RBH_KWARTAL_III,
+:PLAN_ILOSC_RBH_KWARTAL_IV,
+:REALIZACJA_RBH_KWARTAL_I ,
+:REALIZACJA_RBH_KWARTAL_II ,
+:REALIZACJA_RBH_KWARTAL_III,
+:REALIZACJA_RBH_KWARTAL_IV,
+:ILOSC_SPRZET_KWARTAL_I ,
+:ILOSC_SPRZET_KWARTAL_II ,
+:ILOSC_SPRZET_KWARTAL_III ,
+:ILOSC_SPRZET_KWARTAL_IV  ,
+:ILOSC_SPRZET,
+:ILOSC_PLAN ,
+:PROC_PLAN ,
+:ILOSC_ZAL,
+:PROC_ZAL  
+do
+begin
+ suspend;
+end
+
+
+/*razem*/
+
+
+for SELECT
+(case when ku.pozycja is null then 999 else ku.pozycja end) IDX_1,
+10 IDX_2,
+W.ID_KOMORKI, W.KOD AS KOD_WARSZTATU,
+null as naz_warsztatu,
+(case when ku.pozycja is null then 999 else ku.pozycja end) as pozycja ,
+null as naz_remontu,
+null  as naz_sprzetu,
+null INDEKS_MAT,
+sum(P.ILOSC) AS PLAN_ILOSC_SPRZETU,
+null AS RODZ_NAPRAWY,
+SUM(P.ILOSC * P.PLAN_RBH) AS PLAN_ILOSC_RBH,
+SUM(P.KWARTAL_I * P.PLAN_RBH) AS PLAN_ILOSC_RBH_KWARTAL_I,
+SUM(P.KWARTAL_II * P.PLAN_RBH) AS PLAN_ILOSC_RBH_KWARTAL_II,
+SUM(P.KWARTAL_III * P.PLAN_RBH) AS PLAN_ILOSC_RBH_KWARTAL_III,
+SUM(P.KWARTAL_IV * P.PLAN_RBH) AS PLAN_ILOSC_RBH_KWARTAL_IV,
+SUM(CASE WHEN R.MIESIAC BETWEEN 1  AND 3  THEN R.LICZBA_RBH END) AS REALIZACJA_RBH_KWARTAL_I,
+SUM(CASE WHEN R.MIESIAC BETWEEN 4  AND 6  THEN R.LICZBA_RBH END) AS REALIZACJA_RBH_KWARTAL_II,
+SUM(CASE WHEN R.MIESIAC BETWEEN 7  AND 9  THEN R.LICZBA_RBH END) AS REALIZACJA_RBH_KWARTAL_III,
+SUM(CASE WHEN R.MIESIAC BETWEEN 10 AND 12 THEN R.LICZBA_RBH END) AS REALIZACJA_RBH_KWARTAL_IV,
+SUM(CASE WHEN R.MIESIAC BETWEEN 1  AND 3  THEN R.ILOSC END) AS ILOSC_SPRZET_KWARTAL_I,
+SUM(CASE WHEN R.MIESIAC BETWEEN 4  AND 6  THEN R.ILOSC END) AS ILOSC_SPRZET_KWARTAL_II,
+SUM(CASE WHEN R.MIESIAC BETWEEN 7  AND 9  THEN R.ILOSC END) AS ILOSC_SPRZET_KWARTAL_III,
+SUM(CASE WHEN R.MIESIAC BETWEEN 10 AND 12 THEN R.ILOSC END) AS ILOSC_SPRZET_KWARTAL_IV,
+SUM(R.ILOSC) AS ILOSC_SPRZET,
+null AS ILOSC_PLAN,
+null AS PROC_PLAN,
+null AS ILOSC_ZAL,
+null AS PROC_ZAL
+FROM pr_zlecenia z
+left outer join PR_KOMORKI     w  on w.ID_KOMORKI = z.ID_KOMORKI
+left outer join pr_plan          p  on p.ID_HARM      = z.ID_HARM
+left outer join pr_kody_uslug    ku on ku.ID_USLUGI   = p.ID_USLUGI
+left outer join pr_magazyn       m  on m.ID_MAG       = z.ID_MAG  AND M.ID_KOMORKI = Z.ID_KOMORKI_GLW AND M.DEPOZYT =Z.DEPOZYT AND M.ROK =Z.ROK_MAG
+left outer join pr_sprzet        s  on s.ID_SPRZETU   = m.ID_SPRZETU
+left outer join pr_zlecenia_rbh  r  on r.ID_ZLECENIA  = z.ID_ZLECENIA  AND R.ID_KOMORKI = Z.ID_KOMORKI AND R.ROK = Z.ROK
+left outer join pr_jednostki     j  on j.ID_JEDNOSTKI = z.ID_JEDNOSTKI
+left outer join pr_remonty       re on re.ID_REMONTU  = m.id_remontu
+where     (-1=:IN_ID_WARSZTAT or W.ID_KOMORKI = :IN_ID_WARSZTAT)
+group by  
+w.ID_KOMORKI,w.kod,   ku.POZYCJA   
+into 
+:IDX_1,
+:IDX_2,
+:ID_KOMORKI ,
+:KOD_WARSZTATU , 
+:naz_warsztatu  ,
+:pozycja  ,
+:naz_remontu  ,
+:naz_sprzetu ,
+:INDEKS_MAT  ,
+:PLAN_ILOSC_SPRZETU,
+:RODZ_NAPRAWY  ,
+:PLAN_ILOSC_RBH ,
+:PLAN_ILOSC_RBH_KWARTAL_I ,
+:PLAN_ILOSC_RBH_KWARTAL_II ,
+:PLAN_ILOSC_RBH_KWARTAL_III,
+:PLAN_ILOSC_RBH_KWARTAL_IV,
+:REALIZACJA_RBH_KWARTAL_I ,
+:REALIZACJA_RBH_KWARTAL_II ,
+:REALIZACJA_RBH_KWARTAL_III,
+:REALIZACJA_RBH_KWARTAL_IV,
+:ILOSC_SPRZET_KWARTAL_I ,
+:ILOSC_SPRZET_KWARTAL_II ,
+:ILOSC_SPRZET_KWARTAL_III ,
+:ILOSC_SPRZET_KWARTAL_IV  ,
+:ILOSC_SPRZET,
+:ILOSC_PLAN ,
+:PROC_PLAN ,
+:ILOSC_ZAL,
+:PROC_ZAL  
+do
+begin
+ suspend;
+end 
+
+
+/*szczegoly*/
+
+
+locLP = 1;
+       
+for SELECT
+(case when ku.pozycja is null then 999 else ku.pozycja end) IDX_1,
+5 IDX_2,
+W.ID_KOMORKI, W.KOD AS KOD_WARSZTATU,
+(case when w.ID_KOMORKI is null then 'POZOSTA£E' else W.KOD || ' - ' || W.NAZWA end) as naz_warsztatu,
+(case when ku.pozycja is null then 999 else ku.pozycja end) as pozycja ,
+(case when (ku.pozycja is null OR  ku.pozycja = 999) then 'POZOSTA£E' else ku.naz_remontu end ) as naz_remontu,
+case when s.nazwa is null then '' else s.nazwa end || '   '
+|| case when m.NR_REJ is null then '' else m.NR_REJ end || '   '
+|| case when m.NR_FABR is null then '' else m.NR_FABR end  as naz_sprzetu,
+P.INDEKS_MAT,
+P.ILOSC AS PLAN_ILOSC_SPRZETU,
+P.REMONT AS RODZ_NAPRAWY,
+P.ILOSC * P.PLAN_RBH AS PLAN_ILOSC_RBH,
+P.KWARTAL_I * P.PLAN_RBH AS PLAN_ILOSC_RBH_KWARTAL_I,
+P.KWARTAL_II * P.PLAN_RBH AS PLAN_ILOSC_RBH_KWARTAL_II,
+P.KWARTAL_III * P.PLAN_RBH AS PLAN_ILOSC_RBH_KWARTAL_III,
+P.KWARTAL_IV * P.PLAN_RBH AS PLAN_ILOSC_RBH_KWARTAL_IV,
+SUM(CASE WHEN R.MIESIAC BETWEEN 1  AND 3  THEN R.LICZBA_RBH END) AS REALIZACJA_RBH_KWARTAL_I,
+SUM(CASE WHEN R.MIESIAC BETWEEN 4  AND 6  THEN R.LICZBA_RBH END) AS REALIZACJA_RBH_KWARTAL_II,
+SUM(CASE WHEN R.MIESIAC BETWEEN 7  AND 9  THEN R.LICZBA_RBH END) AS REALIZACJA_RBH_KWARTAL_III,
+SUM(CASE WHEN R.MIESIAC BETWEEN 10 AND 12 THEN R.LICZBA_RBH END) AS REALIZACJA_RBH_KWARTAL_IV,
+SUM(CASE WHEN R.MIESIAC BETWEEN 1  AND 3  THEN R.ILOSC END) AS ILOSC_SPRZET_KWARTAL_I,
+SUM(CASE WHEN R.MIESIAC BETWEEN 4  AND 6  THEN R.ILOSC END) AS ILOSC_SPRZET_KWARTAL_II,
+SUM(CASE WHEN R.MIESIAC BETWEEN 7  AND 9  THEN R.ILOSC END) AS ILOSC_SPRZET_KWARTAL_III,
+SUM(CASE WHEN R.MIESIAC BETWEEN 10 AND 12 THEN R.ILOSC END) AS ILOSC_SPRZET_KWARTAL_IV,
+SUM(R.ILOSC) AS ILOSC_SPRZET,
+null AS ILOSC_PLAN,
+null AS PROC_PLAN,
+CASE WHEN SUM(R.ILOSC) = P.ILOSC THEN null ELSE P.ILOSC - SUM(R.ILOSC) END AS ILOSC_ZAL,
+CASE WHEN SUM(R.ILOSC) = P.ILOSC THEN null ELSE SUM(R.ILOSC)/P.ILOSC END AS PROC_ZAL
+FROM pr_zlecenia z
+left outer join PR_KOMORKI     w  on w.ID_KOMORKI = z.ID_KOMORKI
+left outer join pr_plan          p  on p.ID_HARM      = z.ID_HARM
+left outer join pr_kody_uslug    ku on ku.ID_USLUGI   = p.ID_USLUGI
+left outer join pr_magazyn       m  on m.ID_MAG       = z.ID_MAG  AND M.ID_KOMORKI = Z.ID_KOMORKI_GLW AND M.DEPOZYT =Z.DEPOZYT AND M.ROK =Z.ROK_MAG
+left outer join pr_sprzet        s  on s.ID_SPRZETU   = m.ID_SPRZETU
+left outer join pr_zlecenia_rbh  r  on r.ID_ZLECENIA  = z.ID_ZLECENIA  AND R.ID_KOMORKI = Z.ID_KOMORKI AND R.ROK = Z.ROK
+left outer join pr_jednostki     j  on j.ID_JEDNOSTKI = z.ID_JEDNOSTKI
+left outer join pr_remonty       re on re.ID_REMONTU  = m.id_remontu
+where     (-1=:IN_ID_WARSZTAT or W.ID_KOMORKI = :IN_ID_WARSZTAT)
+group by  
+w.ID_KOMORKI, w.KOD, w.NAZWA,  ku.POZYCJA, ku.NAZ_REMONTU,   s.NAZWA,   p.ZADANIE,  m.NR_REJ,  m.NR_FABR,
+P.ZADANIE,P.INDEKS_MAT,P.ILOSC,P.REMONT,P.ILOSC,P.PLAN_RBH,P.KWARTAL_I,P.KWARTAL_II,P.KWARTAL_III,P.KWARTAL_IV
+into 
+:IDX_1,
+:IDX_2,
+:ID_KOMORKI ,
+:KOD_WARSZTATU , 
+:naz_warsztatu  ,
+:pozycja  ,
+:naz_remontu  ,
+:naz_sprzetu ,
+:INDEKS_MAT  ,
+:PLAN_ILOSC_SPRZETU,
+:RODZ_NAPRAWY  ,
+:PLAN_ILOSC_RBH ,
+:PLAN_ILOSC_RBH_KWARTAL_I ,
+:PLAN_ILOSC_RBH_KWARTAL_II ,
+:PLAN_ILOSC_RBH_KWARTAL_III,
+:PLAN_ILOSC_RBH_KWARTAL_IV,
+:REALIZACJA_RBH_KWARTAL_I ,
+:REALIZACJA_RBH_KWARTAL_II ,
+:REALIZACJA_RBH_KWARTAL_III,
+:REALIZACJA_RBH_KWARTAL_IV,
+:ILOSC_SPRZET_KWARTAL_I ,
+:ILOSC_SPRZET_KWARTAL_II ,
+:ILOSC_SPRZET_KWARTAL_III ,
+:ILOSC_SPRZET_KWARTAL_IV  ,
+:ILOSC_SPRZET,
+:ILOSC_PLAN ,
+:PROC_PLAN ,
+:ILOSC_ZAL,
+:PROC_ZAL  
+do
+begin
+ LP = locLP;
+ locLP = locLP + 1;
+ suspend;
+end
+end
+#C

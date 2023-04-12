@@ -1,0 +1,111 @@
+[REPORT]
+comment=Koszty wg remontu
+index=
+rapgroup=
+type=-1
+templatefile=
+[CHART]
+legend=0
+legendalignment=1
+description=1
+descriptionnewpage=0
+mark=0
+markstyle=0
+width=800
+height=600
+style=0
+xstyle=0
+xfield=
+chartlabelangle=0
+chartmultibar=0
+[CFG]
+vertical=|
+horizontal=_
+width_no=3
+no=0
+wrapline=0
+[HTML]
+font=Arial
+sizef=10
+notablehdr=0
+noth=0
+firstpagecnt=-1
+nextpagecnt=-1
+fixedtable=0
+[PARAM_KOSZTY_RBH]
+TYP=-1
+RODZAJ=-1
+SQLCNT=0
+[PARAM_KOSZT]
+TYP=-1
+RODZAJ=-1
+SQLCNT=0
+[HEADER]
+no=1
+line1=ŒREDNIE KOSZTY W PODZIALE NA SPRZÊT
+[HEADER_EXT]
+no=1
+line1=
+[FOOTER]
+no=1
+line1=
+[SQL]
+no=12
+line1=SELECT
+line2=id_sprzetu,
+line3=NAZ_SPRZ,
+line4=NAZ_REM,
+line5=RBH,
+line6=KOSZTY_RBH,
+line7=KOSZTY_OSB,
+line8=KOSZTY_TSM,
+line9=KOSZTY_MPS,
+line10=KOSZTY_USL
+line11=from PR_KOSZTY_WG_REMONTU(:ROK,:DATA_ZAK,:KOSZT_RBH)
+line12=
+[DISPLAYNAMES]
+NAZ_SPRZ=Nazwa sprzêtu
+KOSZTY_OSB=Koszty osobowe
+KOSZTY_TSM=Wartoœæ TŒM
+KOSZTY_MPS=Wartoœæ <br>zu¿ytych MPS
+KOSZTY_USL=Wartoœæ us³ug<br>dodatkowych
+NAZ_REM=Rodzaj remontu
+KOSZTY_RBH=Koszty RBH
+[FIELDSIZES]
+NAZ_SPRZ=70
+NAZ_REM=20
+KOSZTY_OSB=19
+KOSZTY_TSM=19
+KOSZTY_MPS=19
+KOSZTY_USL=19
+ILOSC=-1
+ID_SPRZETU=-1
+[PARAMS]
+DATA_ZAK=@31GRUBR#
+ROK=@ROK#
+KOSZT_RBH=1
+[PARAM_DATA_ZAK]
+TYP=0
+RODZAJ=0
+LONGNAME=Data zakoñczenia
+SQLCNT=0
+[PARAM_KOSZT_RBH]
+TYP=3
+RODZAJ=-1
+LONGNAME=Koszt 1 RBH
+SQLCNT=0
+[PARAM_ROK]
+TYP=1
+RODZAJ=1
+SQLCNT=11
+SQL0=2010
+SQL1=2011
+SQL2=2012
+SQL3=2013
+SQL4=2014
+SQL5=2015
+SQL6=2016
+SQL7=2017
+SQL8=2018
+SQL9=2019
+SQL10=2020

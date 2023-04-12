@@ -1,0 +1,183 @@
+CREATE OR ALTER PROCEDURE PR_ROCZNA_REALIZACJA_PLANU_DET (ROK        Integer,
+       ID_KOMORKI Integer,
+       POZYCJA_IN Integer)
+returns (KOD_WARSZTATU   Varchar(20),
+         NAZ_WARSZTATU   Varchar(120),
+         POZYCJA         Integer,
+         KOD_USLUGI      Varchar(50),
+         NAZ_USLUGI      Varchar(60),
+         ID_HARMONOGRAMU Integer,
+         NAZ_SPRZETU     Varchar(500),
+         INDEKS_MAT      Varchar(20),
+         KOD_REM         Varchar(10),
+         ILOSC_PLAN      Decimal(15,2),
+         ILOSC_DOST      Decimal(15,2),
+         ILOSC_ZAK       Decimal(15,2),
+         ILOSC_WYK       Decimal(15,2),
+         ILOSC_WYK_NZ    Decimal(15,2))
+AS 
+
+begin
+ for select
+ k.KOD as KOD_WARSZTATU, k.NAZWA as NAZ_WARSZTATU,
+ u.POZYCJA, u.P_N as KOD_USLUGI, case when u.POZYCJA = 999 then 'POZOSTA£E ZADANIA' else u.NAZ_REMONTU end AS NAZ_USLUGI,
+ p.ID_HARMONOGRAMU,
+ trim(coalesce(s.NAZWA,'') ||' ' ||coalesce(p.ZADANIE,'')) as NAZ_SPRZETU,
+ s.INDEKS_MAT, r.KOD_REM
+ from PR_HARMONOGRAM p
+ left outer join pr_sprzet     s on s.ID_SPRZETU = p.ID_SPRZETU
+ left outer join pr_remonty    r on r.ID_REMONTU = p.ID_REMONTU
+ left outer join pr_komorki    k on k.ID_KOMORKI = p.ID_KOMORKI
+ left outer join PR_KODY_USLUG u on u.ID_USLUGI  = p.ID_USLUGI
+ where  p.ROK =:ROK AND p.ID_HARMONOGRAMU -   (p.ID_HARMONOGRAMU/1000)*1000 > 8  AND p.ID_KOMORKI = :ID_KOMORKI AND u.POZYCJA = :POZYCJA_IN
+ order by p.rok, K.KOD, U.POZYCJA,p.ID_HARMONOGRAMU
+ into :KOD_WARSZTATU, :NAZ_WARSZTATU, :POZYCJA, :KOD_USLUGI, :NAZ_USLUGI, :ID_HARMONOGRAMU, :NAZ_SPRZETU, :INDEKS_MAT, :KOD_REM
+ DO
+ BEGIN
+ 
+ select COALESCE(sum( coalesce(d.ILOSC,0)),0 ) from pr_harmonogram_det d where d.ROK = :ROK and d.ID_HARMONOGRAMU = :ID_HARMONOGRAMU into :ILOSC_PLAN;
+ if(ILOSC_PLAN >0) then
+ begin
+  select 
+      COALESCE(SUM(m.ilosc),0) as ILOSC_DOST,
+      COALESCE(SUM(case when m.DATA_ZAK is not null and m.DATA_ZAK >'1900-01-01' then  m.ilosc ELSE 0 end),0) as ILOSC_ZAK
+  from pr_magazyn m
+      inner join pr_zlecenia z on z.ID_KOMORKI_GLW = m.ID_KOMORKI and z.ROK_MAG = m.ROK and z.ID_MAG = m.ID_MAG and z.DEPOZYT = m.DEPOZYT and z.NR_KOL =0
+  where z.ID_HARM = :ID_HARMONOGRAMU and z.ROK = :ROK and z.NR_KOL = 0 and (z.DATA_ZAK is null or z.DATA_ZAK <'1900-01-01' or extract( year from z.DATA_ZAK) =:ROK)
+  into :ILOSC_DOST, :ILOSC_ZAK;
+
+  select 
+      COALESCE(sum(r.ILOSC),0), 
+      COALESCE(sum(case when m.DATA_ZAK is NULL OR m.DATA_ZAK <= '1900-01-01' then r.ILOSC end),0) 
+  from PR_ZLECENIA_RBH r 
+  inner join pr_zlecenia z on z.ID_ZLECENIA = r.ID_ZLECENIA and z.ROK = r.ROK and z.ID_KOMORKI = r.ID_KOMORKI and z.NR_KOL =0 
+  inner join pr_magazyn m on m.ID_KOMORKI = z.ID_KOMORKI_GLW and m.DEPOZYT = z.DEPOZYT and m.ROK = z.ROK_MAG and m.ID_MAG = z.ID_MAG
+  where z.ID_HARM = :ID_HARMONOGRAMU and z.ROK = :ROK and z.NR_KOL = 0 and (z.DATA_ZAK is null or z.DATA_ZAK <'1900-01-01' or extract( year from z.DATA_ZAK) =:ROK)
+  into :ILOSC_WYK, :ILOSC_WYK_NZ; 
+  SUSPEND;
+ end 
+ END
+end
+#C
+
+CREATE OR ALTER PROCEDURE PR_ROCZNA_REALIZACJA_PLANU (ROK Integer)
+returns (KOD_WARSZTATU   Varchar(20),
+         NAZ_WARSZTATU   Varchar(120),
+         POZYCJA         Integer,
+         KOD_USLUGI      Varchar(50),
+         NAZ_USLUGI      Varchar(60),
+         IDX             Integer,
+         ID_HARMONOGRAMU Integer,
+         NAZ_SPRZETU     Varchar(500),
+         INDEKS_MAT      Varchar(20),
+         KOD_REM         Varchar(10),
+         ILOSC_PLAN      Decimal(15,2),
+         ILOSC_DOST      Decimal(15,2),
+         ILOSC_WYK       Decimal(15,2),
+         PROC_PLAN       Decimal(15,2),
+         PROC_WYK        Decimal(15,2),
+         ILOSC_ZAK       Decimal(15,2),
+         PROC_PLAN1      Decimal(15,2))
+AS 
+  declare variable ILOSC_DOST_SUM_W Decimal(15,2);
+  declare variable ILOSC_PLAN_SUM_W Decimal(15,2);
+  declare variable ILOSC_WYK_SUM_W Decimal(15,2);
+  declare variable ILOSC_WYK_SUM_U Decimal(15,2);
+  declare variable ILOSC_PLAN_SUM_U Decimal(15,2);
+  declare variable ILOSC_DOST_SUM_U Decimal(15,2);
+  declare variable ILOSC_ZAK_SUM_W Decimal(15,2);
+  declare variable ILOSC_ZAK_SUM_U Decimal(15,2);
+  declare variable ID_KOMORKI Integer;
+  declare variable ILOSC_PLAN_SUM_O Decimal(15,2);
+  declare variable ILOSC_DOST_SUM_O Decimal(15,2);
+  declare variable ILOSC_ZAK_SUM_O Decimal(15,2);
+  declare variable ILOSC_WYK_SUM_O Decimal(15,2);
+  declare variable ILOSC_WYK_NZ Decimal(15,2);
+  declare variable ILOSC_WYK_NZ_SUM_U Decimal(15,2);
+  declare variable ILOSC_WYK_NZ_SUM_W Decimal(15,2);
+  declare variable ILOSC_WYK_NZ_SUM_O Decimal(15,2);
+begin
+ ILOSC_PLAN_SUM_O = 0;  ILOSC_DOST_SUM_O = 0;  ILOSC_ZAK_SUM_O  = 0; ILOSC_WYK_SUM_O  = 0;  ILOSC_WYK_NZ_SUM_O  = 0;     
+ FOR SELECT ID_KOMORKI, KOD, NAZWA FROM PR_KOMORKI WHERE KOD NOT IN ('0/0','-1/-1') AND WARSZTAT ='T'  ORDER BY KOD  INTO :ID_KOMORKI, :KOD_WARSZTATU,  :NAZ_WARSZTATU
+ DO BEGIN
+ POZYCJA     = NULL;    KOD_USLUGI = NULL;     NAZ_USLUGI = NULL;    ID_HARMONOGRAMU = NULL;   
+ NAZ_SPRZETU = NULL;    INDEKS_MAT = NULL;     KOD_REM    = NULL;
+ ILOSC_PLAN_SUM_W = 0;  ILOSC_DOST_SUM_W = 0;  ILOSC_ZAK_SUM_W  = 0;    ILOSC_WYK_SUM_W  = 0;    ILOSC_WYK_NZ_SUM_W  = 0;     
+ ILOSC_PLAN_SUM_U = 0;  ILOSC_DOST_SUM_U = 0;  ILOSC_ZAK_SUM_U  = 0;    ILOSC_WYK_SUM_U  = 0;    ILOSC_WYK_NZ_SUM_U  = 0;  
+ ILOSC_PLAN       = 0;  ILOSC_DOST       = 0;  ILOSC_ZAK        = 0;    ILOSC_WYK        = 0;    ILOSC_WYK_NZ         = 0;  
+ PROC_WYK    = NULL;    PROC_PLAN  = NULL;     PROC_PLAN1       = NULL; PROC_WYK         = NULL; IDX = 1;
+ SUSPEND; /*HEADER WARSZTATY*/
+     FOR SELECT  DISTINCT U.POZYCJA,  CASE WHEN U.POZYCJA =999 THEN 'POZOSTA£E ZADANIA' ELSE U.NAZ_REMONTU END FROM PR_KODY_USLUG  U
+     WHERE EXISTS (SELECT NULL FROM PR_HARMONOGRAM H WHERE H.ROK=:ROK AND H.ID_KOMORKI = :ID_KOMORKI AND H.ID_USLUGI =U.ID_USLUGI AND H.ID_HARMONOGRAMU -   (H.ID_HARMONOGRAMU/1000)*1000 > 8)
+     ORDER BY U.POZYCJA
+     INTO  :POZYCJA,    :NAZ_USLUGI   
+     DO BEGIN
+        ID_HARMONOGRAMU = NULL;   
+        NAZ_SPRZETU = NULL;    INDEKS_MAT = NULL;     KOD_REM    = NULL;
+        ILOSC_PLAN_SUM_U = 0;  ILOSC_DOST_SUM_U = 0;  ILOSC_ZAK_SUM_U  = 0; ILOSC_WYK_SUM_U  = 0;       ILOSC_WYK_NZ_SUM_U  = 0; 
+        ILOSC_PLAN       = 0;  ILOSC_DOST       = 0;  ILOSC_ZAK        = 0; ILOSC_WYK        = 0;       ILOSC_WYK_NZ         = 0;
+        PROC_WYK    = NULL;    PROC_PLAN  = NULL;     PROC_PLAN1       = NULL; PROC_WYK         = NULL; PROC_WYK    = NULL;    PROC_PLAN  = NULL;     IDX = 2;
+        SUSPEND;/*HEADER USLUGI*/
+        IDX = 3;
+        FOR SELECT ID_HARMONOGRAMU, NAZ_SPRZETU, INDEKS_MAT, KOD_REM, ILOSC_PLAN, ILOSC_DOST, ILOSC_WYK, ILOSC_ZAK, ILOSC_WYK_NZ 
+        FROM PR_ROCZNA_REALIZACJA_PLANU_DET(:ROK,:ID_KOMORKI,:POZYCJA)
+        WHERE  KOD_WARSZTATU = :KOD_WARSZTATU AND POZYCJA = :POZYCJA
+        INTO :ID_HARMONOGRAMU, :NAZ_SPRZETU, :INDEKS_MAT, :KOD_REM, :ILOSC_PLAN, :ILOSC_DOST, :ILOSC_WYK, :ILOSC_ZAK, :ILOSC_WYK_NZ
+        DO
+        BEGIN
+           IF( ILOSC_DOST - ILOSC_ZAK <> 0 ) THEN PROC_WYK        = (ILOSC_WYK_NZ/(ILOSC_DOST - ILOSC_ZAK) )*100;  ELSE PROC_WYK =NULL;
+           IF( ILOSC_PLAN <> 0 ) THEN PROC_PLAN       = (ILOSC_ZAK/ILOSC_PLAN)*100;  ELSE PROC_PLAN =NULL;
+           IF( ILOSC_PLAN <> 0 ) THEN PROC_PLAN1      = (ILOSC_WYK/ILOSC_PLAN)*100;  ELSE PROC_PLAN1 =NULL;
+           SUSPEND; /*DETAIL*/
+            ILOSC_PLAN_SUM_U    = ILOSC_PLAN_SUM_U    + ILOSC_PLAN ;
+            ILOSC_DOST_SUM_U    = ILOSC_DOST_SUM_U    + ILOSC_DOST ;
+            ILOSC_ZAK_SUM_U     = ILOSC_ZAK_SUM_U     + ILOSC_ZAK;
+            ILOSC_WYK_SUM_U     = ILOSC_WYK_SUM_U     + ILOSC_WYK  ;     
+            ILOSC_WYK_NZ_SUM_U  = ILOSC_WYK_NZ_SUM_U  + ILOSC_WYK_NZ  ;     
+        END
+        ID_HARMONOGRAMU = NULL; NAZ_SPRZETU = NULL; INDEKS_MAT = NULL; KOD_REM = NULL;
+        ILOSC_PLAN      = ILOSC_PLAN_SUM_U;
+        ILOSC_DOST      = ILOSC_DOST_SUM_U;
+        ILOSC_ZAK       = ILOSC_ZAK_SUM_U;
+        ILOSC_WYK       = ILOSC_WYK_SUM_U;
+        IF( ILOSC_DOST_SUM_U - ILOSC_ZAK_SUM_U <> 0 ) THEN PROC_WYK        = (ILOSC_WYK_NZ_SUM_U/(ILOSC_DOST_SUM_U - ILOSC_ZAK_SUM_U) )*100;  ELSE PROC_WYK =NULL;
+        IF( ILOSC_PLAN_SUM_U <> 0 ) THEN PROC_PLAN       = (ILOSC_ZAK_SUM_U/ILOSC_PLAN_SUM_U)*100; ELSE PROC_PLAN =NULL;
+        IF( ILOSC_PLAN_SUM_U <> 0 ) THEN PROC_PLAN1      = (ILOSC_WYK_SUM_U/ILOSC_PLAN_SUM_U)*100; ELSE PROC_PLAN1 =NULL;
+        IDX=4;
+        SUSPEND; /*fotter us³ugi*/
+         ILOSC_PLAN_SUM_W    = ILOSC_PLAN_SUM_W + ILOSC_PLAN_SUM_U ;
+         ILOSC_DOST_SUM_W    = ILOSC_DOST_SUM_W + ILOSC_DOST_SUM_U ;
+         ILOSC_ZAK_SUM_W     = ILOSC_ZAK_SUM_W  + ILOSC_ZAK_SUM_U;
+         ILOSC_WYK_SUM_W     = ILOSC_WYK_SUM_W  + ILOSC_WYK_SUM_U  ;     
+         ILOSC_WYK_NZ_SUM_W  = ILOSC_WYK_NZ_SUM_W  + ILOSC_WYK_NZ_SUM_U  ;     
+     END
+     POZYCJA = NULL; KOD_USLUGI = NULL; NAZ_USLUGI = NULL;  ID_HARMONOGRAMU = NULL; NAZ_SPRZETU = NULL;  INDEKS_MAT  = NULL; KOD_REM = NULL;
+     ILOSC_PLAN      = ILOSC_PLAN_SUM_W;
+     ILOSC_DOST      = ILOSC_DOST_SUM_W;
+     ILOSC_ZAK       = ILOSC_ZAK_SUM_W;
+     ILOSC_WYK       = ILOSC_WYK_SUM_W;
+     IF( ILOSC_DOST_SUM_W - ILOSC_ZAK_SUM_W  <> 0 ) THEN PROC_WYK = (ILOSC_WYK_NZ_SUM_W /(ILOSC_DOST_SUM_W - ILOSC_ZAK_SUM_W) )*100; ELSE PROC_WYK =NULL;
+     IF( ILOSC_PLAN_SUM_W <> 0 ) THEN PROC_PLAN       = (ILOSC_ZAK_SUM_W/ILOSC_PLAN_SUM_W)*100;   ELSE PROC_PLAN =NULL;
+     IF( ILOSC_PLAN_SUM_W <> 0 ) THEN PROC_PLAN1      = (ILOSC_WYK_SUM_W/ILOSC_PLAN_SUM_W)*100;   ELSE PROC_PLAN1 =NULL;
+     IDX = 5;
+     SUSPEND /*FOOTER WARSZTATY*/;
+      ILOSC_PLAN_SUM_O    = ILOSC_PLAN_SUM_O + ILOSC_PLAN_SUM_W ;
+      ILOSC_DOST_SUM_O    = ILOSC_DOST_SUM_O + ILOSC_DOST_SUM_W ;
+      ILOSC_ZAK_SUM_O     = ILOSC_ZAK_SUM_O  + ILOSC_ZAK_SUM_W;
+      ILOSC_WYK_SUM_O     = ILOSC_WYK_SUM_O  + ILOSC_WYK_SUM_W  ;     
+      ILOSC_WYK_NZ_SUM_O  = ILOSC_WYK_NZ_SUM_O  + ILOSC_WYK_NZ_SUM_W  ;     
+ END
+     NAZ_WARSZTATU   ='OGÓ£EM';
+     POZYCJA         = NULL; KOD_USLUGI = NULL;  NAZ_USLUGI = NULL; ID_HARMONOGRAMU = NULL; NAZ_SPRZETU = NULL; INDEKS_MAT = NULL; KOD_REM  = NULL;
+     ILOSC_PLAN      = ILOSC_PLAN_SUM_O;
+     ILOSC_DOST      = ILOSC_DOST_SUM_O;
+     ILOSC_ZAK       = ILOSC_ZAK_SUM_O;
+     ILOSC_WYK       = ILOSC_WYK_SUM_O;
+     IF( ILOSC_DOST_SUM_O - ILOSC_ZAK_SUM_O <> 0 ) THEN PROC_WYK        = (ILOSC_DOST_SUM_O/(ILOSC_DOST_SUM_O - ILOSC_ZAK_SUM_O) )*100;  ELSE PROC_WYK =NULL;
+     IF( ILOSC_PLAN_SUM_O <> 0 ) THEN PROC_PLAN       = (ILOSC_ZAK_SUM_O/ILOSC_PLAN_SUM_O)*100; ELSE PROC_PLAN =NULL;
+     IF( ILOSC_PLAN_SUM_O <> 0 ) THEN PROC_PLAN1      = (ILOSC_WYK_SUM_O/ILOSC_PLAN_SUM_O)*100; ELSE PROC_PLAN1 =NULL;
+     IDX = 6;
+     SUSPEND /* FOOTTER OGOLNY*/;
+end
+#C
+

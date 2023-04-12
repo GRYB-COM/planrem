@@ -1,0 +1,75 @@
+UPDATE PR_MAGAZYN SET NR_MAG = 27 WHERE NR_MAG =26 AND SYGN_MAG = '027/2013/R'
+#C
+
+UPDATE PR_MAGAZYN SET NR_MAG = 95 WHERE NR_MAG =94 AND SYGN_MAG = '095/2013/R'
+#C
+
+delete from pr_magazyn where nr_mag=27  and id_komorki=12 and rok=2013 and depozyt='R'  and nr_fabr is null
+#C
+
+update pr_magazyn m set NR_FABR = (select min(m1.NR_FABR) from pr_magazyn m1 where m1.ID_HARM= 45005 and m1.rok=          2013   and m1.ID_KOMORKI=  15  and m1.DEPOZYT ='R'  and m1.nr_mag= 34  and m1.nr_fabr is not null)
+ 
+where m.ID_HARM= 45005 and m.rok=2013   and m.ID_KOMORKI=15  and m.DEPOZYT ='R'  and m.nr_mag= 34  and m.nr_fabr is null
+#C
+
+delete  from pr_magazyn m 
+where m.ID_HARM= 45005 and rok=          2013   and ID_KOMORKI=  15  and DEPOZYT ='R'  and nr_mag= 34
+and not  exists (select null from pr_zlecenia z where z.ID_MAG = m.id_mag and z.ROK_MAG = m.ROK and z.DEPOZYT = m.DEPOZYT and z.ID_KOMORKI_GLW = m.ID_KOMORKI)
+#C
+
+CREATE UNIQUE INDEX PR_MAGAZYN_IDX_NR_MAG ON PR_MAGAZYN(ROK,ID_KOMORKI,DEPOZYT,NR_MAG)
+#C
+
+UPDATE PR_PLAN SET ZADANIE = ZADANIE WHERE ID_HARM =
+(SELECT MAX(NR_MAG) FROM PR_MAGAZYN WHERE ROK = 0 AND ID_KOMORKI=0 AND DEPOZYT='x' AND NR_MAG=0  PLAN SORT (PR_MAGAZYN INDEX (PR_MAGAZYN_IDX_NR_MAG)))
+#C
+
+create exception PR_BAD_NR_MAG 'Zwielokrotniony nr magazynu'
+#TRY
+CREATE OR ALTER PROCEDURE PR_ADD2MAGAZYN (SYGN_MAG      Varchar(50),
+       DEPOZYT       Char(1),
+       ID_MAG        Integer,
+       ID_SPRZETU    Integer,
+       ID_HARM       Integer,
+       ILOSC         Numeric(15,2),
+       UWAGI         Varchar(200),
+       DATA_PRZEKAZ  Date,
+       STATUS        Char(1),
+       DATA_PRZYJ    Date,
+       NR_FABR       Varchar(60),
+       PODSTAWA      Varchar(200),
+       ID_JEDNOSTKI  Integer,
+       ID_REMONTU    Integer,
+       NR_HARM       Integer,
+       KOD_WARSZTATU Varchar(5),
+       ROK           Integer,
+       NR_REJ        Varchar(60),
+       GLOWNY_KUT    Varchar(60),
+       ID_KOMORKI    Integer,
+       NR_MAG        Integer,
+       PROT_PRZEKAZ  Varchar(200),
+       PROT_PRZYJ    Varchar(200),
+       DATA_PROP_ZAK Date,
+       DATA_ZAK      Date,
+       GLOWNY        Char(1))
+AS 
+  declare variable COUNTER Integer;
+begin
+ select coalesce(count(*),0) from pr_magazyn m where m.ROK = :ROK and m.ID_KOMORKI = :ID_KOMORKI and M.DEPOZYT = :DEPOZYT AND M.NR_MAG = :NR_MAG  INTO :COUNTER;
+ IF(COUNTER >1) THEN EXCEPTION PR_BAD_NR_MAG;
+ IF(GLOWNY = 'T' OR COUNTER =0 ) THEN
+ BEGIN
+ UPDATE OR INSERT INTO
+ PR_MAGAZYN(DEPOZYT, SYGN_MAG, ID_MAG, ID_SPRZETU, ID_HARM, UWAGI, ILOSC, DATA_PRZEKAZ, STATUS, DATA_PRZYJ, NR_FABR, PODSTAWA, ID_JEDNOSTKI, NR_HARM, ID_REMONTU,
+ KOD_WARSZTATU, NR_REJ, ROK, GLOWNY_KUT, ID_KOMORKI, NR_MAG, PROT_PRZEKAZ, PROT_PRZYJ, DATA_PROP_ZAK, DATA_ZAK)
+ VALUES(:DEPOZYT, :SYGN_MAG, :ID_MAG, :ID_SPRZETU, :ID_HARM, :UWAGI, :ILOSC, :DATA_PRZEKAZ, :STATUS, :DATA_PRZYJ, :NR_FABR, :PODSTAWA, :ID_JEDNOSTKI, :NR_HARM, :ID_REMONTU,
+ :KOD_WARSZTATU, :NR_REJ, :ROK, :GLOWNY_KUT, :ID_KOMORKI, :NR_MAG, :PROT_PRZEKAZ, :PROT_PRZYJ, :DATA_PROP_ZAK, :DATA_ZAK)
+ MATCHING(ROK,ID_KOMORKI,DEPOZYT,NR_MAG); 
+ END
+ ELSE
+ BEGIN
+ UPDATE PR_MAGAZYN m SET ID_MAG = :ID_MAG where m.ROK = :ROK and m.ID_KOMORKI = :ID_KOMORKI and M.DEPOZYT = :DEPOZYT AND M.NR_MAG = :NR_MAG;
+ END
+end
+#C
+

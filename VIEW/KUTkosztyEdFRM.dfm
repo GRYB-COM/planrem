@@ -1,0 +1,183 @@
+object _KUTkosztyEdFRM: T_KUTkosztyEdFRM
+  Left = 30
+  Top = 202
+  BorderIcons = []
+  BorderStyle = bsDialog
+  Caption = 'Edycja koszt'#243'w'
+  ClientHeight = 113
+  ClientWidth = 454
+  Color = clBtnFace
+  Font.Charset = DEFAULT_CHARSET
+  Font.Color = clWindowText
+  Font.Height = -11
+  Font.Name = 'Tahoma'
+  Font.Style = []
+  OldCreateOrder = False
+  Position = poOwnerFormCenter
+  PixelsPerInch = 96
+  TextHeight = 13
+  object m_TopP: TAdvSmoothPanel
+    Left = 0
+    Top = 0
+    Width = 454
+    Height = 80
+    Cursor = crDefault
+    Caption.HTMLFont.Charset = DEFAULT_CHARSET
+    Caption.HTMLFont.Color = clWindowText
+    Caption.HTMLFont.Height = -11
+    Caption.HTMLFont.Name = 'Tahoma'
+    Caption.HTMLFont.Style = []
+    Caption.Font.Charset = DEFAULT_CHARSET
+    Caption.Font.Color = clWindowText
+    Caption.Font.Height = -16
+    Caption.Font.Name = 'Tahoma'
+    Caption.Font.Style = []
+    Caption.ColorStart = 11563548
+    Caption.ColorEnd = 10446362
+    Fill.Color = 16445929
+    Fill.ColorTo = 15587527
+    Fill.ColorMirror = 15587527
+    Fill.ColorMirrorTo = 16773863
+    Fill.GradientMirrorType = gtVertical
+    Fill.BorderColor = 14922381
+    Fill.Rounding = 0
+    Fill.ShadowOffset = 0
+    Version = '1.0.9.2'
+    Align = alClient
+    TabOrder = 0
+    ExplicitWidth = 405
+    ExplicitHeight = 148
+    object m_KodLB: TLabel
+      Left = 24
+      Top = 16
+      Width = 22
+      Height = 13
+      Caption = 'Ilo'#347#263
+      Transparent = True
+    end
+    object m_WydzLB: TLabel
+      Left = 144
+      Top = 16
+      Width = 66
+      Height = 13
+      Caption = 'Nazwa kosztu'
+      Transparent = True
+    end
+    object m_KodED: TDBEdit
+      Left = 24
+      Top = 35
+      Width = 105
+      Height = 21
+      DataField = 'ILOSC'
+      DataSource = m_DS
+      TabOrder = 0
+    end
+    object m_OddzCB: TDBLookupComboBox
+      Left = 144
+      Top = 35
+      Width = 289
+      Height = 21
+      DataField = 'ID_SLOW_KOSZTOW'
+      DataSource = m_DS
+      KeyField = 'ID_SLOW_KOSZTOW'
+      ListField = 'KOD;NAZWA'
+      ListSource = m_DSSlow
+      TabOrder = 1
+    end
+  end
+  object AdvSmoothPanel1: TAdvSmoothPanel
+    Left = 0
+    Top = 80
+    Width = 454
+    Height = 33
+    Cursor = crDefault
+    Caption.HTMLFont.Charset = DEFAULT_CHARSET
+    Caption.HTMLFont.Color = clWindowText
+    Caption.HTMLFont.Height = -11
+    Caption.HTMLFont.Name = 'Tahoma'
+    Caption.HTMLFont.Style = []
+    Caption.Font.Charset = DEFAULT_CHARSET
+    Caption.Font.Color = clWindowText
+    Caption.Font.Height = -16
+    Caption.Font.Name = 'Tahoma'
+    Caption.Font.Style = []
+    Caption.ColorStart = 11563548
+    Caption.ColorEnd = 10446362
+    Fill.Color = 16445929
+    Fill.ColorTo = 15587527
+    Fill.ColorMirror = 15587527
+    Fill.ColorMirrorTo = 16773863
+    Fill.GradientMirrorType = gtVertical
+    Fill.BorderColor = 14922381
+    Fill.Rounding = 0
+    Fill.ShadowOffset = 0
+    Version = '1.0.9.2'
+    Align = alBottom
+    TabOrder = 1
+    ExplicitTop = 148
+    ExplicitWidth = 405
+    DesignSize = (
+      454
+      33)
+    object m_CancelBB: TAdvSmoothButton
+      Left = 330
+      Top = 6
+      Width = 53
+      Height = 20
+      Anchors = [akTop, akRight]
+      Status.Caption = '0'
+      Status.Appearance.Fill.Color = clRed
+      Status.Appearance.Fill.ColorMirror = clNone
+      Status.Appearance.Fill.ColorMirrorTo = clNone
+      Status.Appearance.Fill.GradientType = gtSolid
+      Status.Appearance.Fill.BorderColor = clGray
+      Status.Appearance.Fill.Rounding = 0
+      Status.Appearance.Fill.ShadowOffset = 0
+      Status.Appearance.Font.Charset = DEFAULT_CHARSET
+      Status.Appearance.Font.Color = clWhite
+      Status.Appearance.Font.Height = -11
+      Status.Appearance.Font.Name = 'Tahoma'
+      Status.Appearance.Font.Style = []
+      Caption = 'Anuluj'
+      Color = 16644337
+      TabOrder = 0
+      Version = '1.6.9.0'
+      OnClick = m_CancelBBClick
+      ExplicitLeft = 281
+    end
+    object m_SaveBB: TAdvSmoothButton
+      Left = 389
+      Top = 6
+      Width = 53
+      Height = 20
+      Anchors = [akTop, akRight]
+      Status.Caption = '0'
+      Status.Appearance.Fill.Color = clRed
+      Status.Appearance.Fill.ColorMirror = clNone
+      Status.Appearance.Fill.ColorMirrorTo = clNone
+      Status.Appearance.Fill.GradientType = gtSolid
+      Status.Appearance.Fill.BorderColor = clGray
+      Status.Appearance.Fill.Rounding = 0
+      Status.Appearance.Fill.ShadowOffset = 0
+      Status.Appearance.Font.Charset = DEFAULT_CHARSET
+      Status.Appearance.Font.Color = clWhite
+      Status.Appearance.Font.Height = -11
+      Status.Appearance.Font.Name = 'Tahoma'
+      Status.Appearance.Font.Style = []
+      Caption = 'Zapisz'
+      Color = 16644337
+      TabOrder = 1
+      Version = '1.6.9.0'
+      OnClick = m_SaveBBClick
+      ExplicitLeft = 340
+    end
+  end
+  object m_DS: TDataSource
+    Left = 224
+    Top = 8
+  end
+  object m_DSSlow: TDataSource
+    Left = 288
+    Top = 8
+  end
+end

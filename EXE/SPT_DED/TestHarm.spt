@@ -1,0 +1,69 @@
+CREATE OR ALTER PROCEDURE PR_TEST_HARM (BAZA Char(350))
+returns (ID_HARMONOGRAMU_1      Integer,
+         ID_HARMONOGRAMU_2      Integer,
+         ROK_1                  Integer,
+         ROK_2                  Integer,
+         ID_USLUGI_1            Integer,
+         ID_USLUGI_2            Integer,
+         ID_KOMORKI_1           Integer,
+         ID_KOMORKI_2           Integer,
+         NR_ZADANIA_1           Varchar(50),
+         NR_ZADANIA_2           Varchar(50),
+         ZADANIE_1              Varchar(255),
+         ZADANIE_2              Varchar(255),
+         ID_JEDNOSTKI_1         Integer,
+         ID_JEDNOSTKI_2         Integer,
+         ID_REMONTU_1           Integer,
+         ID_REMONTU_2           Integer,
+         ID_HARMONOGRAMU_GL_1   Integer,
+         ID_HARMONOGRAMU_GL_2   Integer,
+         DATA_OD_1              Date,
+         DATA_OD_2              Date,
+         DATA_DO_1              Date,
+         DATA_DO_2              Date,
+         ID_SPRZETU_1           Integer,
+         ID_SPRZETU_2           Integer,
+         NORMA_RBH_1            Numeric(15,2),
+         NORMA_RBH_2            Numeric(15,2),
+         TYP_1                  Char(1),
+         TYP_2                  Char(1),
+         ID_HARMONOGRAMU_HEAD_1 Integer,
+         ID_HARMONOGRAMU_HEAD_2 Integer)
+AS 
+  declare variable id_HARMONOGRAMU_GD Integer;
+  declare variable STAT Char(500);
+begin
+
+BAZA ='c:\baza\__TEST\CZYSTA_BAZA\BAZA.gdb';
+for select ROK, ID_USLUGI, ID_KOMORKI, NR_ZADANIA, ZADANIE, ID_JEDNOSTKI, ID_REMONTU, ID_HARMONOGRAMU_GL, DATA_OD, DATA_DO, ID_HARMONOGRAMU, ID_SPRZETU, NORMA_RBH, TYP, ID_HARMONOGRAMU_HEAD ID_HARMONOGRAMU
+from PR_HARMONOGRAM H WHERE ROK=2014 
+into :ROK_1, :ID_USLUGI_1, :ID_KOMORKI_1, :NR_ZADANIA_1, :ZADANIE_1, :ID_JEDNOSTKI_1, :ID_REMONTU_1, :ID_HARMONOGRAMU_GL_1, :DATA_OD_1, :DATA_DO_1, 
+:ID_HARMONOGRAMU_1, :ID_SPRZETU_1, :NORMA_RBH_1, :TYP_1, :ID_HARMONOGRAMU_HEAD_1 
+do
+begin
+  STAT = 'SELECT ROK, ID_USLUGI, ID_KOMORKI, NR_ZADANIA, ZADANIE, ID_JEDNOSTKI, 
+  ID_REMONTU, ID_HARMONOGRAMU_GL, DATA_OD, DATA_DO, ID_HARMONOGRAMU, ID_SPRZETU, NORMA_RBH, TYP, ID_HARMONOGRAMU_HEAD ID_HARMONOGRAMU 
+  FROM PR_HARMONOGRAM WHERE ROK=2014 AND ID_HARMONOGRAMU =' || :ID_HARMONOGRAMU_1; 
+  execute statement STAT
+  on EXTERNAL DATA SOURCE BAZA AS USER 'sysdba' PASSWORD 'masterkey'
+  into :ROK_2, :ID_USLUGI_2, :ID_KOMORKI_2, :NR_ZADANIA_2, :ZADANIE_2, :ID_JEDNOSTKI_2, :ID_REMONTU_2, :ID_HARMONOGRAMU_GL_2, :DATA_OD_2, :DATA_DO_2, :ID_HARMONOGRAMU_2, :ID_SPRZETU_2, :NORMA_RBH_2, :TYP_2, :ID_HARMONOGRAMU_HEAD_2; 
+  IF(
+     COALESCE(:ID_HARMONOGRAMU_1,0) <> COALESCE(:ID_HARMONOGRAMU_2,0) or
+     COALESCE(:ROK_1,0) <> COALESCE(:ROK_2,0) or
+     COALESCE(:ID_USLUGI_1,0) <> COALESCE(:ID_USLUGI_2,0) or
+     COALESCE(:ID_KOMORKI_1,0) <> COALESCE(:ID_KOMORKI_2,0) or
+     COALESCE(:NR_ZADANIA_1,' ') <> COALESCE(:NR_ZADANIA_2,' ') or
+     COALESCE(:ZADANIE_1,' ') <> COALESCE(:ZADANIE_2,' ') or
+     COALESCE(:ID_JEDNOSTKI_1,0) <> COALESCE(:ID_JEDNOSTKI_2,0) or
+     COALESCE(:ID_REMONTU_1,0) <> COALESCE(:ID_REMONTU_2,0) or
+     COALESCE(:ID_HARMONOGRAMU_GL_1,0) <> COALESCE(:ID_HARMONOGRAMU_GL_2,0) or
+     COALESCE(:DATA_OD_1,'1900-01-01') <> COALESCE(:DATA_OD_2,'1900-01-01') or
+     COALESCE(:DATA_DO_1,'1900-01-01') <> COALESCE(:DATA_DO_2,'1900-01-01') or
+     COALESCE(:ID_SPRZETU_1,0) <> COALESCE(:ID_SPRZETU_2,0) or
+     COALESCE(:NORMA_RBH_1,0.0) <> COALESCE(:NORMA_RBH_2,0.0) or
+     COALESCE(:TYP_1,' ') <> COALESCE(:TYP_2,' ') or
+     COALESCE(:ID_HARMONOGRAMU_HEAD_1,0) <> COALESCE(:ID_HARMONOGRAMU_HEAD_2,0) 
+          
+    ) THEN SUSPEND;
+end
+end

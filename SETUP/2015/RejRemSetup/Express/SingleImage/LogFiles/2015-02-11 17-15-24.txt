@@ -1,0 +1,94 @@
+=================Logging started at 2015-02-11 17:15:24 ==================
+Binary table successfully built
+CustomAction table successfully built
+Property table successfully built
+Feature table successfully built
+FeatureComponents table successfully built
+Extracting COM data from 1 feature(s)
+Successfully scanned features for COM info
+IniFile table successfully built
+Building Directory table
+Directory table successfully built
+Registry table successfully built
+New Registry Entries (8) dynamically acquired for feature Always Install
+Building Feature table
+Component table successfully built
+Directory table successfully built
+AdminExecuteSequence table successfully built
+AdminUISequence table successfully built
+AdvtExecuteSequence table successfully built
+InstallExecuteSequence table successfully built
+InstallUISequence table successfully built
+	** Error -3018: Error determining target  for shortcut [ProgramMenuFolder]\##NEW_STRING7##\##NEW_STRING8## in feature Always Install
+	** Error -3018: Error building Shortcut table in feature Always Install
+Class table successfully built
+AppId table successfully built
+New Class {9E8D2FA1-591C-11D0-BF52-0020AF32BD64} dynamically acquired for feature Always Install
+New Class {9E8D2FA3-591C-11D0-BF52-0020AF32BD64} dynamically acquired for feature Always Install
+New Class {9E8D2FA5-591C-11D0-BF52-0020AF32BD64} dynamically acquired for feature Always Install
+New Class {9E8D2FA7-591C-11D0-BF52-0020AF32BD64} dynamically acquired for feature Always Install
+ProgId table successfully built
+New ProgId Borland.Midas_DatapacketRead.1 dynamically acquired for feature Always Install
+New ProgId Borland.Midas_DatapacketWrite.1 dynamically acquired for feature Always Install
+New ProgId Borland.Midas_DSBase.1 dynamically acquired for feature Always Install
+New ProgId Borland.Midas_DSCursor.1 dynamically acquired for feature Always Install
+New ProgId Borland.Midas_DSBase dynamically acquired for feature Always Install
+New ProgId Borland.Midas_DSCursor dynamically acquired for feature Always Install
+TypeLib table successfully built
+New TypeLib {83F57D68-CA9A-11D2-9088-00C04FA35CFA} dynamically acquired for feature Always Install
+Extension table successfully built
+Verb table successfully built
+MIME table successfully built
+PublishComponent table successfully built
+Directory table successfully built
+LaunchCondition table successfully built
+ServiceInstall table successfully built
+ServiceControl table successfully built
+ODBCDriver table successfully built
+ODBCAttribute table successfully built
+ODBCDataSource table successfully built
+ODBCSourceAttribute table successfully built
+ODBCTranslator table successfully built
+TextStyle table successfully built
+ActionText table successfully built
+Error table successfully built
+UIText table successfully built
+Icon table successfully built
+InstallShield table successfully built
+Dialog AdminChangeFolder for language Angielski (Stany Zjednoczone) built
+Dialog AdminNetworkLocation for language Angielski (Stany Zjednoczone) built
+Dialog AdminWelcome for language Angielski (Stany Zjednoczone) built
+Dialog SplashBitmap for language Angielski (Stany Zjednoczone) built
+Dialog InstallChangeFolder for language Angielski (Stany Zjednoczone) built
+Dialog CancelSetup for language Angielski (Stany Zjednoczone) built
+Dialog CustomSetup for language Angielski (Stany Zjednoczone) built
+Dialog OutOfSpace for language Angielski (Stany Zjednoczone) built
+Dialog SetupError for language Angielski (Stany Zjednoczone) built
+Dialog SetupCompleteSuccess for language Angielski (Stany Zjednoczone) built
+Dialog SetupCompleteError for language Angielski (Stany Zjednoczone) built
+Dialog DiskSpaceRequirements for language Angielski (Stany Zjednoczone) built
+Dialog FilesInUse for language Angielski (Stany Zjednoczone) built
+Dialog SetupInitialization for language Angielski (Stany Zjednoczone) built
+Dialog LicenseAgreement for language Angielski (Stany Zjednoczone) built
+Dialog MaintenanceType for language Angielski (Stany Zjednoczone) built
+Dialog MaintenanceWelcome for language Angielski (Stany Zjednoczone) built
+Dialog SetupProgress for language Angielski (Stany Zjednoczone) built
+Dialog CustomerInformation for language Angielski (Stany Zjednoczone) built
+Dialog SetupResume for language Angielski (Stany Zjednoczone) built
+Dialog SetupInterrupted for language Angielski (Stany Zjednoczone) built
+Dialog ReadyToInstall for language Angielski (Stany Zjednoczone) built
+Dialog ReadyToRemove for language Angielski (Stany Zjednoczone) built
+Dialog InstallWelcome for language Angielski (Stany Zjednoczone) built
+Dialog DestinationFolder for language Angielski (Stany Zjednoczone) built
+Dialog CustomSetupTips for language Angielski (Stany Zjednoczone) built
+Dialog ReadmeInformation for language Angielski (Stany Zjednoczone) built
+Dialog SetupType for language Angielski (Stany Zjednoczone) built
+Dialog DatabaseFolder for language Angielski (Stany Zjednoczone) built
+Language Angielski (Stany Zjednoczone) built
+Files processed
+Cabs
+Media
+SummaryStream table successfully built
+Setup.exe created
+Express\SingleImage build completed with 2 errors, 0 warnings
+=================Logging Stopped at 2015-02-11 17:16:07 ==================

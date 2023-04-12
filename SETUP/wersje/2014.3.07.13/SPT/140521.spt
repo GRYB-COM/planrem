@@ -1,0 +1,6 @@
+ALTER TABLE PR_ZLECENIA add ILOSC Decimal(15,2) NOT NULL
+#TRY
+
+update pr_zlecenia z set z.ilosc  = (select ilosc from pr_magazyn m where m.DEPOZYT = z.DEPOZYT and m.ROK = z.ROK_MAG and m.ID_KOMORKI = z.ID_KOMORKI_GLW and m.ID_MAG = z.ID_MAG)
+where z.ilosc is null
+#C

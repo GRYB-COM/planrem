@@ -1,0 +1,80 @@
+DELETE FROM PR_ZLECENIA WHERE ROK_MAG < 2012
+#C
+
+DELETE FROM PR_MAGAZYN WHERE ROK <2012
+#C
+
+DELETE FROM PR_HARMONOGRAM WHERE ROK <2012
+#C
+
+INSERT INTO PR_HARMONOGRAM(ROK, ID_USLUGI, ID_KOMORKI, NR_ZADANIA, ZADANIE, ID_JEDNOSTKI, ID_REMONTU, ID_HARMONOGRAMU_GL, DATA_OD, DATA_DO, ID_HARMONOGRAMU, ID_SPRZETU, NORMA_RBH)
+select 2005 as ROK, h.ID_USLUGI, h.ID_KOMORKI, h.NR_ZADANIA, h.ZADANIE, h.ID_JEDNOSTKI, h.ID_REMONTU, h.ID_HARMONOGRAMU_GL, h.DATA_OD, h.DATA_DO, h.ID_HARMONOGRAMU, h.ID_SPRZETU, h.NORMA_RBH 
+from pr_harmonogram h   where h.id_harmonogramu - (h.id_harmonogramu/1000)*1000 <8    and h.rok =2012 
+and not exists (select null from pr_harmonogram h1 where h1.ID_HARMONOGRAMU = h.ID_HARMONOGRAMU and h1.ROK =2005) 
+order by h.id_harmonogramu
+#C
+
+
+INSERT INTO PR_HARMONOGRAM(ROK, ID_USLUGI, ID_KOMORKI, NR_ZADANIA, ZADANIE, ID_JEDNOSTKI, ID_REMONTU, ID_HARMONOGRAMU_GL, DATA_OD, DATA_DO, ID_HARMONOGRAMU, ID_SPRZETU, NORMA_RBH)
+select 2006 as ROK, h.ID_USLUGI, h.ID_KOMORKI, h.NR_ZADANIA, h.ZADANIE, h.ID_JEDNOSTKI, h.ID_REMONTU, h.ID_HARMONOGRAMU_GL, h.DATA_OD, h.DATA_DO, h.ID_HARMONOGRAMU, h.ID_SPRZETU, h.NORMA_RBH 
+from pr_harmonogram h   where h.id_harmonogramu - (h.id_harmonogramu/1000)*1000 <8    and h.rok =2012 
+and not exists (select null from pr_harmonogram h1 where h1.ID_HARMONOGRAMU = h.ID_HARMONOGRAMU and h1.ROK =2006) 
+order by h.id_harmonogramu
+#C
+
+
+INSERT INTO PR_HARMONOGRAM(ROK, ID_USLUGI, ID_KOMORKI, NR_ZADANIA, ZADANIE, ID_JEDNOSTKI, ID_REMONTU, ID_HARMONOGRAMU_GL, DATA_OD, DATA_DO, ID_HARMONOGRAMU, ID_SPRZETU, NORMA_RBH)
+select 2007 as ROK, h.ID_USLUGI, h.ID_KOMORKI, h.NR_ZADANIA, h.ZADANIE, h.ID_JEDNOSTKI, h.ID_REMONTU, h.ID_HARMONOGRAMU_GL, h.DATA_OD, h.DATA_DO, h.ID_HARMONOGRAMU, h.ID_SPRZETU, h.NORMA_RBH 
+from pr_harmonogram h   where h.id_harmonogramu - (h.id_harmonogramu/1000)*1000 <8    and h.rok =2012 
+and not exists (select null from pr_harmonogram h1 where h1.ID_HARMONOGRAMU = h.ID_HARMONOGRAMU and h1.ROK =2007) 
+order by h.id_harmonogramu
+#C
+
+
+INSERT INTO PR_HARMONOGRAM(ROK, ID_USLUGI, ID_KOMORKI, NR_ZADANIA, ZADANIE, ID_JEDNOSTKI, ID_REMONTU, ID_HARMONOGRAMU_GL, DATA_OD, DATA_DO, ID_HARMONOGRAMU, ID_SPRZETU, NORMA_RBH)
+select 2008 as ROK, h.ID_USLUGI, h.ID_KOMORKI, h.NR_ZADANIA, h.ZADANIE, h.ID_JEDNOSTKI, h.ID_REMONTU, h.ID_HARMONOGRAMU_GL, h.DATA_OD, h.DATA_DO, h.ID_HARMONOGRAMU, h.ID_SPRZETU, h.NORMA_RBH 
+from pr_harmonogram h   where h.id_harmonogramu - (h.id_harmonogramu/1000)*1000 <8    and h.rok =2012 
+and not exists (select null from pr_harmonogram h1 where h1.ID_HARMONOGRAMU = h.ID_HARMONOGRAMU and h1.ROK =2008) 
+order by h.id_harmonogramu
+#C
+
+
+INSERT INTO PR_HARMONOGRAM(ROK, ID_USLUGI, ID_KOMORKI, NR_ZADANIA, ZADANIE, ID_JEDNOSTKI, ID_REMONTU, ID_HARMONOGRAMU_GL, DATA_OD, DATA_DO, ID_HARMONOGRAMU, ID_SPRZETU, NORMA_RBH)
+select 2009 as ROK, h.ID_USLUGI, h.ID_KOMORKI, h.NR_ZADANIA, h.ZADANIE, h.ID_JEDNOSTKI, h.ID_REMONTU, h.ID_HARMONOGRAMU_GL, h.DATA_OD, h.DATA_DO, h.ID_HARMONOGRAMU, h.ID_SPRZETU, h.NORMA_RBH 
+from pr_harmonogram h   where h.id_harmonogramu - (h.id_harmonogramu/1000)*1000 <8    and h.rok =2012 
+and not exists (select null from pr_harmonogram h1 where h1.ID_HARMONOGRAMU = h.ID_HARMONOGRAMU and h1.ROK =2009) 
+order by h.id_harmonogramu
+#C
+
+
+INSERT INTO PR_HARMONOGRAM(ROK, ID_USLUGI, ID_KOMORKI, NR_ZADANIA, ZADANIE, ID_JEDNOSTKI, ID_REMONTU, ID_HARMONOGRAMU_GL, DATA_OD, DATA_DO, ID_HARMONOGRAMU, ID_SPRZETU, NORMA_RBH)
+select 2010 as ROK, h.ID_USLUGI, h.ID_KOMORKI, h.NR_ZADANIA, h.ZADANIE, h.ID_JEDNOSTKI, h.ID_REMONTU, h.ID_HARMONOGRAMU_GL, h.DATA_OD, h.DATA_DO, h.ID_HARMONOGRAMU, h.ID_SPRZETU, h.NORMA_RBH 
+from pr_harmonogram h   where h.id_harmonogramu - (h.id_harmonogramu/1000)*1000 <8    and h.rok =2012 
+and not exists (select null from pr_harmonogram h1 where h1.ID_HARMONOGRAMU = h.ID_HARMONOGRAMU and h1.ROK =2010) 
+order by h.id_harmonogramu
+#C
+
+
+INSERT INTO PR_HARMONOGRAM(ROK, ID_USLUGI, ID_KOMORKI, NR_ZADANIA, ZADANIE, ID_JEDNOSTKI, ID_REMONTU, ID_HARMONOGRAMU_GL, DATA_OD, DATA_DO, ID_HARMONOGRAMU, ID_SPRZETU, NORMA_RBH)
+select 2011 as ROK, h.ID_USLUGI, h.ID_KOMORKI, h.NR_ZADANIA, h.ZADANIE, h.ID_JEDNOSTKI, h.ID_REMONTU, h.ID_HARMONOGRAMU_GL, h.DATA_OD, h.DATA_DO, h.ID_HARMONOGRAMU, h.ID_SPRZETU, h.NORMA_RBH 
+from pr_harmonogram h   where h.id_harmonogramu - (h.id_harmonogramu/1000)*1000 <8    and h.rok =2012 
+and not exists (select null from pr_harmonogram h1 where h1.ID_HARMONOGRAMU = h.ID_HARMONOGRAMU and h1.ROK =2011) 
+order by h.id_harmonogramu
+#C
+
+INSERT INTO PR_HARMONOGRAM(ROK, ID_USLUGI, ID_KOMORKI, NR_ZADANIA, ZADANIE, ID_JEDNOSTKI, ID_REMONTU, ID_HARMONOGRAMU_GL, DATA_OD, DATA_DO, ID_HARMONOGRAMU, ID_SPRZETU, NORMA_RBH)
+select extract(YEAR FROM H.DATA_OD) AS ROK, h.ID_USLUGI, h.ID_KOMORKI, h.NR_ZADANIA, h.ZADANIE, h.ID_JEDNOSTKI, h.ID_REMONTU, h.ID_HARMONOGRAMU_GL, h.DATA_OD, h.DATA_DO, h.ID_HARMONOGRAMU, h.ID_SPRZETU, h.NORMA_RBH 
+from pr_harmonogram h   where h.rok =2012 AND DATA_OD IS NOT NULL 
+and not exists (select null from pr_harmonogram h1 where h1.ID_HARMONOGRAMU = h.ID_HARMONOGRAMU and h1.ROK =extract(YEAR FROM H.DATA_OD)) 
+order by h.id_harmonogramu
+#C
+
+INSERT INTO PR_HARMONOGRAM_DET(ROK,  ID_HARMONOGRAMU, MIESIAC, ILOSC, PLAN_RBH)
+select extract(year from h.DATA_OD) as rok,   hd.ID_HARMONOGRAMU, hd.MIESIAC, hd.ILOSC, hd.PLAN_RBH   from PR_HARMONOGRAM_DET hd    
+inner join pr_harmonogram h on h.ROK = hd.ROK and h.ID_HARMONOGRAMU = hd.ID_HARMONOGRAMU
+where h.data_od is not null  
+and not exists 
+(select null from PR_HARMONOGRAM_DET hd1 
+ where hd1.ID_HARMONOGRAMU = hd.ID_HARMONOGRAMU and hd1.ILOSC = hd.ILOSC and hd1.MIESIAC = hd.MIESIAC and hd1.PLAN_RBH = hd.PLAN_RBH and hd1.ROK = extract(year from h.DATA_OD)  )
+order by 1
+#C

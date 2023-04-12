@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="windows-1250" ?>
+<configuration title="3 OWT" owner="Wersja niekomercyjna do testów i szkoleń" version="3.0">
+<glbLinks />
+<applications >
+<application sysid="256" name="Rejestr Remontów" key="8753-B69T-F4FB-M6U8">
+<links >
+<link id="L1" alias="ŚCIEŻKA DO BAZA.gdb" user="s3uMfJd3" password="qLmsrLq/3dDk" kind="Firebird" protocol="Lokalny" owner="3 Okręgowe Warsztaty Techniczne" dialect="3"   charSet="WIN1250" name="NALEŻY PODAĆ PRAWIDŁOWĄ ŚCIEŻKĘ DO BAZY">
+<parameters />
+</link>
+</links>
+<parameters />
+</application>
+</applications>
+</configuration>

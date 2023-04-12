@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="windows-1250" ?>
+<configuration title="3 OWT" owner="Wersja niekomercyjna do testów i szkoleń" version="3.0">
+<glbLinks />
+<applications >
+<application sysid="256" name="Rejestr Remontów" key="8753-B69T-F4FB-M6U8">
+<links >
+<link id="L1" alias="C:\baza\__test\czysta_baza\BAZA.GDB" user="s3uMfJd3" password="qLmsrLq/3dDk" kind="Firebird" protocol="Lokalny" owner="3 Okręgowe Warsztaty Techniczne" dialect="3"   charSet="WIN1250" name="Modlin">
+<parameters />
+</link>
+<link id="L2" alias="C:\baza\__test\zegrze\baza.gdb" user="s3uMfJd3" password="qLmsrLq/3dDk" kind="Firebird" protocol="Lokalny" owner="3 Okręgowe Warsztaty Techniczne" dialect="3"   charSet="WIN1250" name="Zegrze">
+<parameters />
+</link>
+<link id="L3" alias="C:\baza\__test\gd\baza.gdb" user="s3uMfJd3" password="qLmsrLq/3dDk" kind="Firebird" protocol="Lokalny" owner="3 Okręgowe Warsztaty Techniczne" dialect="3"   charSet="WIN1250" name="Gdańska">
+<parameters />
+</link>
+<link id="L4" alias="C:\baza\__test\komo\baza.gdb" user="s3uMfJd3" password="qLmsrLq/3dDk" kind="Firebird" protocol="Lokalny" owner="3 Okręgowe Warsztaty Techniczne" dialect="3"   charSet="WIN1250" name="Komorowo">
+<parameters />
+</link>
+</links>
+<parameters />
+</application>
+</applications>
+</configuration>

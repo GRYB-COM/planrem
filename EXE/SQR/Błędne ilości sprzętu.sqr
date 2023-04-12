@@ -1,0 +1,78 @@
+[REPORT]
+comment=
+index=
+rapgroup=Kontrolne
+type=-1
+templatefile=
+[CHART]
+legend=0
+legendalignment=1
+description=1
+descriptionnewpage=0
+mark=0
+markstyle=0
+width=800
+height=600
+style=0
+xstyle=0
+xfield=
+chartlabelangle=0
+chartmultibar=0
+[CFG]
+vertical=|
+horizontal=_
+width_no=3
+no=0
+wrapline=0
+[HTML]
+font=Arial
+sizef=10
+notablehdr=0
+noth=0
+firstpagecnt=-1
+nextpagecnt=-1
+fixedtable=0
+[HEADER]
+no=1
+line1=B³êdne iloœci sprzêtu
+[HEADER_EXT]
+no=1
+line1=
+[FOOTER]
+no=1
+line1=
+[SQL]
+no=8
+line1=select
+line2=z.ID_HARM, m.SYGN_MAG,m.DATA_ZAK,
+line3=COALESCE(SUM(case when m.DATA_ZAK is not null and m.DATA_ZAK >'1900-01-01' then  m.ilosc ELSE 0 end),0) as ILOSC_ZAK,
+line4=SUM((SELECT SUM(COALESCE(r.ILOSC,0))  from PR_ZLECENIA_RBH r WHERE  z.ID_ZLECENIA = r.ID_ZLECENIA and z.ROK = r.ROK and z.ID_KOMORKI = r.ID_KOMORKI and z.NR_KOL =0))
+line5=from pr_magazyn m
+line6=inner join pr_zlecenia z on z.ID_KOMORKI_GLW = m.ID_KOMORKI and z.ROK_MAG = m.ROK and z.ID_MAG = m.ID_MAG and z.DEPOZYT = m.DEPOZYT and z.NR_KOL =0
+line7=where z.ROK = :ROK and z.NR_KOL = 0 AND  Z.ID_HARM-   (Z.ID_HARM/1000)*1000 > 8
+line8=group by z.ID_HARM, m.SYGN_MAG,m.DATA_ZAK HAVING  SUM(case when m.DATA_ZAK is not null and m.DATA_ZAK >'1900-01-01' then  m.ilosc ELSE 0 end)  >   SUM((SELECT SUM(COALESCE(r.ILOSC,0))  from PR_ZLECENIA_RBH r WHERE  z.ID_ZLECENIA = r.ID_ZLECENIA and z.ROK = r.ROK and z.ID_KOMORKI = r.ID_KOMORKI and z.NR_KOL =0))
+[DISPLAYNAMES]
+ID_HARM=Nr harm.
+SYGN_MAG=Nr KUT
+DATA_ZAK=Data zak.
+ILOSC_DOST=Dostarczono
+ILOSC_ZAK=Zakoñczone <br>( z daty zakoñczenia)
+SUM=Zakoñczone<br> (z rozliczenia iloœci i godzin)
+[FIELDSIZES]
+ID_HARM=10
+SYGN_MAG=50
+DATA_ZAK=10
+ILOSC_DOST=19
+ILOSC_ZAK=19
+SUM=19
+[PARAMS]
+ROK=@ROK#
+[PARAM_ROK]
+TYP=1
+RODZAJ=1
+KEYFIELD=ROK
+LISTFIELDS=ROK
+DISPLAYNAMES=ROK
+LONGNAME=Rok
+SQLCNT=1
+SQL0=select distinct rok from pr_zlecenia
